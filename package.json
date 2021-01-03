@@ -1,0 +1,18 @@
+{
+  "name": "discordgamelinter",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "Mohamed Belkamelk",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@discordjs/opus": "^0.3.3",
+    "discord.js": "^12.5.1",
+    "ytdl-core-discord": "^1.2.5"
+  },
+  "scripts": {
+    "start": "node .",
+    "prestart": "yarn run build",
+    "build": "tsc -p ."
+  }
+}
