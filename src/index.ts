@@ -51,7 +51,7 @@ const messageHandler = (message: Message) => {
 								dispatcher[id].on('finish', () => {
 									queue[id].shift();
 									(async () => {
-										await play(connection, queue, id);
+										dispatcher[id] = await play(connection, queue, id);
 									})();
 								});
 							} else {
