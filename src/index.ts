@@ -48,7 +48,7 @@ const messageHandler = (message: Message) => {
 								queue[id].push(args[1]);
 								connection[id] = await message.member?.voice.channel?.join();
 								dispatcher[id] = await play(connection, queue, id);
-								dispatcher[id].on('finish', () => {
+								dispatcher[id]?.on('finish', () => {
 									queue[id].shift();
 									(async () => {
 										dispatcher[id] = await play(connection, queue, id);
@@ -82,7 +82,7 @@ const messageHandler = (message: Message) => {
 				queue[id].shift();
 				(async () => {
 					dispatcher[id] = await play(connection, queue, id);
-					dispatcher[id].on('finish', () => {
+					dispatcher[id]?.on('finish', () => {
 						queue[id].shift();
 						(async () => {
 							dispatcher[id] = await play(connection, queue, id);
