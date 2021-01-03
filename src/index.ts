@@ -33,7 +33,7 @@ async function play(
 			return null;
 		} else {
 			return connection[id]?.play(
-				await ytdl(loop[id][0], {
+				await ytdl(loop[id], {
 					filter: 'audioonly',
 				}),
 				{
