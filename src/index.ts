@@ -30,16 +30,24 @@ async function play(
 			delete connection[id];
 			delete dispatcher[id];
 			delete queue[id];
+			delete loop[id];
 			return null;
 		} else {
-			return connection[id]?.play(
-				await ytdl(loop[id], {
-					filter: 'audioonly',
-				}),
-				{
-					type: 'opus',
-				}
-			);
+			return connection[id]
+				?.play(
+					await ytdl(loop[id], {
+						filter: 'audioonly',
+					}),
+					{
+						type: 'opus',
+					}
+				)
+				.on('finish', () => {
+					queue[id].shift();
+					(async () => {
+						dispatcher[id] = await play(connection, queue, id);
+					})();
+				});
 		}
 	}
 }
