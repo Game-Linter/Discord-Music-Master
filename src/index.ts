@@ -6,7 +6,6 @@ const PREFIX = '__';
 let connection: any = {};
 let dispatcher: any = {};
 let loop: any = {};
-
 let queue: any = {};
 
 async function play(
@@ -26,13 +25,9 @@ async function play(
 			}
 		);
 	} else {
-		if (loop[id]) {
-			return connection[id]?.play();
-		} else {
-			connection[id].disconnect();
-			delete connection[id];
-			return null;
-		}
+		connection[id].disconnect();
+		delete connection[id];
+		return null;
 	}
 }
 
@@ -87,6 +82,12 @@ const messageHandler = (message: Message) => {
 				queue[id].shift();
 				(async () => {
 					dispatcher[id] = await play(connection, queue, id);
+					dispatcher[id].on('finish', () => {
+						queue[id].shift();
+						(async () => {
+							dispatcher[id] = await play(connection, queue, id);
+						})();
+					});
 				})();
 				break;
 			case 'loop':
