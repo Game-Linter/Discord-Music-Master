@@ -86,7 +86,7 @@ const messageHandler = (message: Message) => {
 			case 'skip':
 				queue[id].shift();
 				(async () => {
-					await play(connection, queue, id);
+					dispatcher[id] = await play(connection, queue, id);
 				})();
 				break;
 			case 'loop':
