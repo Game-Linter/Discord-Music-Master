@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Message, VoiceConnection } from 'discord.js';
 import { Discord } from './core/server';
 import ytdl from 'ytdl-core-discord';
 
@@ -9,7 +9,7 @@ let loop: any = {};
 let queue: any = {};
 
 async function play(
-	connection: any,
+	connection: { [x: string]: VoiceConnection },
 	queue: { [x: string]: any[] },
 	id: string
 ) {
@@ -76,6 +76,8 @@ const messageHandler = (message: Message) => {
 			case 'fuckoff':
 				connection[id]?.disconnect();
 				delete connection[id];
+				delete queue[id];
+				delete dispatcher[id];
 				break;
 
 			case 'skip':
