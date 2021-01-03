@@ -25,9 +25,22 @@ async function play(
 			}
 		);
 	} else {
-		connection[id].disconnect();
-		delete connection[id];
-		return null;
+		if (!loop[id]) {
+			connection[id].disconnect();
+			delete connection[id];
+			delete dispatcher[id];
+			delete queue[id];
+			return null;
+		} else {
+			return connection[id]?.play(
+				await ytdl(loop[id][0], {
+					filter: 'audioonly',
+				}),
+				{
+					type: 'opus',
+				}
+			);
+		}
 	}
 }
 
@@ -93,7 +106,7 @@ const messageHandler = (message: Message) => {
 				})();
 				break;
 			case 'loop':
-				loop[id] = true;
+				loop[id] = queue[id][0];
 				break;
 
 			default:
