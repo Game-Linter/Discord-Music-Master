@@ -49,8 +49,8 @@ async function play(
 			return null;
 		} else {
 			const title =
-				queue[id] &&
-				(await getInfo(queue[id][0]).then((info) => info.videoDetails.title));
+				loop[id] &&
+				(await getInfo(loop[id]).then((info) => info.videoDetails.title));
 			title && message.channel.send(`Now playing | ${title}`);
 			return connection[id]
 				?.play(
