@@ -156,6 +156,13 @@ const messageHandler = (message: Message) => {
 				break;
 			case 'loop':
 				loop[id] = loop[id] ? false : queue[id][0];
+				message.react('♾');
+				(async () => {
+					const { title } = await getInfo(loop[id]).then(
+						(res) => res.videoDetails
+					);
+					message.channel.send(`Now looping forever | ${title}`);
+				})();
 				break;
 
 			default:
