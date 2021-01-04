@@ -60,7 +60,7 @@ async function play(
 }
 
 const messageHandler = (message: Message) => {
-	if (message.content.startsWith(PREFIX)) {
+	if (message.content.startsWith(PREFIX) && !message.author.bot) {
 		const content = message.content
 			.split(' ')[0]
 			.slice(PREFIX.length, message.content.length);
