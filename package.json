@@ -1,18 +1,22 @@
 {
-  "name": "discordgamelinter",
-  "version": "1.0.0",
-  "main": "dist/index.js",
-  "author": "Mohamed Belkamelk",
-  "license": "MIT",
-  "private": true,
-  "dependencies": {
-    "@discordjs/opus": "^0.3.3",
-    "discord.js": "^12.5.1",
-    "ytdl-core-discord": "^1.2.5"
-  },
-  "scripts": {
-    "start": "node .",
-    "prestart": "yarn run build",
-    "build": "tsc -p ."
-  }
+	"name": "discordgamelinter",
+	"version": "1.0.0",
+	"main": "dist/index.js",
+	"author": "Mohamed Belkamelk",
+	"license": "MIT",
+	"private": true,
+	"types": "src/@types",
+	"dependencies": {
+		"@discordjs/opus": "^0.3.3",
+		"@types/validator": "^13.1.2",
+		"discord.js": "^12.5.1",
+		"validator": "^13.5.2",
+		"ytdl-core-discord": "^1.2.5",
+		"ytdl-getinfo": "^1.1.0"
+	},
+	"scripts": {
+		"start": "node .",
+		"prestart": "yarn run build",
+		"build": "tsc -p ."
+	}
 }

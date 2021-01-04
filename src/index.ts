@@ -1,6 +1,8 @@
 import { Message, VoiceConnection } from 'discord.js';
 import { Discord } from './core/server';
 import ytdl from 'ytdl-core-discord';
+import validator from 'validator';
+import { getInfo } from 'ytdl-core-discord';
 
 const PREFIX = '__';
 let connection: any = {};
@@ -70,14 +72,20 @@ const messageHandler = (message: Message) => {
 				if (message.member?.voice.channelID) {
 					(async () => {
 						const args = message.content.split(' ');
+						const title = await getInfo(args[1]).then(
+							(info) => info.videoDetails.title
+						);
+						// return;
 						try {
 							if (!connection[id]) {
 								queue[id] = [];
 								queue[id].push(args[1]);
 								connection[id] = await message.member?.voice.channel?.join();
 								dispatcher[id] = await play(connection, queue, id);
+								message.channel.send(`Now playing ${title}`);
 							} else {
 								queue[id].push(args[1]);
+								message.channel.send(`Now playing | ${title}`);
 							}
 							// console.log(connection);
 						} catch (error) {
@@ -107,6 +115,10 @@ const messageHandler = (message: Message) => {
 				queue[id].shift();
 				(async () => {
 					dispatcher[id] = await play(connection, queue, id);
+					const title = await getInfo(queue[id]).then(
+						(info) => info.videoDetails.title
+					);
+					message.channel.send(`Now playing | ${title}`);
 				})();
 				break;
 			case 'loop':
