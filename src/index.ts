@@ -12,12 +12,17 @@ let queue: any = {};
 
 async function play(
 	connection: { [x: string]: VoiceConnection },
-	queue: { [x: string]: any[] },
-	id: string
+	queue: { [x: string]: any },
+	id: string,
+	message: Message
 ) {
 	console.log(queue[id]);
 	// console.log(connection[id]);
 	if (queue[id].length) {
+		const title =
+			queue[id] &&
+			(await getInfo(queue[id][0]).then((info) => info.videoDetails.title));
+		title && message.channel.send(`Now playing | ${title}`);
 		return connection[id]
 			?.play(
 				await ytdl(queue[id][0], {
@@ -30,7 +35,7 @@ async function play(
 			.on('finish', () => {
 				queue[id].shift();
 				(async () => {
-					dispatcher[id] = await play(connection, queue, id);
+					dispatcher[id] = await play(connection, queue, id, message);
 				})();
 			});
 	} else {
@@ -42,6 +47,10 @@ async function play(
 			delete loop[id];
 			return null;
 		} else {
+			const title =
+				queue[id] &&
+				(await getInfo(queue[id][0]).then((info) => info.videoDetails.title));
+			title && message.channel.send(`Now playing | ${title}`);
 			return connection[id]
 				?.play(
 					await ytdl(loop[id], {
@@ -54,7 +63,7 @@ async function play(
 				.on('finish', () => {
 					queue[id].shift();
 					(async () => {
-						dispatcher[id] = await play(connection, queue, id);
+						dispatcher[id] = await play(connection, queue, id, message);
 					})();
 				});
 		}
@@ -81,11 +90,10 @@ const messageHandler = (message: Message) => {
 								queue[id] = [];
 								queue[id].push(args[1]);
 								connection[id] = await message.member?.voice.channel?.join();
-								dispatcher[id] = await play(connection, queue, id);
-								message.channel.send(`Now playing ${title}`);
+								dispatcher[id] = await play(connection, queue, id, message);
 							} else {
 								queue[id].push(args[1]);
-								message.channel.send(`Now playing | ${title}`);
+								message.channel.send(`Queued | ${title}`);
 							}
 							// console.log(connection);
 						} catch (error) {
@@ -114,11 +122,7 @@ const messageHandler = (message: Message) => {
 			case 'skip':
 				queue[id].shift();
 				(async () => {
-					dispatcher[id] = await play(connection, queue, id);
-					const title = await getInfo(queue[id]).then(
-						(info) => info.videoDetails.title
-					);
-					message.channel.send(`Now playing | ${title}`);
+					dispatcher[id] = await play(connection, queue, id, message);
 				})();
 				break;
 			case 'loop':
