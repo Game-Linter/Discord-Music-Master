@@ -23,6 +23,7 @@ async function play(
 		const title =
 			queue[id] &&
 			(await getInfo(queue[id][0]).then((info) => info.videoDetails.title));
+		title && message.react('😳');
 		title && message.channel.send(`Now playing | ${title}`);
 		return connection[id]
 			?.play(
@@ -51,6 +52,7 @@ async function play(
 			const title =
 				loop[id] &&
 				(await getInfo(loop[id]).then((info) => info.videoDetails.title));
+			title && message.react('🔁');
 			title && message.channel.send(`Now playing | ${title}`);
 			return connection[id]
 				?.play(
@@ -122,6 +124,7 @@ const messageHandler = (message: Message) => {
 								dispatcher[id] = await play(connection, queue, id, message);
 							} else {
 								queue[id].push(url);
+								message.react('🦆');
 								message.channel.send(`Queued | ${title}`);
 							}
 							// console.log(connection);
@@ -134,13 +137,16 @@ const messageHandler = (message: Message) => {
 				}
 				break;
 			case 'pause':
+				message.react('⏸');
 				dispatcher[id]?.pause();
 				break;
 			case 'resume':
+				message.react('⏯');
 				dispatcher[id]?.resume();
 				break;
 
 			case 'fuckoff':
+				message.react('🙋‍♂️');
 				connection[id]?.disconnect();
 				delete connection[id];
 				delete queue[id];
