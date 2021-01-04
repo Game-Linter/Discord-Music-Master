@@ -109,9 +109,9 @@ const messageHandler = (message: Message) => {
 				if (message.member?.voice.channelID) {
 					(async () => {
 						const args = message.content.split(' ');
-						// if (!validator.isURL(args[1])) {
-						// 	return message.channel.send('Must be a link');
-						// }
+						if (!args[1]) {
+							return message.channel.send('Give a link or a youtube search');
+						}
 						// return;
 						const { url, title } = await getData(args[1], message);
 						try {
