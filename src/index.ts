@@ -109,7 +109,7 @@ const messageHandler = (message: Message) => {
 				})();
 				break;
 			case 'loop':
-				loop[id] = queue[id][0];
+				loop[id] = loop[id] ? false : queue[id][0];
 				break;
 
 			default:
