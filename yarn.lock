@@ -467,7 +467,7 @@ mime-types@^2.1.12, mime-types@~2.1.19:
   dependencies:
     mime-db "1.45.0"
 
-miniget@^4.0.0:
+miniget@^4.0.0, miniget@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/miniget/-/miniget-4.1.0.tgz#018cc1180d2fe4d45ed735ac6bd2ab7224e8bceb"
   integrity sha512-kzhrNv5L7LlomwGmPGQsLQ2PnT1LeJJWfB0wNFGyv426gEM1gsfziBQmfkr6XOBA8EusZg9nowlNT5CbuKTjZg==
@@ -919,3 +919,10 @@ ytdl-getinfo@^1.1.0:
   integrity sha512-JxjnhHox4xpEA+ugtSIKVrQPAVSQE6TR7aLVCx1vZkrdNh6ifmJnxy7pVQydYBPP0u3jh//AZGOYxRzH5ZEdxg==
   dependencies:
     request "^2.81.0"
+
+ytsr@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/ytsr/-/ytsr-3.2.1.tgz#bf148897168844c889ee19b45335f4261247ad1d"
+  integrity sha512-iN2woG5bfXiAWs9Tv6MPVGx3f1zdpeshyevGAbm0ggCYLmOnSNIA3lkgqlkfa0CH5WKIB/yjwRPU1hc49AUN+g==
+  dependencies:
+    miniget "^4.1.0"

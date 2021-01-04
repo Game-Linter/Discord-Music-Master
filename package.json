@@ -12,7 +12,8 @@
 		"discord.js": "^12.5.1",
 		"validator": "^13.5.2",
 		"ytdl-core-discord": "^1.2.5",
-		"ytdl-getinfo": "^1.1.0"
+		"ytdl-getinfo": "^1.1.0",
+		"ytsr": "^3.2.1"
 	},
 	"scripts": {
 		"start": "node .",

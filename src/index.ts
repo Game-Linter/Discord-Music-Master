@@ -1,8 +1,9 @@
 import { Message, VoiceConnection } from 'discord.js';
 import { Discord } from './core/server';
-import ytdl from 'ytdl-core-discord';
+import ytdl, { getURLVideoID } from 'ytdl-core-discord';
 import validator from 'validator';
 import { getInfo } from 'ytdl-core-discord';
+import ytsr from 'ytsr';
 
 const PREFIX = '__';
 let connection: any = {};
@@ -70,6 +71,33 @@ async function play(
 	}
 }
 
+const getData = (urlOrQuery: string, message: Message) => {
+	if (validator.isURL(urlOrQuery)) {
+		return (async () => {
+			const title = await getInfo(urlOrQuery).then(
+				(info) => info.videoDetails.title
+			);
+			return {
+				url: urlOrQuery,
+				title,
+			};
+		})();
+	}
+
+	return (async () => {
+		const tmp = message.content.split(' ');
+		tmp.shift();
+		const { url, title } = await ytsr(tmp.join(' '), {
+			limit: 1,
+			pages: 1,
+		}).then((res) => res.items[0] as any);
+		return {
+			url,
+			title,
+		};
+	})();
+};
+
 const messageHandler = (message: Message) => {
 	if (message.content.startsWith(PREFIX) && !message.author.bot) {
 		const content = message.content
@@ -81,21 +109,19 @@ const messageHandler = (message: Message) => {
 				if (message.member?.voice.channelID) {
 					(async () => {
 						const args = message.content.split(' ');
-						if (!validator.isURL(args[1])) {
-							return message.channel.send('Must be a link');
-						}
-						const title = await getInfo(args[1]).then(
-							(info) => info.videoDetails.title
-						);
+						// if (!validator.isURL(args[1])) {
+						// 	return message.channel.send('Must be a link');
+						// }
 						// return;
+						const { url, title } = await getData(args[1], message);
 						try {
 							if (!connection[id]) {
 								queue[id] = [];
-								queue[id].push(args[1]);
+								queue[id].push(url);
 								connection[id] = await message.member?.voice.channel?.join();
 								dispatcher[id] = await play(connection, queue, id, message);
 							} else {
-								queue[id].push(args[1]);
+								queue[id].push(url);
 								message.channel.send(`Queued | ${title}`);
 							}
 							// console.log(connection);
