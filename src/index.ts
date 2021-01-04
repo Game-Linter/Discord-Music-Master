@@ -16,14 +16,21 @@ async function play(
 	console.log(queue[id]);
 	// console.log(connection[id]);
 	if (queue[id].length) {
-		return connection[id]?.play(
-			await ytdl(queue[id][0], {
-				filter: 'audioonly',
-			}),
-			{
-				type: 'opus',
-			}
-		);
+		return connection[id]
+			?.play(
+				await ytdl(queue[id][0], {
+					filter: 'audioonly',
+				}),
+				{
+					type: 'opus',
+				}
+			)
+			.on('finish', () => {
+				queue[id].shift();
+				(async () => {
+					dispatcher[id] = await play(connection, queue, id);
+				})();
+			});
 	} else {
 		if (!loop[id]) {
 			connection[id].disconnect();
@@ -69,13 +76,6 @@ const messageHandler = (message: Message) => {
 								queue[id].push(args[1]);
 								connection[id] = await message.member?.voice.channel?.join();
 								dispatcher[id] = await play(connection, queue, id);
-								dispatcher[id]?.on('finish', () => {
-									queue[id].shift();
-									(async () => {
-										dispatcher[id] = await play(connection, queue, id);
-									})();
-									loop[id] = false;
-								});
 							} else {
 								queue[id].push(args[1]);
 							}
@@ -106,13 +106,6 @@ const messageHandler = (message: Message) => {
 				queue[id].shift();
 				(async () => {
 					dispatcher[id] = await play(connection, queue, id);
-					dispatcher[id]?.on('finish', () => {
-						queue[id].shift();
-						(async () => {
-							dispatcher[id] = await play(connection, queue, id);
-						})();
-						loop[id] = false;
-					});
 				})();
 				break;
 			case 'loop':
