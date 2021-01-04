@@ -74,6 +74,7 @@ const messageHandler = (message: Message) => {
 									(async () => {
 										dispatcher[id] = await play(connection, queue, id);
 									})();
+									loop[id] = false;
 								});
 							} else {
 								queue[id].push(args[1]);
@@ -110,6 +111,7 @@ const messageHandler = (message: Message) => {
 						(async () => {
 							dispatcher[id] = await play(connection, queue, id);
 						})();
+						loop[id] = false;
 					});
 				})();
 				break;
