@@ -81,6 +81,9 @@ const messageHandler = (message: Message) => {
 				if (message.member?.voice.channelID) {
 					(async () => {
 						const args = message.content.split(' ');
+						if (!validator.isURL(args[1])) {
+							return message.channel.send('Must be a link');
+						}
 						const title = await getInfo(args[1]).then(
 							(info) => info.videoDetails.title
 						);
