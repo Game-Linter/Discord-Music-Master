@@ -100,6 +100,7 @@ const messageHandler = (message: Message) => {
 				delete connection[id];
 				delete queue[id];
 				delete dispatcher[id];
+				delete loop[id];
 				break;
 
 			case 'skip':
