@@ -202,7 +202,10 @@ const messageHandler = (message: Message) => {
 					})();
 				break;
 			case 'autoplay':
-				autoplay[id] = queue[id][0];
+				autoplay[id] = autoplay[id] ? false : queue[id][0];
+				autoplay[id]
+					? message.channel.send('AUTOPLAY in now on')
+					: message.channel.send('AUTOPLAY in now off');
 				console.log(id, autoplay[id]);
 				break;
 
