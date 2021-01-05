@@ -147,8 +147,8 @@ const messageHandler = (message: Message) => {
 						const { url, title } = await getData(args[1], message);
 						try {
 							if (!connection[id]) {
-								queue[id] = [];
 								autoplay[id] = false;
+								queue[id] = [];
 								queue[id].push(url);
 								connection[id] = await message.member?.voice.channel?.join();
 								dispatcher[id] = await play(connection, queue, id, message);
