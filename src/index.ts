@@ -68,14 +68,14 @@ async function play(
 
 	if (autoplay[id]) {
 		console.log(id, autoplay[id]);
-		const { title, video_url } = await getInfo(autoplay[id] as string).then(
+		const { video_url } = await getInfo(autoplay[id] as string).then(
 			async (info) => {
 				const videoId = info.related_videos[Math.floor(Math.random() * 2)]
 					.id as string;
 				return await getInfo(videoId).then((_info) => _info.videoDetails);
 			}
 		);
-		title && message.channel.send(`Now playing | ${title}`);
+		// title && message.channel.send(`Now playing | ${title}`);
 		autoplay[id] = video_url;
 		queue[id].push(video_url);
 		return (await play(connection, queue, id, message)) as StreamDispatcher;
