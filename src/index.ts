@@ -1,15 +1,16 @@
-import { Message, VoiceConnection } from 'discord.js';
+import { Message, VoiceConnection, StreamDispatcher } from 'discord.js';
 import { Discord } from './core/server';
-import ytdl, { getURLVideoID } from 'ytdl-core-discord';
+import ytdl from 'ytdl-core-discord';
 import validator from 'validator';
 import { getInfo } from 'ytdl-core-discord';
 import ytsr from 'ytsr';
 
 const PREFIX = '__';
-let connection: any = {};
-let dispatcher: any = {};
-let loop: any = {};
-let queue: any = {};
+let connection: { [x: string]: any } = {};
+let dispatcher: { [x: string]: StreamDispatcher | null } = {};
+let loop: { [x: string]: string | boolean } = {};
+let queue: { [x: string]: string[] } = {};
+let autoplay: { [x: string]: boolean | string } = {};
 
 async function play(
 	connection: { [x: string]: VoiceConnection },
@@ -17,7 +18,7 @@ async function play(
 	id: string,
 	message: Message
 ) {
-	console.log(queue[id]);
+	// console.log(queue[id]);
 	// console.log(connection[id]);
 	if (queue[id].length) {
 		const title =
@@ -41,22 +42,19 @@ async function play(
 				})();
 			});
 	} else {
-		if (!loop[id]) {
-			connection[id].disconnect();
-			delete connection[id];
-			delete dispatcher[id];
-			delete queue[id];
-			delete loop[id];
-			return null;
-		} else {
-			const title =
-				loop[id] &&
-				(await getInfo(loop[id]).then((info) => info.videoDetails.title));
-			title && message.react('🔁');
+		if (autoplay[id]) {
+			console.log(id, autoplay[id]);
+			const { title, video_url } = await getInfo(autoplay[id] as string).then(
+				async (info) => {
+					const videoId = info.related_videos[0].id as string;
+					return await getInfo(videoId).then((_info) => _info.videoDetails);
+				}
+			);
 			title && message.channel.send(`Now playing | ${title}`);
+			autoplay[id] = video_url;
 			return connection[id]
 				?.play(
-					await ytdl(loop[id], {
+					await ytdl(video_url as string, {
 						filter: 'audioonly',
 					}),
 					{
@@ -64,12 +62,41 @@ async function play(
 					}
 				)
 				.on('finish', () => {
-					queue[id].shift();
 					(async () => {
 						dispatcher[id] = await play(connection, queue, id, message);
 					})();
 				});
 		}
+		if (!loop[id]) {
+			connection[id].disconnect();
+			delete connection[id];
+			delete dispatcher[id];
+			delete queue[id];
+			delete loop[id];
+			return null;
+		}
+
+		const title =
+			loop[id] &&
+			(await getInfo(loop[id] as string).then(
+				(info) => info.videoDetails.title
+			));
+		title && message.react('🔁');
+		title && message.channel.send(`Now playing | ${title}`);
+		return connection[id]
+			?.play(
+				await ytdl(loop[id] as string, {
+					filter: 'audioonly',
+				}),
+				{
+					type: 'opus',
+				}
+			)
+			.on('finish', () => {
+				(async () => {
+					dispatcher[id] = await play(connection, queue, id, message);
+				})();
+			});
 	}
 }
 
@@ -119,6 +146,7 @@ const messageHandler = (message: Message) => {
 						try {
 							if (!connection[id]) {
 								queue[id] = [];
+								autoplay[id] = false;
 								queue[id].push(url);
 								connection[id] = await message.member?.voice.channel?.join();
 								dispatcher[id] = await play(connection, queue, id, message);
@@ -152,6 +180,7 @@ const messageHandler = (message: Message) => {
 				delete queue[id];
 				delete dispatcher[id];
 				delete loop[id];
+				delete autoplay[id];
 				break;
 
 			case 'skip':
@@ -165,11 +194,15 @@ const messageHandler = (message: Message) => {
 				message.react('♾');
 				loop[id] &&
 					(async () => {
-						const { title } = await getInfo(loop[id]).then(
+						const { title } = await getInfo(loop[id] as string).then(
 							(res) => res.videoDetails
 						);
 						message.channel.send(`Now looping forever | ${title}`);
 					})();
+				break;
+			case 'autoplay':
+				autoplay[id] = queue[id][0];
+				console.log(id, autoplay[id]);
 				break;
 
 			default:
