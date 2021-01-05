@@ -79,7 +79,7 @@ async function play(
 		autoplay[id] = video_url;
 		return connection[id]
 			?.play(
-				await ytdl(video_url as string, {
+				await ytdl(autoplay[id] as string, {
 					filter: 'audioonly',
 				}),
 				{
@@ -98,6 +98,7 @@ async function play(
 	delete dispatcher[id];
 	delete queue[id];
 	delete loop[id];
+	delete autoplay[id];
 	return null;
 }
 
@@ -206,7 +207,7 @@ const messageHandler = (message: Message) => {
 				autoplay[id]
 					? message.channel.send('AUTOPLAY in now on')
 					: message.channel.send('AUTOPLAY in now off');
-				console.log(id, autoplay[id]);
+				// console.log(id, autoplay[id]);
 				break;
 
 			default:
