@@ -17,7 +17,7 @@ async function play(
 	queue: { [x: string]: any },
 	id: string,
 	message: Message
-) {
+): Promise<StreamDispatcher | null> {
 	// console.log(queue[id]);
 	if (loop[id]) {
 		const title =
@@ -77,20 +77,8 @@ async function play(
 		);
 		title && message.channel.send(`Now playing | ${title}`);
 		autoplay[id] = video_url;
-		return connection[id]
-			?.play(
-				await ytdl(autoplay[id] as string, {
-					filter: 'audioonly',
-				}),
-				{
-					type: 'opus',
-				}
-			)
-			.on('finish', () => {
-				(async () => {
-					dispatcher[id] = await play(connection, queue, id, message);
-				})();
-			});
+		queue[id].push(video_url);
+		return (await play(connection, queue, id, message)) as StreamDispatcher;
 	}
 
 	connection[id].disconnect();
