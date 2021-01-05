@@ -46,7 +46,7 @@ async function play(
 			console.log(id, autoplay[id]);
 			const { title, video_url } = await getInfo(autoplay[id] as string).then(
 				async (info) => {
-					const videoId = info.related_videos[Math.floor(Math.random() * 5)]
+					const videoId = info.related_videos[Math.floor(Math.random() * 2)]
 						.id as string;
 					return await getInfo(videoId).then((_info) => _info.videoDetails);
 				}
