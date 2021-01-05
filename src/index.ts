@@ -19,64 +19,7 @@ async function play(
 	message: Message
 ) {
 	// console.log(queue[id]);
-	// console.log(connection[id]);
-	if (queue[id].length) {
-		const title =
-			queue[id] &&
-			(await getInfo(queue[id][0]).then((info) => info.videoDetails.title));
-		title && message.react('😳');
-		title && message.channel.send(`Now playing | ${title}`);
-		return connection[id]
-			?.play(
-				await ytdl(queue[id][0], {
-					filter: 'audioonly',
-				}),
-				{
-					type: 'opus',
-				}
-			)
-			.on('finish', () => {
-				queue[id].shift();
-				(async () => {
-					dispatcher[id] = await play(connection, queue, id, message);
-				})();
-			});
-	} else {
-		if (autoplay[id]) {
-			console.log(id, autoplay[id]);
-			const { title, video_url } = await getInfo(autoplay[id] as string).then(
-				async (info) => {
-					const videoId = info.related_videos[Math.floor(Math.random() * 2)]
-						.id as string;
-					return await getInfo(videoId).then((_info) => _info.videoDetails);
-				}
-			);
-			title && message.channel.send(`Now playing | ${title}`);
-			autoplay[id] = video_url;
-			return connection[id]
-				?.play(
-					await ytdl(video_url as string, {
-						filter: 'audioonly',
-					}),
-					{
-						type: 'opus',
-					}
-				)
-				.on('finish', () => {
-					(async () => {
-						dispatcher[id] = await play(connection, queue, id, message);
-					})();
-				});
-		}
-		if (!loop[id]) {
-			connection[id].disconnect();
-			delete connection[id];
-			delete dispatcher[id];
-			delete queue[id];
-			delete loop[id];
-			return null;
-		}
-
+	if (loop[id]) {
 		const title =
 			loop[id] &&
 			(await getInfo(loop[id] as string).then(
@@ -99,6 +42,63 @@ async function play(
 				})();
 			});
 	}
+	// console.log(connection[id]);
+	if (queue[id].length) {
+		const title =
+			queue[id] &&
+			(await getInfo(queue[id][0]).then((info) => info.videoDetails.title));
+		title && message.react('😳');
+		title && message.channel.send(`Now playing | ${title}`);
+		return connection[id]
+			?.play(
+				await ytdl(queue[id][0], {
+					filter: 'audioonly',
+				}),
+				{
+					type: 'opus',
+				}
+			)
+			.on('finish', () => {
+				queue[id].shift();
+				(async () => {
+					dispatcher[id] = await play(connection, queue, id, message);
+				})();
+			});
+	}
+
+	if (autoplay[id]) {
+		console.log(id, autoplay[id]);
+		const { title, video_url } = await getInfo(autoplay[id] as string).then(
+			async (info) => {
+				const videoId = info.related_videos[Math.floor(Math.random() * 2)]
+					.id as string;
+				return await getInfo(videoId).then((_info) => _info.videoDetails);
+			}
+		);
+		title && message.channel.send(`Now playing | ${title}`);
+		autoplay[id] = video_url;
+		return connection[id]
+			?.play(
+				await ytdl(video_url as string, {
+					filter: 'audioonly',
+				}),
+				{
+					type: 'opus',
+				}
+			)
+			.on('finish', () => {
+				(async () => {
+					dispatcher[id] = await play(connection, queue, id, message);
+				})();
+			});
+	}
+
+	connection[id].disconnect();
+	delete connection[id];
+	delete dispatcher[id];
+	delete queue[id];
+	delete loop[id];
+	return null;
 }
 
 const getData = (urlOrQuery: string, message: Message) => {
