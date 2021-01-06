@@ -26,9 +26,19 @@ const messageHandler = (message: Message) => {
 						const { url, title } = await getData(args[1], message);
 						try {
 							if (!servers[id]) {
-								servers[id] = new DiscordServer(message, servers, id, url);
+								servers[id] = new DiscordServer(
+									message,
+									servers,
+									id,
+									url,
+									title
+								);
 							} else {
-								servers[id].queue.push(url);
+								if (Array.isArray(url)) {
+									servers[id].queue.push(...(await url));
+								} else {
+									servers[id].queue.push(url);
+								}
 								message.react('🦆');
 								message.channel.send(`Queued | ${title}`);
 							}

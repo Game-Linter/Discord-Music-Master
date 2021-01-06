@@ -8,7 +8,8 @@ export async function play(
 	queue: string[],
 	id: string,
 	message: Message,
-	servers: { [x: string]: DiscordServer }
+	servers: { [x: string]: DiscordServer },
+	title?: string
 ): Promise<StreamDispatcher | null> {
 	// console.log(queue[id]);
 	if (servers[id].loop) {
@@ -43,13 +44,17 @@ export async function play(
 	// console.log(connection[id]);
 	if (servers[id].getQueue.length) {
 		console.log(servers[id].getQueue);
-		const title =
-			servers[id].getQueue[0] &&
-			(await getInfo(servers[id].getQueue[0]).then(
-				(info) => info.videoDetails.title
-			));
-		title && message.react('😳');
-		title && message.channel.send(`Now playing | ${title}`);
+		if (title) {
+			message.channel.send(`Now playing | ${title}`);
+		} else {
+			const title =
+				servers[id].getQueue[0] &&
+				(await getInfo(servers[id].getQueue[0]).then(
+					(info) => info.videoDetails.title
+				));
+			title && message.react('😳');
+			title && message.channel.send(`Now playing | ${title}`);
+		}
 		return connection
 			?.play(
 				await ytdl(servers[id].getQueue[0], {
@@ -72,7 +77,8 @@ export async function play(
 						tmpQueue,
 						id,
 						message,
-						servers
+						servers,
+						title
 					)) as StreamDispatcher;
 				})();
 			});

@@ -13,17 +13,23 @@ export class DiscordServer {
 		message: Message,
 		servers: { [x: string]: DiscordServer },
 		id: string,
-		url: string
+		url: string | string[],
+		title?: string
 	) {
 		(async () => {
 			this.connection = (await message.member?.voice.channel?.join()) as VoiceConnection;
-			this.queue.push(url);
+			if (Array.isArray(url)) {
+				this.queue.push(...url);
+			} else {
+				this.queue.push(url);
+			}
 			this.dispatcher = await play(
 				this.connection,
 				this.queue,
 				id,
 				message,
-				servers
+				servers,
+				title
 			);
 		})();
 	}
