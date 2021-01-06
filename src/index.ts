@@ -184,13 +184,14 @@ const messageHandler = (message: Message) => {
 			case 'loop':
 				loop[id] = loop[id] ? false : queue[id][0];
 				message.react('♾');
-				loop[id] &&
-					(async () => {
-						const { title } = await getInfo(loop[id] as string).then(
-							(res) => res.videoDetails
-						);
-						message.channel.send(`Now looping forever | ${title}`);
-					})();
+				loop[id]
+					? (async () => {
+							const { title } = await getInfo(loop[id] as string).then(
+								(res) => res.videoDetails
+							);
+							message.channel.send(`Now looping forever | ${title}`);
+					  })()
+					: message.channel.send(`Loop is now off`);
 				break;
 			case 'autoplay':
 				autoplay[id] = autoplay[id] ? false : queue[id][0];
