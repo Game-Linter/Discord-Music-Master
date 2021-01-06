@@ -99,5 +99,8 @@ export async function play(
 			servers
 		)) as StreamDispatcher;
 	}
+
+	servers[id].getConnection?.disconnect();
+	delete servers[id];
 	return null;
 }
