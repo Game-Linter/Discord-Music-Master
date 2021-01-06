@@ -43,7 +43,7 @@ async function play(
 			});
 	}
 	// console.log(connection[id]);
-	if (queue[id].length) {
+	if (queue[id]?.length) {
 		const title =
 			queue[id] &&
 			(await getInfo(queue[id][0]).then((info) => info.videoDetails.title));
@@ -62,7 +62,7 @@ async function play(
 				if (autoplay[id]) {
 					autoplay[id] = queue[id][0];
 				}
-				queue[id].shift();
+				queue[id]?.shift();
 				(async () => {
 					dispatcher[id] = await play(connection, queue, id, message);
 				})();
@@ -80,11 +80,11 @@ async function play(
 		);
 		// title && message.channel.send(`Now playing | ${title}`);
 		autoplay[id] = video_url;
-		queue[id].push(video_url);
+		queue[id]?.push(video_url);
 		return (await play(connection, queue, id, message)) as StreamDispatcher;
 	}
 
-	connection[id].disconnect();
+	connection[id]?.disconnect();
 	delete connection[id];
 	delete dispatcher[id];
 	delete queue[id];
@@ -140,11 +140,11 @@ const messageHandler = (message: Message) => {
 							if (!connection[id]) {
 								autoplay[id] = false;
 								queue[id] = [];
-								queue[id].push(url);
+								queue[id]?.push(url);
 								connection[id] = await message.member?.voice.channel?.join();
 								dispatcher[id] = await play(connection, queue, id, message);
 							} else {
-								queue[id].push(url);
+								queue[id]?.push(url);
 								message.react('🦆');
 								message.channel.send(`Queued | ${title}`);
 							}
@@ -178,7 +178,7 @@ const messageHandler = (message: Message) => {
 
 			case 'skip':
 				if (!loop[id]) {
-					queue[id].shift();
+					queue[id]?.shift();
 				}
 				(async () => {
 					dispatcher[id] = await play(connection, queue, id, message);
