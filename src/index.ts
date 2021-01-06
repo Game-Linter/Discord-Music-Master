@@ -59,10 +59,10 @@ async function play(
 				}
 			)
 			.on('finish', () => {
-				queue[id].shift();
 				if (autoplay[id]) {
 					autoplay[id] = queue[id][0];
 				}
+				queue[id].shift();
 				(async () => {
 					dispatcher[id] = await play(connection, queue, id, message);
 				})();
