@@ -181,12 +181,6 @@ const messageHandler = (message: Message) => {
 					dispatcher[id] = await play(connection, queue, id, message);
 				})();
 				break;
-			case 'next':
-				// queue[id].shift();
-				(async () => {
-					dispatcher[id] = await play(connection, queue, id, message);
-				})();
-				break;
 			case 'loop':
 				loop[id] = loop[id] ? false : queue[id][0];
 				message.react('♾');
