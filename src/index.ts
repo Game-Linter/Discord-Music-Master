@@ -1,132 +1,20 @@
 import { Message, VoiceConnection, StreamDispatcher } from 'discord.js';
 import { Discord } from './core/server';
-import ytdl from 'ytdl-core-discord';
-import validator from 'validator';
+
 import { getInfo } from 'ytdl-core-discord';
-import ytsr from 'ytsr';
+import { getData } from './core/get-data-youtube';
+import { DiscordServer } from './core/discordServer';
+import { getCommand } from './core/getCommand';
+import { play } from './core/play-core';
 
 const PREFIX = '__';
-let connection: { [x: string]: any } = {};
-let dispatcher: { [x: string]: StreamDispatcher | null } = {};
-let loop: { [x: string]: string | boolean } = {};
-let queue: { [x: string]: string[] } = {};
-let autoplay: { [x: string]: boolean | string } = {};
 
-async function play(
-	connection: { [x: string]: VoiceConnection },
-	queue: { [x: string]: any },
-	id: string,
-	message: Message
-): Promise<StreamDispatcher | null> {
-	// console.log(queue[id]);
-	if (loop[id]) {
-		const title =
-			loop[id] &&
-			(await getInfo(loop[id] as string).then(
-				(info) => info.videoDetails.title
-			));
-		title && message.react('🔁');
-		title && message.channel.send(`Now playing | ${title}`);
-		return connection[id]
-			?.play(
-				await ytdl(loop[id] as string, {
-					filter: 'audioonly',
-				}),
-				{
-					type: 'opus',
-				}
-			)
-			.on('finish', () => {
-				(async () => {
-					dispatcher[id] = await play(connection, queue, id, message);
-				})();
-			});
-	}
-	// console.log(connection[id]);
-	if (queue[id]?.length) {
-		const title =
-			queue[id] &&
-			(await getInfo(queue[id][0]).then((info) => info.videoDetails.title));
-		title && message.react('😳');
-		title && message.channel.send(`Now playing | ${title}`);
-		return connection[id]
-			?.play(
-				await ytdl(queue[id][0], {
-					filter: 'audioonly',
-				}),
-				{
-					type: 'opus',
-				}
-			)
-			.on('finish', () => {
-				if (autoplay[id]) {
-					autoplay[id] = queue[id][0];
-				}
-				queue[id]?.shift();
-				(async () => {
-					dispatcher[id] = await play(connection, queue, id, message);
-				})();
-			});
-	}
-
-	if (autoplay[id]) {
-		console.log(id, autoplay[id]);
-		const { video_url } = await getInfo(autoplay[id] as string).then(
-			async (info) => {
-				const videoId = info.related_videos[Math.floor(Math.random() * 2)]
-					.id as string;
-				return await getInfo(videoId).then((_info) => _info.videoDetails);
-			}
-		);
-		// title && message.channel.send(`Now playing | ${title}`);
-		autoplay[id] = video_url;
-		queue[id]?.push(video_url);
-		return (await play(connection, queue, id, message)) as StreamDispatcher;
-	}
-
-	connection[id]?.disconnect();
-	delete connection[id];
-	delete dispatcher[id];
-	delete queue[id];
-	delete loop[id];
-	delete autoplay[id];
-	return null;
-}
-
-const getData = (urlOrQuery: string, message: Message) => {
-	if (validator.isURL(urlOrQuery)) {
-		return (async () => {
-			const title = await getInfo(urlOrQuery).then(
-				(info) => info.videoDetails.title
-			);
-			return {
-				url: urlOrQuery,
-				title,
-			};
-		})();
-	}
-
-	return (async () => {
-		const tmp = message.content.split(' ');
-		tmp.shift();
-		const { url, title } = await ytsr(tmp.join(' '), {
-			limit: 1,
-			pages: 1,
-		}).then((res) => res.items[0] as any);
-		return {
-			url,
-			title,
-		};
-	})();
-};
+let servers: { [x: string]: DiscordServer } = {};
 
 const messageHandler = (message: Message) => {
 	if (message.content.startsWith(PREFIX) && !message.author.bot) {
-		const content = message.content
-			.split(' ')[0]
-			.slice(PREFIX.length, message.content.length);
-		const id = message.guild!.id;
-		switch (content) {
+		const { command, id } = getCommand(message, PREFIX);
+		switch (command) {
 			case 'audio':
 				if (message.member?.voice.channelID) {
 					(async () => {
@@ -137,20 +25,27 @@ const messageHandler = (message: Message) => {
 						// return;
 						const { url, title } = await getData(args[1], message);
 						try {
-							if (!connection[id]) {
-								autoplay[id] = false;
-								queue[id] = [];
-								queue[id]?.push(url);
-								connection[id] = await message.member?.voice.channel?.join();
-								dispatcher[id] = await play(connection, queue, id, message);
+							if (!servers[id]) {
+								servers[id] = new DiscordServer(message, servers, id);
+								servers[id].setQueue = [url];
+								servers[
+									id
+								].setConnection = (await message.member?.voice.channel?.join()) as VoiceConnection;
+								servers[id].setDispatcher = (await play(
+									servers[id].getConnection,
+									servers[id].getQueue,
+									id,
+									message,
+									servers
+								)) as StreamDispatcher;
 							} else {
-								queue[id]?.push(url);
+								servers[id].queue.push(url);
 								message.react('🦆');
 								message.channel.send(`Queued | ${title}`);
 							}
 							// console.log(connection);
 						} catch (error) {
-							console.log(error.message);
+							console.log(error);
 						}
 					})();
 				} else {
@@ -159,37 +54,42 @@ const messageHandler = (message: Message) => {
 				break;
 			case 'pause':
 				message.react('⏸');
-				dispatcher[id]?.pause();
+				servers[id].dispatcher?.pause();
 				break;
 			case 'resume':
 				message.react('⏯');
-				dispatcher[id]?.resume();
+				// dispatcher[id]?.resume();
+				servers[id].dispatcher?.resume();
 				break;
 
 			case 'fuckoff':
 				message.react('🙋‍♂️');
-				connection[id]?.disconnect();
-				delete connection[id];
-				delete queue[id];
-				delete dispatcher[id];
-				delete loop[id];
-				delete autoplay[id];
+				servers[id].getConnection?.disconnect();
+				delete servers[id];
 				break;
 
 			case 'skip':
-				if (!loop[id]) {
-					queue[id]?.shift();
+				if (!servers[id].loop) {
+					servers[id].queue?.shift();
 				}
 				(async () => {
-					dispatcher[id] = await play(connection, queue, id, message);
+					servers[id].dispatcher = await play(
+						servers[id].getConnection,
+						servers[id].getQueue,
+						id,
+						message,
+						servers
+					);
 				})();
 				break;
 			case 'loop':
-				loop[id] = loop[id] ? false : queue[id][0];
+				servers[id].setLoop = servers[id].loop
+					? false
+					: servers[id].getQueue[0];
 				message.react('♾');
-				loop[id]
+				servers[id].loop
 					? (async () => {
-							const { title } = await getInfo(loop[id] as string).then(
+							const { title } = await getInfo(servers[id].loop as string).then(
 								(res) => res.videoDetails
 							);
 							message.channel.send(`Now looping forever | ${title}`);
@@ -197,8 +97,10 @@ const messageHandler = (message: Message) => {
 					: message.channel.send(`Loop is now off`);
 				break;
 			case 'autoplay':
-				autoplay[id] = autoplay[id] ? false : queue[id][0];
-				autoplay[id]
+				servers[id].setAuto = servers[id].autoplay
+					? false
+					: servers[id].getQueue[0];
+				servers[id].autoplay
 					? message.channel.send('AUTOPLAY in now on')
 					: message.channel.send('AUTOPLAY in now off');
 				// console.log(id, autoplay[id]);
