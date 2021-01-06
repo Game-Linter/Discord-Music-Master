@@ -12,10 +12,12 @@ export class DiscordServer {
 	constructor(
 		message: Message,
 		servers: { [x: string]: DiscordServer },
-		id: string
+		id: string,
+		url: string
 	) {
 		(async () => {
 			this.connection = (await message.member?.voice.channel?.join()) as VoiceConnection;
+			this.queue.push(url);
 			this.dispatcher = await play(
 				this.connection,
 				this.queue,

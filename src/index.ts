@@ -26,18 +26,7 @@ const messageHandler = (message: Message) => {
 						const { url, title } = await getData(args[1], message);
 						try {
 							if (!servers[id]) {
-								servers[id] = new DiscordServer(message, servers, id);
-								servers[id].setQueue = [url];
-								servers[
-									id
-								].setConnection = (await message.member?.voice.channel?.join()) as VoiceConnection;
-								servers[id].setDispatcher = (await play(
-									servers[id].getConnection,
-									servers[id].getQueue,
-									id,
-									message,
-									servers
-								)) as StreamDispatcher;
+								servers[id] = new DiscordServer(message, servers, id, url);
 							} else {
 								servers[id].queue.push(url);
 								message.react('🦆');
