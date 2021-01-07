@@ -123,11 +123,11 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 										title: '',
 									};
 								});
-							let urls: string[];
+							let urls: string[] = [];
 
-							trackNames.search.map(async (searchValue) => {
+							for await (const iterator of trackNames.search) {
 								urls.push(
-									await ytsr(searchValue, {
+									await ytsr(iterator, {
 										limit: 1,
 										pages: 1,
 									}).then((ytsearch) => {
@@ -135,7 +135,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 										return url;
 									})
 								);
-							});
+							}
 							return { url };
 
 						default:
