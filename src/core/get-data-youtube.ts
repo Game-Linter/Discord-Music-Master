@@ -127,15 +127,17 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 							let urls: string[] = [];
 
 							for await (const iterator of trackNames.search) {
-								urls.push(
-									await ytsr(iterator, {
-										limit: 1,
-										pages: 1,
-									}).then((ytsearch) => {
-										const { url } = ytsearch.items[0] as any;
-										return url;
-									})
-								);
+								try {
+									urls.push(
+										await ytsr(iterator, {
+											limit: 1,
+											pages: 1,
+										}).then((ytsearch) => {
+											const { url } = ytsearch.items[0] as any;
+											return url;
+										})
+									);
+								} catch (error) {}
 							}
 							message.channel.send('Playlist Loaded');
 							return { url: urls };
