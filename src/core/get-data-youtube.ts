@@ -11,7 +11,7 @@ const SPOTIFY_URI = 'https://open.spotify.com';
 type TGetType = (
 	urlOrQuery: string,
 	message: Message
-) => Promise<{ url: string; title?: string }>;
+) => Promise<{ url: string | string[]; title?: string }>;
 
 import { promisify } from 'util';
 const getAsync = promisify(redisClient.get).bind(redisClient);
@@ -139,7 +139,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 									);
 								})();
 							}
-							return { url };
+							return { url: urls };
 
 						default:
 							return {
