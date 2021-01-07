@@ -19,6 +19,7 @@ const setAsync = promisify(redisClient.setex).bind(redisClient);
 
 export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 	if (validator.isURL(urlOrQuery) && urlOrQuery.startsWith(SPOTIFY_URI)) {
+		message.channel.send('Loading playlist');
 		return (async () => {
 			try {
 				let aatoken: string = '';
@@ -136,6 +137,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 									})
 								);
 							}
+							message.channel.send('Playlist Loaded');
 							return { url: urls };
 
 						default:
