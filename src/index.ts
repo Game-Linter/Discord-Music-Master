@@ -40,7 +40,7 @@ const messageHandler = (message: Message) => {
 									servers[id].queue.push(url);
 								}
 								message.react('🦆');
-								message.channel.send(`Queued | ${title}`);
+								title && message.channel.send(`Queued | ${title}`);
 							}
 							// console.log(connection);
 						} catch (error) {
