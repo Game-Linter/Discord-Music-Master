@@ -90,7 +90,53 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 
 						// break;
 						case 'playlist':
-							return { url: '' };
+							const trackNames: {
+								search: string[];
+								title?: string;
+							} = await axios
+								.get(
+									`https://api.spotify.com/v1/${type}s/${itemId}/tracks?fields=items(track(name,artists))`,
+									{
+										headers: {
+											'Content-Type': 'application/x-www-form-urlencoded',
+											Authorization: `Bearer ${aatoken}`,
+										},
+									}
+								)
+								.then((_res) => {
+									const items: {
+										track: { name: string; artists: { name: string }[] };
+									}[] = _res.data.items;
+
+									const search = items.map((value) => {
+										return `${value.track.name} ${value.track.artists[0].name}`;
+									});
+
+									return {
+										search: search,
+									};
+								})
+								.catch((err) => {
+									console.log(err);
+									return {
+										search: [''],
+										title: '',
+									};
+								});
+							let urls: string[];
+
+							trackNames.search.map(async (searchValue) => {
+								urls.push(
+									await ytsr(searchValue, {
+										limit: 1,
+										pages: 1,
+									}).then((ytsearch) => {
+										const { url } = ytsearch.items[0] as any;
+										return url;
+									})
+								);
+							});
+							return { url };
 
 						default:
 							return {

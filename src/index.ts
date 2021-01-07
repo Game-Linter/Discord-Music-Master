@@ -35,7 +35,7 @@ const messageHandler = (message: Message) => {
 								);
 							} else {
 								if (Array.isArray(url)) {
-									servers[id].queue.push(...(await url));
+									servers[id].queue.push(...url);
 								} else {
 									servers[id].queue.push(url);
 								}
