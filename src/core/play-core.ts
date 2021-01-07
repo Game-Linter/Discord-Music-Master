@@ -48,42 +48,82 @@ export async function play(
 	if (servers[id].getQueue.length) {
 		console.log(servers[id].getQueue);
 		if (servers[id].getQueue[0].startsWith(SPOTIFY_URI)) {
-			const { search, title } = await getSpotifyTrack(
-				await getAccessToken(),
-				servers[id].getQueue[0]
-			);
-			title && message.react('😳');
-			title && message.channel.send(`Now playing | ${title}`);
-			const { url } = await ytsr(search, { pages: 1, limit: 1 }).then(
-				(__res) => __res.items[0] as any
-			);
-			return connection
-				?.play(
-					await ytdl(url, {
-						filter: 'audioonly',
-					}),
-					{
-						type: 'opus',
-					}
-				)
-				.on('finish', () => {
-					// if (servers[id].autoplay) {
-					// 	servers[id].setAuto = servers[id].getQueue[0];
-					// }
-					// servers[id].getQueue.shift();
-					const tmpQueue = servers[id].getQueue;
-					tmpQueue.shift();
-					(async () => {
-						servers[id].setDispatcher = (await play(
-							connection,
-							tmpQueue,
-							id,
-							message,
-							servers,
-							title
-						)) as StreamDispatcher;
-					})();
-				});
+			try {
+				const { search, title } = await getSpotifyTrack(
+					await getAccessToken(),
+					servers[id].getQueue[0]
+				);
+				title && message.react('😳');
+				title && message.channel.send(`Now playing | ${title}`);
+				const { url } = await ytsr(search, { pages: 1, limit: 1 }).then(
+					(__res) => __res.items[0] as any
+				);
+				return connection
+					?.play(
+						await ytdl(url, {
+							filter: 'audioonly',
+						}),
+						{
+							type: 'opus',
+						}
+					)
+					.on('finish', () => {
+						// if (servers[id].autoplay) {
+						// 	servers[id].setAuto = servers[id].getQueue[0];
+						// }
+						// servers[id].getQueue.shift();
+						const tmpQueue = servers[id].getQueue;
+						tmpQueue.shift();
+						(async () => {
+							servers[id].setDispatcher = (await play(
+								connection,
+								tmpQueue,
+								id,
+								message,
+								servers,
+								title
+							)) as StreamDispatcher;
+						})();
+					});
+			} catch (error) {
+				servers[id].queue.shift();
+				const { search, title } = await getSpotifyTrack(
+					await getAccessToken(),
+					servers[id].getQueue[0]
+				);
+				title && message.react('😳');
+				title && message.channel.send(`Now playing | ${title}`);
+				const { url } = await ytsr(search, { pages: 1, limit: 1 }).then(
+					(__res) => __res.items[0] as any
+				);
+				return connection
+					?.play(
+						await ytdl(url, {
+							filter: 'audioonly',
+						}),
+						{
+							type: 'opus',
+						}
+					)
+					.on('finish', () => {
+						// if (servers[id].autoplay) {
+						// 	servers[id].setAuto = servers[id].getQueue[0];
+						// }
+						// servers[id].getQueue.shift();
+						const tmpQueue = servers[id].getQueue;
+						tmpQueue.shift();
+						(async () => {
+							servers[id].setDispatcher = (await play(
+								connection,
+								tmpQueue,
+								id,
+								message,
+								servers,
+								title
+							)) as StreamDispatcher;
+						})();
+					});
+			}
 		}
 		const title =
 			servers[id].getQueue[0] &&
