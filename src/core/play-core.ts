@@ -53,7 +53,12 @@ export async function play(
 				servers[id].getQueue[0]
 			);
 			title && message.react('😳');
-			title && message.channel.send(`Now playing | ${title}`);
+			title &&
+				message.channel.send(
+					`Now playing | ${title} | Queue at: ${
+						servers[id].getQueue.length - 1
+					}`
+				);
 			const { url } = await ytsr(search, { pages: 1, limit: 1 }).then(
 				(__res) => __res.items[0] as any
 			);
