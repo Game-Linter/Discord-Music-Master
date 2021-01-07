@@ -121,7 +121,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 										track: {
 											external_urls: { spotify: string };
 										};
-									}[] = _res.data.items.slice(0, 150);
+									}[] = _res.data.items;
 
 									const urls = items.map((value) => {
 										return value.track.external_urls.spotify;
