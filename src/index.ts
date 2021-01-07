@@ -55,6 +55,13 @@ const messageHandler = (message: Message) => {
 				message.react('⏸');
 				servers[id].dispatcher?.pause();
 				break;
+			case 'shuffle':
+				message.react('🔀');
+				servers[id].getQueue.length &&
+					(servers[id].setQueue = servers[id].getQueue.sort(
+						() => Math.random() - 0.5
+					));
+				break;
 			case 'resume':
 				message.react('⏯');
 				// dispatcher[id]?.resume();
