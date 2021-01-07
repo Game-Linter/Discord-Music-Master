@@ -2,6 +2,9 @@ import { Message, StreamDispatcher, VoiceConnection } from 'discord.js';
 import { DiscordServer } from './discordServer';
 import { getInfo } from 'ytdl-core-discord';
 import ytdl from 'ytdl-core-discord';
+import { getAccessToken, SPOTIFY_URI } from './get-data-youtube';
+import { getSpotifyTrack } from './get-data-youtube';
+import ytsr from 'ytsr';
 
 export async function play(
 	connection: VoiceConnection,
@@ -44,17 +47,51 @@ export async function play(
 	// console.log(connection[id]);
 	if (servers[id].getQueue.length) {
 		console.log(servers[id].getQueue);
-		if (title) {
-			message.channel.send(`Now playing | ${title}`);
-		} else {
-			const title =
-				servers[id].getQueue[0] &&
-				(await getInfo(servers[id].getQueue[0]).then(
-					(info) => info.videoDetails.title
-				));
+		if (servers[id].getQueue[0].startsWith(SPOTIFY_URI)) {
+			const { search, title } = await getSpotifyTrack(
+				await getAccessToken(),
+				servers[id].getQueue[0]
+			);
 			title && message.react('😳');
 			title && message.channel.send(`Now playing | ${title}`);
+			const { url } = await ytsr(search, { pages: 1, limit: 1 }).then(
+				(__res) => __res.items[0] as any
+			);
+			return connection
+				?.play(
+					await ytdl(url, {
+						filter: 'audioonly',
+					}),
+					{
+						type: 'opus',
+					}
+				)
+				.on('finish', () => {
+					// if (servers[id].autoplay) {
+					// 	servers[id].setAuto = servers[id].getQueue[0];
+					// }
+					// servers[id].getQueue.shift();
+					const tmpQueue = servers[id].getQueue;
+					tmpQueue.shift();
+					(async () => {
+						servers[id].setDispatcher = (await play(
+							connection,
+							tmpQueue,
+							id,
+							message,
+							servers,
+							title
+						)) as StreamDispatcher;
+					})();
+				});
 		}
+		const title =
+			servers[id].getQueue[0] &&
+			(await getInfo(servers[id].getQueue[0]).then(
+				(info) => info.videoDetails.title
+			));
+		title && message.react('😳');
+		title && message.channel.send(`Now playing | ${title}`);
 		return connection
 			?.play(
 				await ytdl(servers[id].getQueue[0], {

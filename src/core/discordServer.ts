@@ -41,7 +41,7 @@ export class DiscordServer {
 		return true && this.isAutoplay;
 	}
 
-	public get getQueue(): any[] {
+	public get getQueue(): string[] {
 		return this.queue;
 	}
 	public get getConnection(): VoiceConnection {
