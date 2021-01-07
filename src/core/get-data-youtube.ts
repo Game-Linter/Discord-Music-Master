@@ -125,16 +125,19 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 								});
 							let urls: string[] = [];
 
-							for await (const iterator of trackNames.search) {
-								urls.push(
-									await ytsr(iterator, {
-										limit: 1,
-										pages: 1,
-									}).then((ytsearch) => {
-										const { url } = ytsearch.items[0] as any;
-										return url;
-									})
-								);
+							for (let index = 0; index < trackNames.search.length; index++) {
+								const element = trackNames.search[index];
+								(async () => {
+									urls.push(
+										await ytsr(element, {
+											limit: 1,
+											pages: 1,
+										}).then((ytsearch) => {
+											const { url } = ytsearch.items[0] as any;
+											return url;
+										})
+									);
+								})();
 							}
 							return { url };
 
