@@ -107,7 +107,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 								.then((_res) => {
 									const items: {
 										track: { name: string; artists: { name: string }[] };
-									}[] = _res.data.items;
+									}[] = _res.data.items.slice(0, 150);
 
 									const search = items.map((value) => {
 										return `${value.track.name} ${value.track.artists[0].name}`;
