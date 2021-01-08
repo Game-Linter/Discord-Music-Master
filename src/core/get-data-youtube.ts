@@ -102,15 +102,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 				return (async () => {
 					switch (type) {
 						case 'track':
-							const { search, title } = await getSpotifyTrack(
-								aatoken,
-								urlOrQuery
-							);
-							const { url } = await ytsr(search, {
-								limit: 1,
-								pages: 1,
-							}).then((__res) => __res.items[0] as any);
-							return { url, title };
+							return { url: urlOrQuery };
 
 						// break;
 						case 'playlist':

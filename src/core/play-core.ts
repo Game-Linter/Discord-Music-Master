@@ -30,6 +30,10 @@ export const getRecommended = async (tmpUrl: string) => {
 	};
 };
 
+export const getTitleYoutube = async (link: string) => {
+	return link && (await getInfo(link).then((info) => info.videoDetails.title));
+};
+
 export async function play(
 	connection: VoiceConnection,
 	queue: string[],
@@ -40,11 +44,7 @@ export async function play(
 ): Promise<StreamDispatcher | null> {
 	// console.log(queue[id]);
 	if (servers[id].loop) {
-		const title =
-			servers[id].loop &&
-			(await getInfo(servers[id].loop as string).then(
-				(info) => info.videoDetails.title
-			));
+		const title = await getTitleYoutube(servers[id].loop as string);
 		title && message.react('🔁');
 		title && message.channel.send(`Now playing | ${title}`);
 		return connection
@@ -70,7 +70,6 @@ export async function play(
 	}
 	// console.log(connection[id]);
 	if (servers[id].getQueue.length) {
-		console.log(servers[id].getQueue);
 		if (servers[id].getQueue[0].startsWith(SPOTIFY_URI)) {
 			try {
 				const { search, title } = await getSpotifyTrack(
@@ -149,11 +148,7 @@ export async function play(
 					});
 			}
 		}
-		const title =
-			servers[id].getQueue[0] &&
-			(await getInfo(servers[id].getQueue[0]).then(
-				(info) => info.videoDetails.title
-			));
+		const title = await getTitleYoutube(servers[0].getQueue[0]);
 		title && message.react('😳');
 		title && message.channel.send(`Now playing | ${title}`);
 		return connection
