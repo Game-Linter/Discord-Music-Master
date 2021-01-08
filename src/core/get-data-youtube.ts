@@ -88,6 +88,61 @@ export const getAccessToken = async () => {
 	return aatoken;
 };
 
+export const getPlaylistSpotify = async (
+	type: string,
+	itemId: string,
+	aatoken: string
+) => {
+	return await axios
+		.get(
+			`https://api.spotify.com/v1/${type}s/${itemId}/tracks?fields=items(track(external_urls))`,
+			{
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					Authorization: `Bearer ${aatoken}`,
+				},
+			}
+		)
+		.then((_res) => {
+			const items: {
+				track: {
+					external_urls: { spotify: string };
+				};
+			}[] = _res.data.items;
+
+			const urls = items.map((value) => {
+				return value.track.external_urls.spotify;
+			});
+
+			return urls;
+		})
+		.catch((err) => {
+			console.log(err);
+			return [''];
+		});
+};
+
+export const getAlbumSpotify = async (
+	type: string,
+	itemId: string,
+	aatoken: string
+) => {
+	return await axios
+		.get(`https://api.spotify.com/v1/${type}s/${itemId}/tracks?limit=50`, {
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				Authorization: `Bearer ${aatoken}`,
+			},
+		})
+		.then((res) => {
+			const items: { external_urls: { spotify: string } }[] = res.data.items;
+
+			return items.map((item) => {
+				return item.external_urls.spotify;
+			});
+		});
+};
+
 export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 	if (validator.isURL(urlOrQuery) && urlOrQuery.startsWith(SPOTIFY_URI)) {
 		return (async () => {
@@ -107,36 +162,17 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 						// break;
 						case 'playlist':
 							const loading = message.channel.send('Loading playlist');
-							const trackUrls: string[] = await axios
-								.get(
-									`https://api.spotify.com/v1/${type}s/${itemId}/tracks?fields=items(track(external_urls))`,
-									{
-										headers: {
-											'Content-Type': 'application/x-www-form-urlencoded',
-											Authorization: `Bearer ${aatoken}`,
-										},
-									}
-								)
-								.then((_res) => {
-									const items: {
-										track: {
-											external_urls: { spotify: string };
-										};
-									}[] = _res.data.items;
-
-									const urls = items.map((value) => {
-										return value.track.external_urls.spotify;
-									});
-
-									return urls;
-								})
-								.catch((err) => {
-									console.log(err);
-									return [''];
-								});
+							const trackUrls: string[] = await getPlaylistSpotify(
+								type,
+								itemId,
+								aatoken
+							);
 							(await loading).edit('Playlist Loaded');
 							return { url: trackUrls };
 
+						case 'album':
+							const albumTracks = await getAlbumSpotify(type, itemId, aatoken);
+							return { url: albumTracks };
 						default:
 							return {
 								url: '',
