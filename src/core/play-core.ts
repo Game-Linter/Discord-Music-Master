@@ -148,7 +148,7 @@ export async function play(
 					});
 			}
 		}
-		const title = await getTitleYoutube(servers[0].getQueue[0]);
+		const title = await getTitleYoutube(servers[id].getQueue[0]);
 		title && message.react('😳');
 		title && message.channel.send(`Now playing | ${title}`);
 		return connection
