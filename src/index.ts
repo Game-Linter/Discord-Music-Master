@@ -127,7 +127,7 @@ const messageHandler = (message: Message) => {
 
 			case 'help':
 				message.channel.send(`
-					  	\`\`\`\`
+					  	\`\`\`
 						__audio anyYoutubeSearch
 						__audio youtubeUrl
 						__audio spotify Track Link
@@ -140,7 +140,7 @@ const messageHandler = (message: Message) => {
 						__loop (Loop current Song )
 						__autoplay (Keep Playing recommended songs after the queue is done)
 						__shuffle (Shuffle Current Queue)
-						\`\`\`\`
+						\`\`\`
 				`);
 				break;
 
