@@ -18,8 +18,7 @@ const messageHandler = (message: Message) => {
 			case 'audio':
 				if (message.member?.voice.channelID) {
 					(async () => {
-						const msgContent = message.content.replace(/\s+/g, ' ');
-						const args = msgContent.split(' ');
+						const args = message.content.split(' ');
 						if (!args[1]) {
 							return message.channel.send('Give a link or a youtube search');
 						}
