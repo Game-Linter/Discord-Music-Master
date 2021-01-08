@@ -157,7 +157,8 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 				return (async () => {
 					switch (type) {
 						case 'track':
-							return { url: urlOrQuery };
+							const { title } = await getSpotifyTrack(aatoken, urlOrQuery);
+							return { url: urlOrQuery, title };
 
 						// break;
 						case 'playlist':
