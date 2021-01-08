@@ -91,7 +91,10 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 			try {
 				// https://api.spotify.com/v1/tracks/{id}
 				const type = urlOrQuery.split('/')[3];
-				const itemId = urlOrQuery.split('/')[4];
+				let itemId = urlOrQuery.split('/')[4];
+				if (itemId.indexOf('?') !== -1) {
+					itemId = itemId.slice(0, itemId.indexOf('?'));
+				}
 				const aatoken = await getAccessToken();
 				return (async () => {
 					switch (type) {
