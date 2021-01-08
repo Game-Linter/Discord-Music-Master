@@ -34,6 +34,7 @@ export class DiscordServer {
 				).catch((err) => null);
 			} catch (error) {
 				message.channel.send(error.message);
+				delete servers[id];
 			}
 		})();
 	}
