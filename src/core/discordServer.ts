@@ -17,20 +17,24 @@ export class DiscordServer {
 		title?: string
 	) {
 		(async () => {
-			this.connection = (await message.member?.voice.channel?.join()) as VoiceConnection;
-			if (Array.isArray(url)) {
-				this.queue.push(...url);
-			} else {
-				this.queue.push(url);
+			try {
+				this.connection = (await message.member?.voice.channel?.join()) as VoiceConnection;
+				if (Array.isArray(url)) {
+					this.queue.push(...url);
+				} else {
+					this.queue.push(url);
+				}
+				this.dispatcher = await play(
+					this.connection,
+					this.queue,
+					id,
+					message,
+					servers,
+					title
+				);
+			} catch (error) {
+				message.channel.send(error.message);
 			}
-			this.dispatcher = await play(
-				this.connection,
-				this.queue,
-				id,
-				message,
-				servers,
-				title
-			);
 		})();
 	}
 
