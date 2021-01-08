@@ -96,9 +96,9 @@ export async function play(
 						}
 					)
 					.on('finish', () => {
-						// if (servers[id].autoplay) {
-						// 	servers[id].setAuto = servers[id].getQueue[0];
-						// }
+						if (servers[id].autoplay) {
+							servers[id].setAuto = servers[id].getQueue[0];
+						}
 						// servers[id].getQueue.shift();
 						const tmpQueue = servers[id].getQueue;
 						tmpQueue.shift();
@@ -198,6 +198,7 @@ export async function play(
 		if (qq.startsWith(SPOTIFY_URI)) {
 			const { url } = await getRecommended(qq);
 			recommendedLink = url;
+			console.log('Used spotify recommendation');
 		} else {
 			const { video_url } = await getInfo(servers[id].autoplay as string).then(
 				async (info) => {
