@@ -24,7 +24,7 @@ const messageHandler = (message: Message) => {
 							return message.channel.send('Give a link or a youtube search');
 						}
 						// return;
-						const { url, title } = await getData(args[1], message);
+						const { url, title } = await getData(args[1], message).catch();
 						try {
 							if (!servers[id]) {
 								servers[id] = new DiscordServer(
@@ -97,7 +97,7 @@ const messageHandler = (message: Message) => {
 						id,
 						message,
 						servers
-					);
+					).catch((err) => null);
 				})();
 				break;
 			case 'loop':
@@ -107,10 +107,12 @@ const messageHandler = (message: Message) => {
 				message.react('♾');
 				servers[id].loop
 					? (async () => {
-							const { title } = await getInfo(servers[id].loop as string).then(
-								(res) => res.videoDetails
-							);
-							message.channel.send(`Now looping forever | ${title}`);
+							const { title = null } = await getInfo(servers[id].loop as string)
+								.then((res) => res.videoDetails)
+								.catch((err) => {
+									return { title: null };
+								});
+							title && message.channel.send(`Now looping forever | ${title}`);
 					  })()
 					: message.channel.send(`Loop is now off`);
 				break;

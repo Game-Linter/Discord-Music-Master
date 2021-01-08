@@ -31,7 +31,7 @@ export class DiscordServer {
 					message,
 					servers,
 					title
-				);
+				).catch((err) => null);
 			} catch (error) {
 				message.channel.send(error.message);
 			}
