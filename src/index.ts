@@ -18,7 +18,8 @@ const messageHandler = (message: Message) => {
 			case 'audio':
 				if (message.member?.voice.channelID) {
 					(async () => {
-						const args = message.content.split(' ');
+						const msgContent = message.content.replace(/\s+/g, ' ');
+						const args = msgContent.split(' ');
 						if (!args[1]) {
 							return message.channel.send('Give a link or a youtube search');
 						}
@@ -34,6 +35,14 @@ const messageHandler = (message: Message) => {
 									title
 								);
 							} else {
+								if (
+									message.member?.voice.channelID !==
+									message.guild?.voice?.channelID
+								) {
+									return message.channel.send(
+										'Get into the same channel as the bot'
+									);
+								}
 								if (Array.isArray(url)) {
 									servers[id].queue.push(...url);
 								} else {
