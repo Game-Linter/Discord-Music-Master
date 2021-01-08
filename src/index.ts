@@ -77,6 +77,9 @@ const messageHandler = (message: Message) => {
 			case 'skip':
 				if (!servers[id].loop) {
 					servers[id].queue?.shift();
+					if (servers[id].getQueue.length) {
+						servers[id].setAuto = servers[id].getQueue[0];
+					}
 				}
 				(async () => {
 					servers[id].dispatcher = await play(
