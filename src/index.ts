@@ -130,18 +130,18 @@ const messageHandler = (message: Message) => {
 			case 'help':
 				message.channel.send(`
 					  	\`\`\`
-						__audio anyYoutubeSearch
-						__audio youtubeUrl
-						__audio spotify Track Link
-						__audio spotify Playlist Link
-						__audio spotify Album Link
-						__skip (Skip current track)
-						__pause
-						__resume 
-						__fuckoff (Quit)
-						__loop (Loop current Song )
-						__autoplay (Keep Playing recommended songs after the queue is done)
-						__shuffle (Shuffle Current Queue)
+__audio anyYoutubeSearch
+__audio youtubeUrl
+__audio spotify Track Link
+__audio spotify Playlist Link
+__audio spotify Album Link
+__skip (Skip current track)
+__pause
+__resume 
+__fuckoff (Quit)
+__loop (Loop current Song )
+__autoplay (Keep Playing recommended songs after the queue is done)
+__shuffle (Shuffle Current Queue)
 						\`\`\`
 				`);
 				break;
