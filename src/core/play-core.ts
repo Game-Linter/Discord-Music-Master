@@ -7,8 +7,8 @@ import { getSpotifyTrack } from './get-data-youtube';
 import ytsr from 'ytsr';
 import axios from 'axios';
 
-export const getRecommended = async (url: string) => {
-	let itemId = url.split('/')[4];
+export const getRecommended = async (tmpUrl: string) => {
+	let itemId = tmpUrl.split('/')[4];
 	if (itemId.indexOf('?') !== -1) {
 		itemId = itemId.slice(0, itemId.indexOf('?'));
 	}
@@ -25,13 +25,9 @@ export const getRecommended = async (url: string) => {
 		.then((res) => {
 			return res.data.tracks[0].external_urls.spotify as string;
 		});
-
-	const { search } = await getSpotifyTrack(await getAccessToken(), Link);
-
-	return await ytsr(search, {
-		pages: 1,
-		limit: 1,
-	}).then((res) => res.items[0] as any);
+	return {
+		spotifyLink: Link,
+	};
 };
 
 export async function play(
@@ -192,14 +188,16 @@ export async function play(
 	if (servers[id].autoplay) {
 		// console.log(id, autoplay[id]);
 		const qq = servers[id].autoplay as string;
-		console.log(qq);
+		// console.log(qq);
 
-		let recommendedLink: string;
+		let tmpQ = [];
 
 		if (qq.startsWith(SPOTIFY_URI)) {
-			const { url } = await getRecommended(qq);
-			recommendedLink = url;
+			const { spotifyLink } = await getRecommended(qq);
 			console.log('Used spotify recommendation');
+			servers[id].setAuto = spotifyLink;
+			tmpQ = servers[id].getQueue;
+			tmpQ.push(spotifyLink);
 		} else {
 			const { video_url } = await getInfo(servers[id].autoplay as string).then(
 				async (info) => {
@@ -208,12 +206,10 @@ export async function play(
 					return await getInfo(videoId).then((_info) => _info.videoDetails);
 				}
 			);
-			recommendedLink = video_url;
+			servers[id].setAuto = video_url;
+			tmpQ = servers[id].getQueue;
+			tmpQ.push(video_url);
 		}
-		// title && message.channel.send(`Now playing | ${title}`);
-		servers[id].setAuto = recommendedLink;
-		const tmpQ = servers[id].getQueue;
-		tmpQ.push(recommendedLink);
 		return (await play(
 			connection,
 			tmpQ,
