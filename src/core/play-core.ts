@@ -5,6 +5,34 @@ import ytdl from 'ytdl-core-discord';
 import { getAccessToken, SPOTIFY_URI } from './get-data-youtube';
 import { getSpotifyTrack } from './get-data-youtube';
 import ytsr from 'ytsr';
+import axios from 'axios';
+
+export const getRecommended = async (url: string) => {
+	let itemId = url.split('/')[4];
+	if (itemId.indexOf('?') !== -1) {
+		itemId = itemId.slice(0, itemId.indexOf('?'));
+	}
+
+	const Link = await axios
+		.get(
+			`https://api.spotify.com/v1/recommendations?seed_tracks=${itemId}&limit=1`,
+			{
+				headers: {
+					Authorization: `Bearer ${await getAccessToken()}`,
+				},
+			}
+		)
+		.then((res) => {
+			return res.data.tracks[0].external_urls.spotify as string;
+		});
+
+	const { search } = await getSpotifyTrack(await getAccessToken(), Link);
+
+	return await ytsr(search, {
+		pages: 1,
+		limit: 1,
+	}).then((res) => res.items[0] as any);
+};
 
 export async function play(
 	connection: VoiceConnection,
@@ -106,9 +134,9 @@ export async function play(
 						}
 					)
 					.on('finish', () => {
-						// if (servers[id].autoplay) {
-						// 	servers[id].setAuto = servers[id].getQueue[0];
-						// }
+						if (servers[id].autoplay) {
+							servers[id].setAuto = servers[id].getQueue[0];
+						}
 						// servers[id].getQueue.shift();
 						const tmpQueue = servers[id].getQueue;
 						tmpQueue.shift();
@@ -163,17 +191,27 @@ export async function play(
 
 	if (servers[id].autoplay) {
 		// console.log(id, autoplay[id]);
-		const { video_url } = await getInfo(servers[id].autoplay as string).then(
-			async (info) => {
-				const videoId = info.related_videos[Math.floor(Math.random() * 2)]
-					.id as string;
-				return await getInfo(videoId).then((_info) => _info.videoDetails);
-			}
-		);
+		const qq = servers[id].autoplay as string;
+
+		let recommendedLink: string;
+
+		if (qq.startsWith(SPOTIFY_URI)) {
+			const { url } = await getRecommended(qq);
+			recommendedLink = url;
+		} else {
+			const { video_url } = await getInfo(servers[id].autoplay as string).then(
+				async (info) => {
+					const videoId = info.related_videos[Math.floor(Math.random() * 2)]
+						.id as string;
+					return await getInfo(videoId).then((_info) => _info.videoDetails);
+				}
+			);
+			recommendedLink = video_url;
+		}
 		// title && message.channel.send(`Now playing | ${title}`);
-		servers[id].setAuto = video_url;
+		servers[id].setAuto = recommendedLink;
 		const tmpQ = servers[id].getQueue;
-		tmpQ.push(video_url);
+		tmpQ.push(recommendedLink);
 		return (await play(
 			connection,
 			tmpQ,
