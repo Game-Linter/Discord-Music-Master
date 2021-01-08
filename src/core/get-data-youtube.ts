@@ -24,7 +24,10 @@ export const getSpotifyTrack: (
 	token: string,
 	url: string
 ) => {
-	const itemId = url.split('/')[4];
+	let itemId = url.split('/')[4];
+	if (itemId.indexOf('?') !== -1) {
+		itemId = itemId.slice(0, itemId.indexOf('?'));
+	}
 	return await axios
 		.get(`https://api.spotify.com/v1/tracks/${itemId}`, {
 			headers: {
