@@ -118,6 +118,7 @@ const messageHandler = (message: Message) => {
 				servers[id].setAuto = servers[id].autoplay
 					? false
 					: servers[id].getQueue[0];
+				message.react('🤖');
 				servers[id].autoplay
 					? message.channel.send('AUTOPLAY in now on')
 					: message.channel.send('AUTOPLAY in now off');
