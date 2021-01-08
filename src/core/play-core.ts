@@ -192,6 +192,7 @@ export async function play(
 	if (servers[id].autoplay) {
 		// console.log(id, autoplay[id]);
 		const qq = servers[id].autoplay as string;
+		console.log(qq);
 
 		let recommendedLink: string;
 
