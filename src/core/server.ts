@@ -6,6 +6,13 @@ export class Discord {
 	constructor(init: { messageHandler: (message: Message) => void }) {
 		this.client = new Client();
 		this.client.on('ready', () => {
+			this.client.user?.setPresence({
+				status: 'online',
+				activity: {
+					type: 'COMPETING',
+					name: '__audio',
+				},
+			});
 			console.log('Ready!');
 		});
 		this.client.on('message', init.messageHandler);
