@@ -78,36 +78,42 @@ export async function play(
 				);
 				title && message.react('😳');
 				title && message.channel.send(`Now playing | ${title}`);
-				const { url } = await ytsr(search, { pages: 1, limit: 1 }).then(
-					(__res) => __res.items[0] as any
-				);
-				return connection
-					?.play(
-						await ytdl(url, {
-							filter: 'audioonly',
-						}),
-						{
-							type: 'opus',
-						}
-					)
-					.on('finish', () => {
-						if (servers[id].autoplay) {
-							servers[id].setAuto = servers[id].getQueue[0];
-						}
-						// servers[id].getQueue.shift();
-						const tmpQueue = servers[id].getQueue;
-						tmpQueue.shift();
-						(async () => {
-							servers[id].setDispatcher = (await play(
-								connection,
-								tmpQueue,
-								id,
-								message,
-								servers,
-								title
-							)) as StreamDispatcher;
-						})();
+				const { url } = await ytsr(search, { pages: 1, limit: 1 })
+					.then((__res) => __res.items[0] as any)
+					.catch((err) => {
+						return {
+							url: null,
+						};
 					});
+				return url
+					? connection
+							?.play(
+								await ytdl(url, {
+									filter: 'audioonly',
+								}),
+								{
+									type: 'opus',
+								}
+							)
+							.on('finish', () => {
+								if (servers[id].autoplay) {
+									servers[id].setAuto = servers[id].getQueue[0];
+								}
+								// servers[id].getQueue.shift();
+								const tmpQueue = servers[id].getQueue;
+								tmpQueue.shift();
+								(async () => {
+									servers[id].setDispatcher = (await play(
+										connection,
+										tmpQueue,
+										id,
+										message,
+										servers,
+										title
+									)) as StreamDispatcher;
+								})();
+							})
+					: null;
 			} catch (error) {
 				servers[id].queue.shift();
 				const { search, title } = await getSpotifyTrack(
@@ -116,36 +122,40 @@ export async function play(
 				);
 				title && message.react('😳');
 				title && message.channel.send(`Now playing | ${title}`);
-				const { url } = await ytsr(search, { pages: 1, limit: 1 }).then(
-					(__res) => __res.items[0] as any
-				);
-				return connection
-					?.play(
-						await ytdl(url, {
-							filter: 'audioonly',
-						}),
-						{
-							type: 'opus',
-						}
-					)
-					.on('finish', () => {
-						if (servers[id].autoplay) {
-							servers[id].setAuto = servers[id].getQueue[0];
-						}
-						// servers[id].getQueue.shift();
-						const tmpQueue = servers[id].getQueue;
-						tmpQueue.shift();
-						(async () => {
-							servers[id].setDispatcher = (await play(
-								connection,
-								tmpQueue,
-								id,
-								message,
-								servers,
-								title
-							)) as StreamDispatcher;
-						})();
+				const { url } = await ytsr(search, { pages: 1, limit: 1 })
+					.then((__res) => __res.items[0] as any)
+					.catch((err) => {
+						return { url: null };
 					});
+				return url
+					? connection
+							?.play(
+								await ytdl(url, {
+									filter: 'audioonly',
+								}),
+								{
+									type: 'opus',
+								}
+							)
+							.on('finish', () => {
+								if (servers[id].autoplay) {
+									servers[id].setAuto = servers[id].getQueue[0];
+								}
+								// servers[id].getQueue.shift();
+								const tmpQueue = servers[id].getQueue;
+								tmpQueue.shift();
+								(async () => {
+									servers[id].setDispatcher = (await play(
+										connection,
+										tmpQueue,
+										id,
+										message,
+										servers,
+										title
+									)) as StreamDispatcher;
+								})();
+							})
+					: null;
 			}
 		}
 		const title = await getTitleYoutube(servers[id].getQueue[0]);

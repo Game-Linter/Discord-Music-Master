@@ -209,7 +209,13 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 		const { url, title } = await ytsr(tmp.join(' '), {
 			limit: 1,
 			pages: 1,
-		}).then((res) => res.items[0] as any);
+		})
+			.then((res) => res.items[0] as any)
+			.catch((err) => {
+				return {
+					url: '',
+				};
+			});
 		return {
 			url,
 			title,
