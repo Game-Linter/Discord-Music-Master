@@ -1,0 +1,27 @@
+name: ci
+
+on:
+  push:
+    branches: oop
+  pull_request:
+    branches: master
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.KEY }}
+          port: 22
+          script: |
+            cd /home/ubuntu/workspace/discord-music
+            git pull origin oop
+            yarn run build
+            pm2 reload index
