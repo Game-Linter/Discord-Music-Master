@@ -35,14 +35,14 @@ const messageHandler = (message: Message) => {
 									title
 								);
 							} else {
-								if (
-									message.member?.voice.channelID !==
-									message.guild?.voice?.channelID
-								) {
-									return message.channel.send(
-										'Get into the same channel as the bot'
-									);
-								}
+								// if (
+								// 	message.member?.voice.channelID !==
+								// 	message.guild?.voice?.channelID
+								// ) {
+								// 	return message.channel.send(
+								// 		'Get into the same channel as the bot'
+								// 	);
+								// }
 								if (Array.isArray(url)) {
 									servers[id].queue.push(...url);
 								} else {
