@@ -171,9 +171,13 @@ const client = new Discord({
 });
 
 client.client.on('voiceStateUpdate', (arg0, arg1) => {
+	console.log('triggered');
 	const newGld = arg1.channel?.guild.id;
 	const oldGld = arg0.channel?.guild.id;
-	if (!newGld && oldGld && servers[oldGld]) {
-		delete servers[oldGld];
+	if (arg0.member?.id === client.client.user?.id) {
+		if (!newGld && oldGld && servers[oldGld]) {
+			console.log('deleted');
+			delete servers[oldGld];
+		}
 	}
 });
