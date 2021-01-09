@@ -6,7 +6,7 @@ export class DiscordServer {
 	private connection!: VoiceConnection;
 	public dispatcher!: StreamDispatcher | null;
 	public queue: string[] = [];
-	private isAutoplay: any = false;
+	private isAutoplay: any = true;
 	private isLoop: any = false;
 
 	constructor(
