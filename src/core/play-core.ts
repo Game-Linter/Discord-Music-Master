@@ -69,8 +69,8 @@ export async function play(
 			});
 	}
 	// console.log(connection[id]);
-	if (servers[id].getQueue.length) {
-		const [firstUrl] = servers[id].getQueue;
+	if (queue.length) {
+		const [firstUrl] = queue;
 		if (firstUrl.startsWith(SPOTIFY_URI)) {
 			try {
 				const { search, title } = await getSpotifyTrack(
@@ -100,8 +100,9 @@ export async function play(
 								if (servers[id].autoplay) {
 									servers[id].setAuto = firstUrl;
 								}
-								// servers[id].getQueue.shift();
-								const [, ...tmpQueue] = servers[id].getQueue;
+								// queue.shift();
+								const [, ...tmpQueue] = queue;
+								console.log(tmpQueue);
 								// tmpQueue.shift();
 								(async () => {
 									servers[id].setDispatcher = (await play(
@@ -119,7 +120,7 @@ export async function play(
 				servers[id].queue.shift();
 				const { search, title } = await getSpotifyTrack(
 					await getAccessToken(),
-					servers[id].getQueue[0]
+					queue[0]
 				);
 				title && message.react('😳');
 				title && message.channel.send(`Now playing | ${title}`);
@@ -140,10 +141,10 @@ export async function play(
 							)
 							.on('finish', () => {
 								if (servers[id].autoplay) {
-									servers[id].setAuto = servers[id].getQueue[0];
+									servers[id].setAuto = queue[0];
 								}
-								// servers[id].getQueue.shift();
-								const [x, ...tmpQueue] = servers[id].getQueue;
+								// queue.shift();
+								const [x, ...tmpQueue] = queue;
 								(async () => {
 									servers[id].setDispatcher = (await play(
 										connection,
@@ -158,12 +159,12 @@ export async function play(
 					: null;
 			}
 		}
-		const title = await getTitleYoutube(servers[id].getQueue[0]);
+		const title = await getTitleYoutube(queue[0]);
 		title && message.react('😳');
 		title && message.channel.send(`Now playing | ${title}`);
 		return connection
 			?.play(
-				await ytdl(servers[id].getQueue[0], {
+				await ytdl(queue[0], {
 					filter: 'audioonly',
 				}),
 				{
@@ -171,12 +172,12 @@ export async function play(
 				}
 			)
 			.on('finish', () => {
-				const [firstUrl, ...tmpQueue] = servers[id].getQueue;
+				const [firstUrl, ...tmpQueue] = queue;
 
 				if (servers[id].autoplay) {
 					servers[id].setAuto = firstUrl;
 				}
-				// servers[id].getQueue.shift();
+				// queue.shift();
 				(async () => {
 					servers[id].setDispatcher = (await play(
 						connection,
@@ -201,7 +202,7 @@ export async function play(
 			const { spotifyLink } = await getRecommended(qq);
 			console.log('Used spotify recommendation');
 			servers[id].setAuto = spotifyLink;
-			tmpQ = servers[id].getQueue;
+			tmpQ = queue;
 			tmpQ.push(spotifyLink);
 		} else {
 			const { video_url } = await getInfo(servers[id].autoplay as string).then(
@@ -212,7 +213,7 @@ export async function play(
 				}
 			);
 			servers[id].setAuto = video_url;
-			tmpQ = servers[id].getQueue;
+			tmpQ = queue;
 			tmpQ.push(video_url);
 		}
 		return (await play(
