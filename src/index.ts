@@ -185,14 +185,16 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
 	console.log('triggered');
 	const newGld = arg1.channel?.guild.id;
 	const oldGld = arg0.channel?.guild.id;
+	if (
+		arg0.channel?.members
+			.array()
+			.every((value) => value.guild.id === client.client.user?.id) &&
+		oldGld
+	) {
+		console.log('am alone');
+	}
 	if (arg0.member?.id === client.client.user?.id) {
-		if (
-			(!newGld && oldGld && servers[oldGld]) ||
-			(arg0.channel?.members
-				.array()
-				.every((value) => value.guild.id === client.client.user?.id) &&
-				oldGld)
-		) {
+		if (!newGld && oldGld && servers[oldGld]) {
 			console.log('deleted');
 			delete servers[oldGld];
 		}
