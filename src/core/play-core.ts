@@ -44,6 +44,7 @@ export async function play(
 	servers: { [x: string]: DiscordServer },
 	title?: string
 ): Promise<StreamDispatcher | null> {
+	console.log(queue);
 	// console.log(queue[id]);
 	if (servers[id].loop) {
 		const trackUrl = servers[id].loop as string;
@@ -89,7 +90,7 @@ export async function play(
 	// servers[id].setQueue = queue;
 	if (queue.length) {
 		const [firstUrl] = queue;
-		console.log(queue.length, firstUrl);
+		// console.log(queue.length, firstUrl);
 		if (firstUrl.startsWith(SPOTIFY_URI)) {
 			try {
 				const { search, title } = await getSpotifyTrack(
@@ -105,37 +106,35 @@ export async function play(
 							url: null,
 						};
 					});
-				return url
-					? connection
-							?.play(
-								await ytdl(url, {
-									filter: 'audioonly',
-								}),
-								{
-									type: 'opus',
-								}
-							)
-							.on('finish', () => {
-								if (servers[id].autoplay) {
-									servers[id].setAuto = firstUrl;
-								}
-								// queue.shift();
-								const [, ...tmpQueue] = queue;
-								// console.log(tmpQueue);
-								// tmpQueue.shift();
-								servers[id].setQueue = tmpQueue;
-								(async () => {
-									servers[id].setDispatcher = (await play(
-										connection,
-										tmpQueue,
-										id,
-										message,
-										servers,
-										title
-									)) as StreamDispatcher;
-								})();
-							})
-					: null;
+				return connection
+					?.play(
+						await ytdl(url, {
+							filter: 'audioonly',
+						}),
+						{
+							type: 'opus',
+						}
+					)
+					.on('finish', () => {
+						if (servers[id].autoplay) {
+							servers[id].setAuto = firstUrl;
+						}
+						// queue.shift();
+						const [, ...tmpQueue] = queue;
+						console.log(tmpQueue);
+						// tmpQueue.shift();
+						servers[id].setQueue = tmpQueue;
+						(async () => {
+							servers[id].setDispatcher = (await play(
+								connection,
+								tmpQueue,
+								id,
+								message,
+								servers,
+								title
+							)) as StreamDispatcher;
+						})();
+					});
 			} catch (error) {
 				queue.shift();
 				const { search, title } = await getSpotifyTrack(
