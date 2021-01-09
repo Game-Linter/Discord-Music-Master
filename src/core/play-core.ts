@@ -55,7 +55,11 @@ export async function play(
 			searchUri = search;
 			finalTitle = title;
 		}
-		const { url, title } = await getData(searchUri || trackUrl, message);
+		const { url, title } = searchUri
+			? await ytsr(searchUri, { pages: 1, limit: 1 }).then(
+					(res) => res.items[0] as any
+			  )
+			: await getData(trackUrl, message);
 		finalTitle && message.react('🔁');
 		finalTitle && message.channel.send(`Now playing | ${finalTitle || title}`);
 		return connection
