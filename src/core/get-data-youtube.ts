@@ -54,6 +54,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 					}
 				})();
 			} catch (error) {
+				console.log(error.message);
 				return {
 					url: '',
 					title: '',
@@ -83,6 +84,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 		})
 			.then((res) => res.items[0] as any)
 			.catch((err) => {
+				console.log(err.message);
 				return {
 					url: '',
 				};

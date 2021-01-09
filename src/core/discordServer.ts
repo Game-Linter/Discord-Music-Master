@@ -31,7 +31,10 @@ export class DiscordServer {
 					message,
 					servers,
 					title
-				).catch((err) => null);
+				).catch((err) => {
+					console.log(err.message);
+					return null;
+				});
 				this.setAuto = this.queue[0] as string;
 			} catch (error) {
 				message.channel.send(error.message);

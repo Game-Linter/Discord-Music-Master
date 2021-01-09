@@ -29,7 +29,8 @@ export const getPlaylistSpotify = async (
 			return urls;
 		})
 		.catch((err) => {
-			console.log(err);
+			console.log(err.message);
+
 			return [''];
 		});
 };

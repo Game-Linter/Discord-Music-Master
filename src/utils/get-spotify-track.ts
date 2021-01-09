@@ -25,7 +25,8 @@ export const getSpotifyTrack: (
 			};
 		})
 		.catch((err) => {
-			console.log(err);
+			console.log(err.message);
+
 			return {
 				search: '',
 				title: '',

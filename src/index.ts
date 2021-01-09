@@ -24,7 +24,15 @@ const messageHandler = (message: Message) => {
 							return message.channel.send('Give a link or a youtube search');
 						}
 						// return;
-						const { url, title } = await getData(args[1], message).catch();
+						const { url, title } = await getData(args[1], message).catch(
+							(err) => {
+								console.log(err);
+								return {
+									url: '',
+									title: '',
+								};
+							}
+						);
 						try {
 							if (!servers[id]) {
 								servers[id] = new DiscordServer(
@@ -53,7 +61,7 @@ const messageHandler = (message: Message) => {
 							}
 							// console.log(connection);
 						} catch (error) {
-							console.log(error);
+							console.log(error.message);
 						}
 					})();
 				} else {
@@ -97,7 +105,10 @@ const messageHandler = (message: Message) => {
 						id,
 						message,
 						servers
-					).catch((err) => null);
+					).catch((err) => {
+						console.log(err.message);
+						return null;
+					});
 				})();
 				break;
 			case 'loop':
@@ -112,6 +123,7 @@ const messageHandler = (message: Message) => {
 							)
 								.then((res) => res.videoDetails)
 								.catch((err) => {
+									console.log(err.message);
 									return { title: null };
 								});
 							title && message.channel.send(`Now looping forever | ${title}`);

@@ -101,6 +101,7 @@ export async function play(
 				const { url } = await ytsr(search, { pages: 1, limit: 1 })
 					.then((__res) => __res.items[0] as any)
 					.catch((err) => {
+						console.log(err.message);
 						return {
 							url: null,
 						};
@@ -135,6 +136,7 @@ export async function play(
 						})();
 					});
 			} catch (error) {
+				console.log(error.message);
 				queue.shift();
 				const { search, title } = await getSpotifyTrack(
 					await getAccessToken(),
@@ -145,6 +147,8 @@ export async function play(
 				const { url } = await ytsr(search, { pages: 1, limit: 1 })
 					.then((__res) => __res.items[0] as any)
 					.catch((err) => {
+						console.log(error.message);
+
 						return { url: null };
 					});
 				return connection
