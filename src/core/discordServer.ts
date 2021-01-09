@@ -24,7 +24,6 @@ export class DiscordServer {
 				} else {
 					this.queue.push(url);
 				}
-				this.isAutoplay = this.queue[0];
 				this.dispatcher = await play(
 					this.connection,
 					this.queue,
@@ -33,6 +32,7 @@ export class DiscordServer {
 					servers,
 					title
 				).catch((err) => null);
+				this.setAuto = this.queue[0] as string;
 			} catch (error) {
 				message.channel.send(error.message);
 				delete servers[id];
