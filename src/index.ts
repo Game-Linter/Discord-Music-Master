@@ -188,7 +188,10 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
 	if (arg0.member?.id === client.client.user?.id) {
 		if (
 			(!newGld && oldGld && servers[oldGld]) ||
-			(arg0.channel?.members.array.length && oldGld)
+			(arg0.channel?.members
+				.array()
+				.every((value) => value.guild.id === client.client.user?.id) &&
+				oldGld)
 		) {
 			console.log('deleted');
 			delete servers[oldGld];
