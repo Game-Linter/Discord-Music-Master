@@ -158,3 +158,11 @@ __shuffle (Shuffle Current Queue)
 const client = new Discord({
 	messageHandler,
 });
+
+client.client.on('voiceStateUpdate', (arg0, arg1) => {
+	const newGld = arg1.channel?.guild.id;
+	const oldGld = arg0.channel?.guild.id;
+	if (!newGld && oldGld && servers[oldGld]) {
+		delete servers[oldGld];
+	}
+});
