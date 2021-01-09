@@ -185,7 +185,15 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
 	console.log('triggered');
 	const newGld = arg1.channel?.guild.id;
 	const oldGld = arg0.channel?.guild.id;
-	console.log(arg1.channel?.members.array());
+	if (
+		arg1.channel?.members
+			.array()
+			.every((member) => member.user.id === client.client.user!.id) &&
+		newGld
+	) {
+		servers[newGld]?.getConnection.disconnect();
+		delete servers[newGld];
+	}
 	if (arg0.member?.id === client.client.user?.id) {
 		if (!newGld && oldGld && servers[oldGld]) {
 			console.log('deleted');
