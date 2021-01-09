@@ -6,7 +6,7 @@ export class DiscordServer {
 	private connection!: VoiceConnection;
 	public dispatcher!: StreamDispatcher | null;
 	public queue: string[] = [];
-	private isAutoplay: any = true;
+	private isAutoplay: any = false;
 	private isLoop: any = false;
 
 	constructor(
@@ -24,6 +24,7 @@ export class DiscordServer {
 				} else {
 					this.queue.push(url);
 				}
+				this.isAutoplay = this.queue[0];
 				this.dispatcher = await play(
 					this.connection,
 					this.queue,
