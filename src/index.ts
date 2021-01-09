@@ -44,9 +44,9 @@ const messageHandler = (message: Message) => {
 									);
 								}
 								if (Array.isArray(url)) {
-									servers[id].queue.push(...url);
+									servers[id]?.queue.push(...url);
 								} else {
-									servers[id].queue.push(url);
+									servers[id]?.queue.push(url);
 								}
 								message.react('🦆');
 								title && message.channel.send(`Queued | ${title}`);
@@ -62,11 +62,11 @@ const messageHandler = (message: Message) => {
 				break;
 			case 'pause':
 				message.react('⏸');
-				servers[id].dispatcher?.pause();
+				servers[id]?.dispatcher?.pause();
 				break;
 			case 'shuffle':
 				message.react('🔀');
-				const tmp = servers[id].getQueue;
+				const tmp = servers[id]?.getQueue;
 				tmp.shift();
 				tmp.length &&
 					(servers[id].setQueue = tmp.sort(() => Math.random() - 0.5));
@@ -74,27 +74,27 @@ const messageHandler = (message: Message) => {
 			case 'resume':
 				message.react('⏯');
 				// dispatcher[id]?.resume();
-				servers[id].dispatcher?.resume();
+				servers[id]?.dispatcher?.resume();
 				break;
 
 			case 'fuckoff':
 				message.react('🙋‍♂️');
-				servers[id].getConnection?.disconnect();
+				servers[id]?.getConnection?.disconnect();
 				delete servers[id];
 				break;
 
 			case 'skip':
-				if (!servers[id].loop) {
-					servers[id].queue?.shift();
-					if (servers[id].getQueue.length && servers[id].autoplay) {
-						const [first] = servers[id].getQueue;
+				if (!servers[id]?.loop) {
+					servers[id]?.queue?.shift();
+					if (servers[id]?.getQueue.length && servers[id]?.autoplay) {
+						const [first] = servers[id]?.getQueue;
 						servers[id].setAuto = first;
 					}
 				}
 				(async () => {
 					servers[id].dispatcher = await play(
-						servers[id].getConnection,
-						servers[id].getQueue,
+						servers[id]?.getConnection,
+						servers[id]?.getQueue,
 						id,
 						message,
 						servers
@@ -102,13 +102,15 @@ const messageHandler = (message: Message) => {
 				})();
 				break;
 			case 'loop':
-				servers[id].setLoop = servers[id].loop
+				servers[id].setLoop = servers[id]?.loop
 					? false
-					: servers[id].getQueue[0];
+					: servers[id]?.getQueue[0];
 				message.react('♾');
-				servers[id].loop
+				servers[id]?.loop
 					? (async () => {
-							const { title = null } = await getInfo(servers[id].loop as string)
+							const { title = null } = await getInfo(
+								servers[id]?.loop as string
+							)
 								.then((res) => res.videoDetails)
 								.catch((err) => {
 									return { title: null };
@@ -118,11 +120,11 @@ const messageHandler = (message: Message) => {
 					: message.channel.send(`Loop is now off`);
 				break;
 			case 'autoplay':
-				servers[id].setAuto = servers[id].autoplay
+				servers[id].setAuto = servers[id]?.autoplay
 					? false
-					: servers[id].getQueue[0];
+					: servers[id]?.getQueue[0];
 				message.react('🤖');
-				servers[id].autoplay
+				servers[id]?.autoplay
 					? message.channel.send('AUTOPLAY in now on')
 					: message.channel.send('AUTOPLAY in now off');
 				// console.log(id, autoplay[id]);
