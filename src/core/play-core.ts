@@ -89,6 +89,7 @@ export async function play(
 	// servers[id].setQueue = queue;
 	if (queue.length) {
 		const [firstUrl] = queue;
+		console.log(queue.length, firstUrl);
 		if (firstUrl.startsWith(SPOTIFY_URI)) {
 			try {
 				const { search, title } = await getSpotifyTrack(
@@ -122,6 +123,7 @@ export async function play(
 								const [, ...tmpQueue] = queue;
 								// console.log(tmpQueue);
 								// tmpQueue.shift();
+								servers[id].setQueue = tmpQueue;
 								(async () => {
 									servers[id].setDispatcher = (await play(
 										connection,
@@ -135,7 +137,7 @@ export async function play(
 							})
 					: null;
 			} catch (error) {
-				servers[id].queue.shift();
+				queue.shift();
 				const { search, title } = await getSpotifyTrack(
 					await getAccessToken(),
 					queue[0]
@@ -163,6 +165,7 @@ export async function play(
 								}
 								// queue.shift();
 								const [x, ...tmpQueue] = queue;
+								servers[id].setQueue = tmpQueue;
 								(async () => {
 									servers[id].setDispatcher = (await play(
 										connection,
@@ -191,6 +194,7 @@ export async function play(
 			)
 			.on('finish', () => {
 				const [firstUrl, ...tmpQueue] = queue;
+				servers[id].setQueue = tmpQueue;
 
 				if (servers[id].autoplay) {
 					servers[id].setAuto = firstUrl;
