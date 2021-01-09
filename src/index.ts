@@ -18,7 +18,7 @@ const messageHandler = (message: Message) => {
 			case 'audio':
 				if (message.member?.voice.channelID) {
 					(async () => {
-						const msgContent = message.content.replace(/\s+/g, ' ');
+						const msgContent = message.content.trim().replace(/\s+/g, ' ');
 						const args = msgContent.split(' ');
 						if (!args[1]) {
 							return message.channel.send('Give a link or a youtube search');
@@ -86,8 +86,8 @@ const messageHandler = (message: Message) => {
 			case 'skip':
 				if (!servers[id]?.loop) {
 					servers[id]?.queue?.shift();
-					if (servers[id]?.getQueue.length && servers[id]?.autoplay) {
-						const [first] = servers[id]?.getQueue;
+					const [first] = servers[id]?.getQueue;
+					if (first && servers[id]?.autoplay) {
 						servers[id].setAuto = first;
 					}
 				}

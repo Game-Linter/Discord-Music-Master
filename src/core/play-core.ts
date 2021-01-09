@@ -2,7 +2,7 @@ import { Message, StreamDispatcher, VoiceConnection } from 'discord.js';
 import { DiscordServer } from './discordServer';
 import { getInfo } from 'ytdl-core-discord';
 import ytdl from 'ytdl-core-discord';
-import { getAccessToken, SPOTIFY_URI } from './get-data-youtube';
+import { getAccessToken, getData, SPOTIFY_URI } from './get-data-youtube';
 import { getSpotifyTrack } from './get-data-youtube';
 import ytsr from 'ytsr';
 import axios from 'axios';
@@ -44,12 +44,23 @@ export async function play(
 ): Promise<StreamDispatcher | null> {
 	// console.log(queue[id]);
 	if (servers[id].loop) {
-		const title = await getTitleYoutube(servers[id].loop as string);
-		title && message.react('🔁');
-		title && message.channel.send(`Now playing | ${title}`);
+		const trackUrl = servers[id].loop as string;
+		let searchUri: any, finalTitle: any;
+
+		if (trackUrl.startsWith(SPOTIFY_URI)) {
+			const { search, title } = await getSpotifyTrack(
+				await getAccessToken(),
+				trackUrl
+			);
+			searchUri = search;
+			finalTitle = title;
+		}
+		const { url, title } = await getData(searchUri || trackUrl, message);
+		finalTitle && message.react('🔁');
+		finalTitle && message.channel.send(`Now playing | ${finalTitle || title}`);
 		return connection
 			?.play(
-				await ytdl(servers[id].loop as string, {
+				await ytdl(url as string, {
 					filter: 'audioonly',
 				}),
 				{
@@ -69,6 +80,7 @@ export async function play(
 			});
 	}
 	// console.log(connection[id]);
+	servers[id].setQueue = queue;
 	if (queue.length) {
 		const [firstUrl] = queue;
 		if (firstUrl.startsWith(SPOTIFY_URI)) {
