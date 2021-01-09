@@ -186,7 +186,10 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
 	const newGld = arg1.channel?.guild.id;
 	const oldGld = arg0.channel?.guild.id;
 	if (arg0.member?.id === client.client.user?.id) {
-		if (!newGld && oldGld && servers[oldGld]) {
+		if (
+			(!newGld && oldGld && servers[oldGld]) ||
+			(arg0.channel?.members.array.length && oldGld)
+		) {
 			console.log('deleted');
 			delete servers[oldGld];
 		}
