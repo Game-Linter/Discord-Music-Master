@@ -190,10 +190,10 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
 		arg0.channel?.members
 			.array()
 			.every((member) => member.user.id === client.client.user!.id) &&
-		newGld
+		oldGld
 	) {
-		servers[newGld]?.getConnection.disconnect();
-		delete servers[newGld];
+		servers[oldGld]?.getConnection.disconnect();
+		delete servers[oldGld];
 	}
 	if (arg0.member?.id === client.client.user?.id) {
 		if (!newGld && oldGld && servers[oldGld]) {
