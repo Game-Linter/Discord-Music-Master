@@ -74,9 +74,20 @@ const messageHandler = (message: Message) => {
 				break;
 			case 'shuffle':
 				message.react('🔀');
-				const [, ...tmp] = servers[id]?.getQueue;
-				tmp.length &&
-					(servers[id].setQueue = tmp.sort(() => Math.random() - 0.5));
+				let [, ...tmp] = servers[id]?.getQueue;
+				(async () => {
+					tmp.length && (tmp = tmp.sort(() => Math.random() - 0.5));
+					servers[id].dispatcher = await play(
+						servers[id]?.getConnection,
+						tmp,
+						id,
+						message,
+						servers
+					).catch((err) => {
+						console.log(err.message);
+						return null;
+					});
+				})();
 				break;
 			case 'resume':
 				message.react('⏯');
