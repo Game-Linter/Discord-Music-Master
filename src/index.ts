@@ -87,7 +87,8 @@ const messageHandler = (message: Message) => {
 				if (!servers[id].loop) {
 					servers[id].queue?.shift();
 					if (servers[id].getQueue.length && servers[id].autoplay) {
-						servers[id].setAuto = servers[id].getQueue[0];
+						const [first] = servers[id].getQueue;
+						servers[id].setAuto = first;
 					}
 				}
 				(async () => {

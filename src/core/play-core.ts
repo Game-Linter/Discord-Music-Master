@@ -70,11 +70,12 @@ export async function play(
 	}
 	// console.log(connection[id]);
 	if (servers[id].getQueue.length) {
-		if (servers[id].getQueue[0].startsWith(SPOTIFY_URI)) {
+		const [firstUrl] = servers[id].getQueue;
+		if (firstUrl.startsWith(SPOTIFY_URI)) {
 			try {
 				const { search, title } = await getSpotifyTrack(
 					await getAccessToken(),
-					servers[id].getQueue[0]
+					firstUrl
 				);
 				title && message.react('😳');
 				title && message.channel.send(`Now playing | ${title}`);
@@ -97,11 +98,11 @@ export async function play(
 							)
 							.on('finish', () => {
 								if (servers[id].autoplay) {
-									servers[id].setAuto = servers[id].getQueue[0];
+									servers[id].setAuto = firstUrl;
 								}
 								// servers[id].getQueue.shift();
-								const tmpQueue = servers[id].getQueue;
-								tmpQueue.shift();
+								const [, ...tmpQueue] = servers[id].getQueue;
+								// tmpQueue.shift();
 								(async () => {
 									servers[id].setDispatcher = (await play(
 										connection,
@@ -142,8 +143,7 @@ export async function play(
 									servers[id].setAuto = servers[id].getQueue[0];
 								}
 								// servers[id].getQueue.shift();
-								const tmpQueue = servers[id].getQueue;
-								tmpQueue.shift();
+								const [x, ...tmpQueue] = servers[id].getQueue;
 								(async () => {
 									servers[id].setDispatcher = (await play(
 										connection,
@@ -171,12 +171,12 @@ export async function play(
 				}
 			)
 			.on('finish', () => {
+				const [firstUrl, ...tmpQueue] = servers[id].getQueue;
+
 				if (servers[id].autoplay) {
-					servers[id].setAuto = servers[id].getQueue[0];
+					servers[id].setAuto = firstUrl;
 				}
 				// servers[id].getQueue.shift();
-				const tmpQueue = servers[id].getQueue;
-				tmpQueue.shift();
 				(async () => {
 					servers[id].setDispatcher = (await play(
 						connection,
