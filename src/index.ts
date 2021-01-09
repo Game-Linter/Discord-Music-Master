@@ -66,8 +66,7 @@ const messageHandler = (message: Message) => {
 				break;
 			case 'shuffle':
 				message.react('🔀');
-				const tmp = servers[id]?.getQueue;
-				tmp.shift();
+				const [, ...tmp] = servers[id]?.getQueue;
 				tmp.length &&
 					(servers[id].setQueue = tmp.sort(() => Math.random() - 0.5));
 				break;

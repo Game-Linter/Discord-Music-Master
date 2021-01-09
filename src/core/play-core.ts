@@ -2,10 +2,12 @@ import { Message, StreamDispatcher, VoiceConnection } from 'discord.js';
 import { DiscordServer } from './discordServer';
 import { getInfo } from 'ytdl-core-discord';
 import ytdl from 'ytdl-core-discord';
-import { getAccessToken, getData, SPOTIFY_URI } from './get-data-youtube';
-import { getSpotifyTrack } from './get-data-youtube';
+import { getData, SPOTIFY_URI } from './get-data-youtube';
+// import {} from './get-data-youtube';
 import ytsr from 'ytsr';
 import axios from 'axios';
+import { getAccessToken } from '../utils/get-token';
+import { getSpotifyTrack } from '../utils/get-spotify-track';
 
 export const getRecommended = async (tmpUrl: string) => {
 	let itemId = tmpUrl.split('/')[4];
@@ -84,7 +86,7 @@ export async function play(
 			});
 	}
 	// console.log(connection[id]);
-	servers[id].setQueue = queue;
+	// servers[id].setQueue = queue;
 	if (queue.length) {
 		const [firstUrl] = queue;
 		if (firstUrl.startsWith(SPOTIFY_URI)) {
@@ -118,7 +120,7 @@ export async function play(
 								}
 								// queue.shift();
 								const [, ...tmpQueue] = queue;
-								console.log(tmpQueue);
+								// console.log(tmpQueue);
 								// tmpQueue.shift();
 								(async () => {
 									servers[id].setDispatcher = (await play(
