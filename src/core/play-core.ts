@@ -44,7 +44,6 @@ export async function play(
 	servers: { [x: string]: DiscordServer },
 	title?: string
 ): Promise<StreamDispatcher | null> {
-	console.log(queue);
 	// console.log(queue[id]);
 	if (servers[id].loop) {
 		const trackUrl = servers[id].loop as string;
@@ -116,12 +115,12 @@ export async function play(
 						}
 					)
 					.on('finish', () => {
-						if (servers[id].autoplay) {
+						if (servers[id]?.autoplay) {
 							servers[id].setAuto = firstUrl;
 						}
 						// queue.shift();
 						const [, ...tmpQueue] = queue;
-						console.log(tmpQueue);
+						console.log(tmpQueue.length);
 						// tmpQueue.shift();
 						servers[id].setQueue = tmpQueue;
 						(async () => {
@@ -148,35 +147,33 @@ export async function play(
 					.catch((err) => {
 						return { url: null };
 					});
-				return url
-					? connection
-							?.play(
-								await ytdl(url, {
-									filter: 'audioonly',
-								}),
-								{
-									type: 'opus',
-								}
-							)
-							.on('finish', () => {
-								if (servers[id].autoplay) {
-									servers[id].setAuto = queue[0];
-								}
-								// queue.shift();
-								const [x, ...tmpQueue] = queue;
-								servers[id].setQueue = tmpQueue;
-								(async () => {
-									servers[id].setDispatcher = (await play(
-										connection,
-										tmpQueue,
-										id,
-										message,
-										servers,
-										title
-									)) as StreamDispatcher;
-								})();
-							})
-					: null;
+				return connection
+					?.play(
+						await ytdl(url, {
+							filter: 'audioonly',
+						}),
+						{
+							type: 'opus',
+						}
+					)
+					.on('finish', () => {
+						if (servers[id].autoplay) {
+							servers[id].setAuto = queue[0];
+						}
+						// queue.shift();
+						const [x, ...tmpQueue] = queue;
+						servers[id].setQueue = tmpQueue;
+						(async () => {
+							servers[id].setDispatcher = (await play(
+								connection,
+								tmpQueue,
+								id,
+								message,
+								servers,
+								title
+							)) as StreamDispatcher;
+						})();
+					});
 			}
 		}
 		const title = await getTitleYoutube(queue[0]);
