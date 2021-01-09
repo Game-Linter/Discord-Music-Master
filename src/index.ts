@@ -186,7 +186,7 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
 	const newGld = arg1.channel?.guild.id;
 	const oldGld = arg0.channel?.guild.id;
 	if (
-		arg0.channel?.members
+		arg1.channel?.members
 			.array()
 			.every((value) => value.guild.id === client.client.user?.id) &&
 		oldGld
