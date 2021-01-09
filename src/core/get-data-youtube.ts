@@ -77,7 +77,7 @@ export const getAccessToken = async () => {
 			.then((_res) => {
 				(async () => {
 					try {
-						await setAsync('redis:token', 3600, _res.data.access_token);
+						await setAsync('redis:token', 3590, _res.data.access_token);
 					} catch (error) {
 						console.log(error.message);
 					}
