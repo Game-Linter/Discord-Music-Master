@@ -1,29 +1,29 @@
 {
-	"name": "discordgamelinter",
-	"version": "1.0.0",
-	"main": "dist/index.js",
-	"author": "Mohamed Belkamelk",
-	"license": "MIT",
-	"private": true,
-	"types": "src/@types",
-	"dependencies": {
-		"@discordjs/opus": "^0.3.3",
-		"@types/qs": "^6.9.5",
-		"@types/redis": "^2.8.28",
-		"@types/validator": "^13.1.2",
-		"axios": "^0.21.1",
-		"discord.js": "^12.5.1",
-		"qs": "^6.9.4",
-		"redis": "^3.0.2",
-		"validator": "^13.5.2",
-		"ytdl-core": "^4.4.1",
-		"ytdl-core-discord": "^1.2.5",
-		"ytdl-getinfo": "^1.1.0",
-		"ytsr": "^3.2.1"
-	},
-	"scripts": {
-		"start": "node .",
-		"prestart": "yarn run build",
-		"build": "tsc -p ."
-	}
+    "name": "discordgamelinter",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "author": "Mohamed Belkamelk",
+    "license": "MIT",
+    "private": true,
+    "types": "src/@types",
+    "dependencies": {
+        "@discordjs/opus": "^0.3.3",
+        "@types/qs": "^6.9.5",
+        "@types/redis": "^2.8.28",
+        "@types/validator": "^13.1.2",
+        "axios": "^0.21.1",
+        "discord.js": "^12.5.1",
+        "qs": "^6.9.4",
+        "redis": "^3.0.2",
+        "validator": "^13.5.2",
+        "ytdl-core": "^4.4.1",
+        "ytdl-core-discord": "^1.2.5",
+        "ytdl-getinfo": "^1.1.0",
+        "ytsr": "^3.2.1"
+    },
+    "scripts": {
+        "start": "node .",
+        "prestart": "yarn run build",
+        "build": "tsc -p ."
+    }
 }
