@@ -239,6 +239,7 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
             .every((member) => member.user.id === client.client.user!.id) &&
         oldGld
     ) {
+        console.log('moved to an empty channel');
         servers[oldGld]?.getConnection.disconnect();
         delete servers[oldGld];
     }
