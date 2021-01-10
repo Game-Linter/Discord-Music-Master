@@ -229,21 +229,21 @@ const client = new Discord({
 });
 
 client.client.on('voiceStateUpdate', (arg0, arg1) => {
-    console.log('triggered');
+    // console.log('triggered');
     const newGld = arg1.channel?.guild.id;
     const oldGld = arg0.channel?.guild.id;
 
-    if (
-        arg0.channel?.members
-            .array()
-            .every((member) => member.user.id === client.client.user!.id) &&
-        oldGld
-    ) {
-        console.log('moved to an empty channel');
-        servers[oldGld]?.getConnection.disconnect();
-        delete servers[oldGld];
-    }
     if (arg0.member?.id === client.client.user?.id) {
+        if (
+            arg0.channel?.members
+                .array()
+                .every((member) => member.user.id === client.client.user!.id) &&
+            oldGld
+        ) {
+            console.log('Moved to an empty channel');
+            servers[oldGld]?.getConnection.disconnect();
+            delete servers[oldGld];
+        }
         if (!newGld && oldGld && servers[oldGld]) {
             console.log('deleted');
             delete servers[oldGld];
