@@ -230,23 +230,41 @@ const client = new Discord({
 
 client.client.on('voiceStateUpdate', (arg0, arg1) => {
     // console.log('triggered');
-    const newGld = arg1.channel?.guild.id;
-    const oldGld = arg0.channel?.guild.id;
+    const oldGuildID = arg0.channel?.guild.id;
+    const newGuildID = arg1.channel?.guild.id;
 
     if (arg0.member?.id === client.client.user?.id) {
+        // Triggered by something happened to the bot
+        console.log({
+            old: arg0.channel?.members.array().map((vl) => vl.guild.id),
+            new: arg1.channel?.members.array().map((va) => va.guild.id),
+        });
         if (
-            arg0.channel?.members
+            arg1.channel?.members
                 .array()
                 .every((member) => member.user.id === client.client.user!.id) &&
-            oldGld
+            newGuildID
         ) {
             console.log('Moved to an empty channel');
-            servers[oldGld]?.getConnection.disconnect();
-            delete servers[oldGld];
+            servers[newGuildID]?.getConnection.disconnect();
+            delete servers[newGuildID];
         }
-        if (!newGld && oldGld && servers[oldGld]) {
+        if (!newGuildID && oldGuildID && servers[oldGuildID]) {
             console.log('deleted');
-            delete servers[oldGld];
+            delete servers[oldGuildID];
+        }
+    } else {
+        // Triggered by other people
+        const Members = arg0.channel?.members.array();
+        if (
+            Members?.length &&
+            Members?.every(
+                (member) => member.user.id === client.client.user?.id,
+            )
+        ) {
+            const glId = arg0.channel?.guild.id;
+            servers[glId!]?.getConnection.disconnect();
+            delete servers[glId!];
         }
     }
 });
