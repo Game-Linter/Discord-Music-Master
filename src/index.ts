@@ -10,6 +10,10 @@ const PREFIX = '__';
 
 let servers: { [x: string]: DiscordServer } = {};
 
+const forbidden = (message: Message) => {
+    return message.member?.voice.channelID !== message.guild?.voice?.channelID;
+};
+
 const messageHandler = (message: Message) => {
     if (message.content.startsWith(PREFIX) && !message.author.bot) {
         const { command, id } = getCommand(message, PREFIX);
@@ -47,10 +51,7 @@ const messageHandler = (message: Message) => {
                                     title,
                                 );
                             } else {
-                                if (
-                                    message.member?.voice.channelID !==
-                                    message.guild?.voice?.channelID
-                                ) {
+                                if (forbidden(message)) {
                                     return message.channel.send(
                                         'Get into the same channel as the bot',
                                     );
@@ -74,10 +75,20 @@ const messageHandler = (message: Message) => {
                 }
                 break;
             case 'pause':
+                if (forbidden(message)) {
+                    return message.channel.send(
+                        'Get into the same channel as the bot',
+                    );
+                }
                 message.react('⏸');
                 servers[id]?.dispatcher?.pause();
                 break;
             case 'shuffle':
+                if (forbidden(message)) {
+                    return message.channel.send(
+                        'Get into the same channel as the bot',
+                    );
+                }
                 message.react('🔀');
                 let [, ...tmp] = servers[id]?.getQueue;
                 (async () => {
@@ -95,18 +106,33 @@ const messageHandler = (message: Message) => {
                 })();
                 break;
             case 'resume':
+                if (forbidden(message)) {
+                    return message.channel.send(
+                        'Get into the same channel as the bot',
+                    );
+                }
                 message.react('⏯');
                 // dispatcher[id]?.resume();
                 servers[id]?.dispatcher?.resume();
                 break;
 
             case 'fuckoff':
+                if (forbidden(message)) {
+                    return message.channel.send(
+                        'Get into the same channel as the bot',
+                    );
+                }
                 message.react('🙋‍♂️');
                 servers[id]?.getConnection?.disconnect();
                 delete servers[id];
                 break;
 
             case 'skip':
+                if (forbidden(message)) {
+                    return message.channel.send(
+                        'Get into the same channel as the bot',
+                    );
+                }
                 if (!servers[id]?.loop) {
                     servers[id]?.queue?.shift();
                     const [first] = servers[id]?.getQueue;
@@ -128,6 +154,11 @@ const messageHandler = (message: Message) => {
                 })();
                 break;
             case 'loop':
+                if (forbidden(message)) {
+                    return message.channel.send(
+                        'Get into the same channel as the bot',
+                    );
+                }
                 servers[id].setLoop = servers[id]?.loop
                     ? false
                     : servers[id]?.getQueue[0];
@@ -150,6 +181,11 @@ const messageHandler = (message: Message) => {
                     : message.channel.send(`Loop is now off`);
                 break;
             case 'autoplay':
+                if (forbidden(message)) {
+                    return message.channel.send(
+                        'Get into the same channel as the bot',
+                    );
+                }
                 servers[id].setAuto = servers[id]?.autoplay
                     ? false
                     : servers[id]?.getQueue[0];
