@@ -1,11 +1,11 @@
-import validator from 'validator';
 import { Message } from 'discord.js';
+import validator from 'validator';
 import { getInfo } from 'ytdl-core-discord';
 import ytsr from 'ytsr';
-import { getAccessToken } from '../utils/get-token';
-import { getSpotifyTrack } from '../utils/get-spotify-track';
-import { getPlaylistSpotify } from '../utils/get-playlist';
 import { getAlbumSpotify } from '../utils/get-album-spotify';
+import { getPlaylistSpotify } from '../utils/get-playlist';
+import { getSpotifyTrack } from '../utils/get-spotify-track';
+import { getAccessToken } from '../utils/get-token';
 
 export const SPOTIFY_URI = 'https://open.spotify.com';
 
@@ -19,8 +19,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
         return (async () => {
             try {
                 // https://api.spotify.com/v1/tracks/{id}
-                const type = urlOrQuery.split('/')[3];
-                let itemId = urlOrQuery.split('/')[4];
+                let [, , , type, itemId] = urlOrQuery.split('/');
                 if (itemId.indexOf('?') !== -1) {
                     itemId = itemId.slice(0, itemId.indexOf('?'));
                 }
@@ -85,8 +84,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
     }
 
     return (async () => {
-        const tmp = message.content.split(' ');
-        tmp.shift();
+        const [, ...tmp] = message.content.split(' ');
         const { url, title } = await ytsr(tmp.join(' '), {
             limit: 1,
             pages: 1,
