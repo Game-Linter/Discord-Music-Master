@@ -1,15 +1,17 @@
-import axios from 'axios';
+import { ax } from './axios-instance';
 
 export const getAlbumSpotify = async (
 	type: string,
 	itemId: string,
 	aatoken: string
 ) => {
-	return await axios
-		.get(`https://api.spotify.com/v1/${type}s/${itemId}/tracks?limit=50`, {
+	return await ax
+		.get(`/${type}s/${itemId}/tracks`, {
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
 				Authorization: `Bearer ${aatoken}`,
+			},
+			params: {
+				limit: 50,
 			},
 		})
 		.then((res) => {

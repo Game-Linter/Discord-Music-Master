@@ -1,9 +1,9 @@
-import axios from 'axios';
 import qs from 'qs';
 
 import { promisify } from 'util';
 import { redisClient } from '../core/redis.server';
 import { BASE } from '../config/base-spotify.config';
+import { tokenAx } from './axios-instance';
 const getAsync = promisify(redisClient.get).bind(redisClient);
 const setAsync = promisify(redisClient.setex).bind(redisClient);
 
@@ -18,15 +18,14 @@ export const getAccessToken = async () => {
 	if (findToken) {
 		aatoken = findToken;
 	} else {
-		aatoken = await axios
+		aatoken = await tokenAx
 			.post(
-				'https://accounts.spotify.com/api/token',
+				'/api/token',
 				qs.stringify({
 					grant_type: 'client_credentials',
 				}),
 				{
 					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded',
 						Authorization: `Basic ${BASE}`,
 					},
 				}

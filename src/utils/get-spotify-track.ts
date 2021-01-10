@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { ax } from './axios-instance';
 
 export const getSpotifyTrack: (
 	token: string,
@@ -11,10 +11,9 @@ export const getSpotifyTrack: (
 	if (itemId.indexOf('?') !== -1) {
 		itemId = itemId.slice(0, itemId.indexOf('?'));
 	}
-	return await axios
-		.get(`https://api.spotify.com/v1/tracks/${itemId}`, {
+	return await ax
+		.get(`/tracks/${itemId}`, {
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
 				Authorization: `Bearer ${token}`,
 			},
 		})
