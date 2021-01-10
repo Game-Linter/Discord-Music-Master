@@ -11,6 +11,9 @@ const PREFIX = '__';
 let servers: { [x: string]: DiscordServer } = {};
 
 const forbidden = (message: Message) => {
+    if (!message.member?.voice) {
+        return true;
+    }
     return message.member?.voice.channelID !== message.guild?.voice?.channelID;
 };
 
