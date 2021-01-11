@@ -13,5 +13,10 @@ export const getLyrics = async (url: string) => {
     const [title, author] = await getInfo(url).then((res) => {
         return [res.videoDetails.title, res.videoDetails.author];
     });
-    return (await lyricsParse(title, author)) as string;
+    const lyrics = (await lyricsParse(title, author)) as string;
+    if (lyrics) {
+        return lyrics.slice(0, 2000);
+    } else {
+        return null;
+    }
 };
