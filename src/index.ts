@@ -1,11 +1,12 @@
 import { Message } from 'discord.js';
 import _ from 'lodash';
-import { getInfo } from 'ytdl-core-discord';
 import { DiscordServer } from './core/discordServer';
-import { getData } from './core/get-data-youtube';
+import { getData, SPOTIFY_URI } from './core/get-data-youtube';
 import { getCommand } from './core/getCommand';
-import { play } from './core/play-core';
+import { getTitleYoutube, play } from './core/play-core';
 import { Discord } from './core/server';
+import { getSpotifyTrack } from './utils/get-spotify-track';
+import { getAccessToken } from './utils/get-token';
 
 const PREFIX = '__';
 
@@ -219,18 +220,25 @@ const messageHandler = (message: Message) => {
                 message.react('♾');
                 servers[id]?.loop
                     ? (async () => {
-                          const { title = null } = await getInfo(
-                              servers[id]?.loop as string,
-                          )
-                              .then((res) => res.videoDetails)
-                              .catch((err) => {
-                                  console.log(err.message);
-                                  return { title: null };
-                              });
+                          const ttl = servers[id].loop as string;
+                          if (ttl.startsWith(SPOTIFY_URI)) {
+                              const { title } = await getSpotifyTrack(
+                                  await getAccessToken(),
+                                  ttl,
+                              );
+                              title &&
+                                  message.channel.send(
+                                      `Now looping forever | ${title}`,
+                                  );
+                              return;
+                          }
+
+                          const title = await getTitleYoutube(ttl);
                           title &&
                               message.channel.send(
                                   `Now looping forever | ${title}`,
                               );
+                          return;
                       })()
                     : message.channel.send(`Loop is now off`);
                 break;
