@@ -77,6 +77,56 @@ const messageHandler = (message: Message) => {
                     message.channel.send('Connect to a channel first');
                 }
                 break;
+            case 'audionow':
+                (async () => {
+                    const msgContent = message.content
+                        .trim()
+                        .replace(/\s+/g, ' ');
+                    const args = msgContent.split(' ');
+                    if (!args[1]) {
+                        return message.channel.send(
+                            'Give a link or a youtube search',
+                        );
+                    }
+                    // return;
+                    const { url, title } = await getData(
+                        args[1],
+                        message,
+                    ).catch((err) => {
+                        console.log(err);
+                        return {
+                            url: '',
+                            title: '',
+                        };
+                    });
+                    if (forbidden(message)) {
+                        return message.channel.send(
+                            'Get into the same channel as the bot',
+                        );
+                    }
+                    const [tobeShifted, ...rest] = servers[id].getQueue;
+                    if (Array.isArray(url)) {
+                        rest.unshift(...url);
+                    } else {
+                        rest.unshift(url);
+                    }
+
+                    servers[id].setQueue = [tobeShifted, ...rest];
+                    message.react('🦆');
+                    title && message.channel.send(`Next | ${title}`);
+                    servers[id].dispatcher = await play(
+                        servers[id]?.getConnection,
+                        servers[id].getQueue,
+                        id,
+                        message,
+                        servers,
+                    ).catch((err) => {
+                        console.log(err.message);
+                        return null;
+                    });
+                })();
+                break;
+
             case 'pause':
                 if (forbidden(message)) {
                     return message.channel.send(
