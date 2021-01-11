@@ -995,6 +995,13 @@ ytdl-getinfo@^1.1.0:
   dependencies:
     request "^2.81.0"
 
+ytpl@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/ytpl/-/ytpl-2.0.4.tgz#24188190f627d328146542b6cf093c770ae947b7"
+  integrity sha512-lXm3LvFvs2RixD6PTDay5jXRhaMSo/Upw7P60/FgQFvNrgSYRwMpR3nB1v3scu84R2XcS6kuENhPD2M4x/920A==
+  dependencies:
+    miniget "^4.1.0"
+
 ytsr@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/ytsr/-/ytsr-3.2.1.tgz#bf148897168844c889ee19b45335f4261247ad1d"

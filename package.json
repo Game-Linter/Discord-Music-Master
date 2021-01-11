@@ -19,6 +19,7 @@
         "ytdl-core": "^4.4.1",
         "ytdl-core-discord": "^1.2.5",
         "ytdl-getinfo": "^1.1.0",
+        "ytpl": "^2.0.4",
         "ytsr": "^3.2.1"
     },
     "scripts": {

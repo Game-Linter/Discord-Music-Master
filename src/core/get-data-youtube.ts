@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import validator from 'validator';
 import { getInfo } from 'ytdl-core-discord';
+import ytpl from 'ytpl';
 import ytsr from 'ytsr';
 import { getAlbumSpotify } from '../utils/get-album-spotify';
 import { getPlaylistSpotify } from '../utils/get-playlist';
@@ -71,6 +72,23 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
         })();
     }
 
+    if (validator.isURL(urlOrQuery) && urlOrQuery.indexOf('&list=') !== -1) {
+        return (async () => {
+            const items = await ytpl(urlOrQuery)
+                .then((res) => {
+                    return res.items.map((item) => {
+                        return item.shortUrl;
+                    });
+                })
+                .catch((err) => {
+                    message.channel.send(err.message);
+                    return '';
+                });
+            return {
+                url: items,
+            };
+        })();
+    }
     if (validator.isURL(urlOrQuery)) {
         return (async () => {
             const title = await getInfo(urlOrQuery).then(
