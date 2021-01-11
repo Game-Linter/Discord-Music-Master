@@ -111,7 +111,7 @@ const messageHandler = (message: Message) => {
                         rest.unshift(url);
                     }
 
-                    servers[id].setQueue = [tobeShifted, ...rest];
+                    servers[id].setQueue = [...rest];
                     message.react('🦆');
                     title && message.channel.send(`Next | ${title}`);
                     servers[id].dispatcher = await play(
