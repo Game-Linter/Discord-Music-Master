@@ -266,7 +266,8 @@ const messageHandler = (message: Message) => {
                 }
                 const [url] = servers[id].getQueue;
                 (async () => {
-                    const lyrics = await getLyrics(url);
+                    const lyrics = (await getLyrics(url)) as string;
+                    // console.log(lyrics.length);
                     lyrics && message.channel.send(`\`\`\`\n${lyrics}\n\`\`\``);
                 })();
                 break;
