@@ -5,6 +5,7 @@ import { getData, SPOTIFY_URI } from './core/get-data-youtube';
 import { getCommand } from './core/getCommand';
 import { getTitleYoutube, play } from './core/play-core';
 import { Discord } from './core/server';
+import { getLyrics } from './utils/get-lyrics';
 import { getSpotifyTrack } from './utils/get-spotify-track';
 import { getAccessToken } from './utils/get-token';
 
@@ -256,6 +257,18 @@ const messageHandler = (message: Message) => {
                     ? message.channel.send('AUTOPLAY in now on')
                     : message.channel.send('AUTOPLAY in now off');
                 // console.log(id, autoplay[id]);
+                break;
+            case 'lyrics':
+                if (forbidden(message)) {
+                    return message.channel.send(
+                        'Get into the same channel as the bot',
+                    );
+                }
+                const [url] = servers[id].getQueue;
+                (async () => {
+                    const lyrics = await getLyrics(url);
+                    lyrics && message.channel.send(`\`\`\`\n${lyrics}\n\`\`\``);
+                })();
                 break;
 
             case 'help':
