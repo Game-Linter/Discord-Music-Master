@@ -15,7 +15,7 @@ export const getLyrics = async (url: string) => {
     });
     const lyrics = (await lyricsParse(title, author)) as string;
     if (lyrics) {
-        return lyrics.slice(0, 2000);
+        return lyrics.slice(0, 1999);
     } else {
         return null;
     }
