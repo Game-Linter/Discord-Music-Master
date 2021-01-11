@@ -72,9 +72,12 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
         })();
     }
 
-    if (validator.isURL(urlOrQuery) && urlOrQuery.indexOf('&list=') !== -1) {
+    if (validator.isURL(urlOrQuery) && urlOrQuery.indexOf('list=') !== -1) {
         return (async () => {
-            const items = await ytpl(urlOrQuery)
+            const plId = urlOrQuery.slice(
+                urlOrQuery.indexOf('list=') + 'list='.length,
+            );
+            const items = await ytpl(plId)
                 .then((res) => {
                     return res.items.map((item) => {
                         return item.shortUrl;
