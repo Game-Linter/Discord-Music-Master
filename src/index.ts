@@ -1,4 +1,5 @@
 import { Message } from 'discord.js';
+import _ from 'lodash';
 import { getInfo } from 'ytdl-core-discord';
 import { DiscordServer } from './core/discordServer';
 import { getData } from './core/get-data-youtube';
@@ -145,7 +146,7 @@ const messageHandler = (message: Message) => {
                 message.react('🔀');
                 let [, ...tmp] = servers[id]?.getQueue;
                 (async () => {
-                    tmp.length && (tmp = tmp.sort(() => Math.random() - 0.5));
+                    tmp.length && (tmp = _.shuffle(tmp));
                     servers[id].dispatcher = await play(
                         servers[id]?.getConnection,
                         tmp,
