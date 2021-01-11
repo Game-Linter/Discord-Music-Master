@@ -1,13 +1,12 @@
+import axios from 'axios';
 import { Message, StreamDispatcher, VoiceConnection } from 'discord.js';
-import { DiscordServer } from './discordServer';
-import { getInfo } from 'ytdl-core-discord';
-import ytdl from 'ytdl-core-discord';
-import { getData, SPOTIFY_URI } from './get-data-youtube';
+import ytdl, { getInfo } from 'ytdl-core-discord';
 // import {} from './get-data-youtube';
 import ytsr from 'ytsr';
-import axios from 'axios';
-import { getAccessToken } from '../utils/get-token';
 import { getSpotifyTrack } from '../utils/get-spotify-track';
+import { getAccessToken } from '../utils/get-token';
+import { DiscordServer } from './discordServer';
+import { getData, SPOTIFY_URI } from './get-data-youtube';
 
 export const getRecommended = async (tmpUrl: string) => {
     let itemId = tmpUrl.split('/')[4];
@@ -91,6 +90,7 @@ export async function play(
     // console.log(connection[id]);
     // servers[id].setQueue = queue;
     if (queue.length) {
+        servers[id].setQueue = queue;
         const [firstUrl] = queue;
         // console.log(queue.length, firstUrl);
         if (firstUrl.startsWith(SPOTIFY_URI)) {
