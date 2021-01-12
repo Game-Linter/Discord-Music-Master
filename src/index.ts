@@ -275,11 +275,13 @@ const messageHandler = (message: Message) => {
             case 'help':
                 message.channel.send(`
 					  	\`\`\`
-__audio anyYoutubeSearch
-__audio youtubeUrl
+__audio any Youtube Search
+__audio youtube Url
+__audio youtube Playlist url
 __audio spotify Track Link
 __audio spotify Playlist Link
 __audio spotify Album Link
+__audionow  [input] (Plays the given track instantly even tho the queue is full,  continues the queue afterwards)
 __skip (Skip current track)
 __pause
 __resume 
