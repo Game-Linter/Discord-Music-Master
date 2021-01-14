@@ -21,7 +21,11 @@ const forbidden = (message: Message) => {
 };
 
 const messageHandler = (message: Message) => {
-    if (message.content.startsWith(PREFIX) && !message.author.bot) {
+    if (
+        message.content.startsWith(PREFIX) &&
+        !message.author.bot &&
+        !(message.author.id === '434778137788678184')
+    ) {
         const { command, id } = getCommand(message, PREFIX);
         switch (command) {
             case 'audio':
