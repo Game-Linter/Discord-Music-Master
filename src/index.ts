@@ -319,6 +319,7 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
             new: arg1.channel?.members.array().map((va) => va.guild.id),
         });
         if (
+            arg1.channel?.members.array().length &&
             arg1.channel?.members
                 .array()
                 .every((member) => member.user.id === client.client.user!.id) &&
