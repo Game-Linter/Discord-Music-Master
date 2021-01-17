@@ -26,7 +26,7 @@ const isBanned = (id: string) => {
     return bannedUsers.filter((bannedUser) => {
         return bannedUser === id;
     }).length;
-}
+};
 
 const messageHandler = (message: Message) => {
     if (
@@ -158,7 +158,7 @@ const messageHandler = (message: Message) => {
                     );
                 }
                 message.react('🔀');
-                let [, ...tmp] = servers[id]?.getQueue;
+                let [, ...tmp] = servers[id]?.getQueue || [];
                 (async () => {
                     tmp.length && (tmp = _.shuffle(tmp));
                     servers[id].dispatcher = await play(
@@ -203,7 +203,7 @@ const messageHandler = (message: Message) => {
                 }
                 if (!servers[id]?.loop) {
                     servers[id]?.queue?.shift();
-                    const [first] = servers[id]?.getQueue;
+                    const [first] = servers[id]?.getQueue || [];
                     if (first && servers[id]?.autoplay) {
                         servers[id].setAuto = first;
                     }
@@ -281,7 +281,9 @@ const messageHandler = (message: Message) => {
                     const lyrics = (await getLyrics(url)) as string;
                     // console.log(lyrics.length);
                     if (lyrics) {
-                        return message.channel.send(`\`\`\`\n${lyrics}\n\`\`\``);
+                        return message.channel.send(
+                            `\`\`\`\n${lyrics}\n\`\`\``,
+                        );
                     }
 
                     return message.channel.send('Lyrics not found this song');
