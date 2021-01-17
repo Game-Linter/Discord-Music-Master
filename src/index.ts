@@ -116,7 +116,7 @@ const messageHandler = (message: Message) => {
                     });
                     if (forbidden(message)) {
                         return message.channel.send(
-                            'Get into the same channel as the bot',
+                            'Use "__audio" first to play a song',
                         );
                     }
                     const [tobeShifted, ...rest] = servers[id].getQueue;
@@ -280,7 +280,11 @@ const messageHandler = (message: Message) => {
                 (async () => {
                     const lyrics = (await getLyrics(url)) as string;
                     // console.log(lyrics.length);
-                    lyrics && message.channel.send(`\`\`\`\n${lyrics}\n\`\`\``);
+                    if (lyrics) {
+                        return message.channel.send(`\`\`\`\n${lyrics}\n\`\`\``);
+                    }
+
+                    return message.channel.send('Lyrics not found this song');
                 })();
                 break;
 
