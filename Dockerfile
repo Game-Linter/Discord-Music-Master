@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:lts
 
 
 WORKDIR /usr/app
@@ -12,7 +12,7 @@ COPY . .
 
 RUN yarn run build
 
-FROM node:slim
+FROM node:lts
 
 
 WORKDIR /usr/app
