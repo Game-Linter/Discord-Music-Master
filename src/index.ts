@@ -20,11 +20,19 @@ const forbidden = (message: Message) => {
     return message.member?.voice.channelID !== message.guild?.voice?.channelID;
 };
 
+const bannedUsers: string[] = ['434778137788678184'];
+
+const isBanned = (id: string) => {
+    return bannedUsers.filter((bannedUser) => {
+        return bannedUser === id;
+    }).length;
+}
+
 const messageHandler = (message: Message) => {
     if (
         message.content.startsWith(PREFIX) &&
         !message.author.bot &&
-        !(message.author.id === '434778137788678184')
+        !isBanned(message.author.id)
     ) {
         const { command, id } = getCommand(message, PREFIX);
         switch (command) {
