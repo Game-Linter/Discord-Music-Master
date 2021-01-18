@@ -3,3 +3,4 @@ dist
 bfg.jar
 cred.txt
 ..bfg-report/
+.git.bfg-report
