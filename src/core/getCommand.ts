@@ -16,7 +16,6 @@
  *
  */
 
-
 import { Message } from 'discord.js';
 
 export const getCommand = (message: Message, prefix: string) => {

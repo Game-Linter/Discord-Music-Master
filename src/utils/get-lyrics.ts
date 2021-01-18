@@ -16,7 +16,6 @@
  *
  */
 
-
 import lyricsParse from 'lyrics-parse';
 import { Author, getInfo } from 'ytdl-core';
 import { SPOTIFY_URI } from '../core/get-data-youtube';

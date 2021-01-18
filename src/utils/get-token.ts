@@ -16,7 +16,6 @@
  *
  */
 
-
 import qs from 'qs';
 import { promisify } from 'util';
 import { BASE } from '../config/base-spotify.config';

@@ -16,7 +16,6 @@
  *
  */
 
-
 import { Client, Message } from 'discord.js';
 import { token } from '../config/discord.config';
 

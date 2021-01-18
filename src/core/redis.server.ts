@@ -16,7 +16,6 @@
  *
  */
 
-
 import { redisUri } from '../config/redis.config';
 import redis from 'redis';
 

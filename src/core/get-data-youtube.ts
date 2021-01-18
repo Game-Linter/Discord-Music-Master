@@ -16,7 +16,6 @@
  *
  */
 
-
 import { Message } from 'discord.js';
 import validator from 'validator';
 import { getInfo } from 'ytdl-core-discord';
