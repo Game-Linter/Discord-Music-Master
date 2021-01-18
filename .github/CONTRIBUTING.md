@@ -5,8 +5,8 @@
     <br />
 </div>
 
-
 # Issues, Questions and Pull Requests are welcome
+
 ### For pull requests
 
 <p>First create an issue with your modification or your feature Idea, then submit a pull request that closes the related issue</p>

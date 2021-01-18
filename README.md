@@ -57,16 +57,23 @@
     	Contribution Guidelines
       </a>
       </p>
-      <h1>Developement</h1>
-       Clone the project and run:
-      ```sh
-      yarn --frozen-lockfile
-      ```
-      Replace all the ```REMOVED``` in config folder with your credentials
-      Then run
-      ```sh
-      yarn start
-      ```
+      <div>
+      <h1> Developement </h1>
+Clone the project and run:
+
+```sh
+yarn --frozen-lockfile
+```
+
+Replace all the `REMOVED` in config folder with your credentials
+
+Then run:
+
+```sh
+yarn start
+```
+
+</div>
       <h3>Everything is Licensed under
       <a href="https://github.com/darklight147/discord-music/blob/master/LICENSE.md">AGPL-3.0 License</a>
       </h3>

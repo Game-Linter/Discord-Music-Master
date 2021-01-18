@@ -1,2 +1,1 @@
-export const redisUri =
-    '***REMOVED***';
+export const redisUri = '***REMOVED***';

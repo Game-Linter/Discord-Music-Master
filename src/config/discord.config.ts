@@ -1,2 +1,1 @@
-export const token =
-    '***REMOVED***';
+export const token = '***REMOVED***';
