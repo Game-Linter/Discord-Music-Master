@@ -59,6 +59,7 @@
       </p>
       <div>
       <h1> Developement </h1>
+	      You need the latest version of <a href="https://www.typescriptlang.org/download">Typescript</a>
 Clone the project and run:
 
 ```sh
