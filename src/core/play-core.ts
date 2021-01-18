@@ -63,9 +63,8 @@ export async function play(
                   (res) => res.items[0] as any,
               )
             : await getData(trackUrl, message);
-        finalTitle && message.react('🔁');
-        finalTitle &&
-            message.channel.send(`Now playing | ${finalTitle || title}`);
+        message.react('🔁');
+        message.channel.send(`Now playing | ${finalTitle || title}`);
         return connection
             ?.play(
                 await ytdl(url as string, {

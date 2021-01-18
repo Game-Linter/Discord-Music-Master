@@ -7,11 +7,6 @@
     "private": true,
     "types": "src/@types",
     "dependencies": {
-        "@discordjs/opus": "^0.3.3",
-        "@types/lodash": "^4.14.167",
-        "@types/qs": "^6.9.5",
-        "@types/redis": "^2.8.28",
-        "@types/validator": "^13.1.2",
         "axios": "^0.21.1",
         "discord.js": "^12.5.1",
         "lodash": "^4.17.20",
@@ -24,6 +19,14 @@
         "ytdl-getinfo": "^1.1.0",
         "ytpl": "^2.0.4",
         "ytsr": "^3.2.1"
+    },
+    "devDependencies": {
+        "@discordjs/opus": "^0.3.3",
+        "@types/lodash": "^4.14.167",
+        "@types/qs": "^6.9.5",
+        "@types/redis": "^2.8.28",
+        "@types/validator": "^13.1.2",
+        "typescript": "*"
     },
     "scripts": {
         "start": "node .",

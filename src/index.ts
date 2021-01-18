@@ -20,11 +20,19 @@ const forbidden = (message: Message) => {
     return message.member?.voice.channelID !== message.guild?.voice?.channelID;
 };
 
+const bannedUsers: string[] = ['434778137788678184'];
+
+const isBanned = (id: string) => {
+    return bannedUsers.filter((bannedUser) => {
+        return bannedUser === id;
+    }).length;
+};
+
 const messageHandler = (message: Message) => {
     if (
         message.content.startsWith(PREFIX) &&
         !message.author.bot &&
-        !(message.author.id === '434778137788678184')
+        !isBanned(message.author.id)
     ) {
         const { command, id } = getCommand(message, PREFIX);
         switch (command) {
@@ -108,7 +116,7 @@ const messageHandler = (message: Message) => {
                     });
                     if (forbidden(message)) {
                         return message.channel.send(
-                            'Get into the same channel as the bot',
+                            'Use "__audio" first to play a song',
                         );
                     }
                     const [tobeShifted, ...rest] = servers[id].getQueue;
@@ -150,7 +158,7 @@ const messageHandler = (message: Message) => {
                     );
                 }
                 message.react('🔀');
-                let [, ...tmp] = servers[id]?.getQueue;
+                let [, ...tmp] = servers[id]?.getQueue || [];
                 (async () => {
                     tmp.length && (tmp = _.shuffle(tmp));
                     servers[id].dispatcher = await play(
@@ -195,7 +203,7 @@ const messageHandler = (message: Message) => {
                 }
                 if (!servers[id]?.loop) {
                     servers[id]?.queue?.shift();
-                    const [first] = servers[id]?.getQueue;
+                    const [first] = servers[id]?.getQueue || [];
                     if (first && servers[id]?.autoplay) {
                         servers[id].setAuto = first;
                     }
@@ -272,7 +280,13 @@ const messageHandler = (message: Message) => {
                 (async () => {
                     const lyrics = (await getLyrics(url)) as string;
                     // console.log(lyrics.length);
-                    lyrics && message.channel.send(`\`\`\`\n${lyrics}\n\`\`\``);
+                    if (lyrics) {
+                        return message.channel.send(
+                            `\`\`\`\n${lyrics}\n\`\`\``,
+                        );
+                    }
+
+                    return message.channel.send('Lyrics not found this song');
                 })();
                 break;
 
