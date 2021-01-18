@@ -58,8 +58,7 @@
       </a>
       </p>
       <h1>Developement</h1>
-      <p>
-      Clone the project and run:
+       Clone the project and run:
       ```sh
       yarn --frozen-lockfile
       ```
@@ -68,7 +67,6 @@
       ```sh
       yarn start
       ```
-      </p>
       <h3>Everything is Licensed under
       <a href="https://github.com/darklight147/discord-music/blob/master/LICENSE.md">AGPL-3.0 License</a>
       </h3>
