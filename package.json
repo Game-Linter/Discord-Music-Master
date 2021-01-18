@@ -2,8 +2,8 @@
     "name": "discordgamelinter",
     "version": "1.0.0",
     "main": "dist/index.js",
-    "author": "Mohamed Belkamelk",
-    "license": "MIT",
+    "author": "Mohamed Belkamel",
+    "license": " AGPL-3.0",
     "private": true,
     "types": "src/@types",
     "dependencies": {
