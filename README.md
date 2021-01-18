@@ -51,6 +51,18 @@
         <li>Queue if not empty</li>
         <li>Autoplay which is enabled by default</li>
       </ol>
+
+      <h1>Contributing</h1>
+      <p>
+      Game-Linter Music Master is a community project We invite your participation through issues and pull requests! You can peruse the <a href="https://github.com/darklight147/discord-music/blob/master/.github/CONTRIBUTING.md">
+    	Conttribution Guidelines
+      </a>
+      </p>
+
+      <h3>Everything is Licensed under
+      <a href="https://github.com/darklight147/discord-music/blob/master/LICENSE.md">AGPL-3.0 License</a>
+
+      </h3>
     </body>
 
 </html>
