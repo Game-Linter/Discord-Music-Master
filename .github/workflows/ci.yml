@@ -31,12 +31,8 @@ jobs:
                   push: false
                   tags: darklight147/docker-music:latest
     CD:
-        on:
-            push:
-                branches: master
-            pull_request:
-                branches: master
         needs: CI
+        if: github.ref == 'refs/heads/master'
         runs-on: ubuntu-latest
         steps:
             - name: executing remote ssh commands using password
