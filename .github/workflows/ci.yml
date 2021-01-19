@@ -31,6 +31,11 @@ jobs:
                   push: false
                   tags: darklight147/docker-music:latest
     CD:
+        on:
+            push:
+                branches: master
+            pull_request:
+                branches: master
         needs: CI
         runs-on: ubuntu-latest
         steps:
