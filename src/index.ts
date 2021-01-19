@@ -169,6 +169,26 @@ const messageHandler = (message: Message) => {
                 message.react('⏸');
                 servers[id]?.dispatcher?.pause();
                 break;
+            case 'restart':
+                if (forbidden(message)) {
+                    return message.channel.send(
+                        'Get into the same channel as the bot',
+                    );
+                }
+                message.react('🦎');
+                (async () => {
+                    servers[id].dispatcher = await play(
+                        servers[id]?.getConnection,
+                        servers[id]?.getQueue,
+                        id,
+                        message,
+                        servers,
+                    ).catch((err) => {
+                        console.log(err.message);
+                        return null;
+                    });
+                })();
+                break;
             case 'shuffle':
                 if (forbidden(message)) {
                     return message.channel.send(
