@@ -4,3 +4,5 @@ bfg.jar
 cred.txt
 ..bfg-report/
 .git.bfg-report
+
+.env
