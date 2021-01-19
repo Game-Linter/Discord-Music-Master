@@ -30,3 +30,21 @@ jobs:
               with:
                   push: false
                   tags: darklight147/docker-music:latest
+    CD:
+        needs: CI
+        if: github.ref == 'refs/heads/master'
+        runs-on: ubuntu-latest
+        steps:
+            - name: executing remote ssh commands using password
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.HOST }}
+                  username: ${{ secrets.USERNAME }}
+                  key: ${{ secrets.KEY }}
+                  port: ${{ secrets.PORT }}
+                  script: |
+                      cd /home/ubuntu/Discord-Music-Master
+                      git pull origin master
+                      docker rm $(docker stop $(docker ps -a -q --filter ancestor=darklight147/discord-music:latest --format="{{.ID}}"))
+                      docker build -t darklight147/discord-music:latest .
+                      docker run  -d --env-file ./.env darklight147/discord-music:latest
