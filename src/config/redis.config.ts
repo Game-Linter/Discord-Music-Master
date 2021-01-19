@@ -16,4 +16,4 @@
  *
  */
 
-export const redisUri = '***REMOVED***';
+export const redisUri = process.env.REDIS;

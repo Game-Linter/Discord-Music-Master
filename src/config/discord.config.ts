@@ -16,4 +16,4 @@
  *
  */
 
-export const token = '***REMOVED***';
+export const token = process.env.DISCORD_TOKEN;

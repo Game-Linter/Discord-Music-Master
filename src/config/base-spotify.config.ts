@@ -16,4 +16,4 @@
  *
  */
 
-export const BASE = '***REMOVED***';
+export const BASE = process.env.BASE;
