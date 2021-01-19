@@ -16,9 +16,8 @@
  *
  */
 
-import { Message, StreamDispatcher } from 'discord.js';
+import { Message, StreamDispatcher, VoiceConnection } from 'discord.js';
 import { play } from './play-core';
-import { VoiceConnection } from 'discord.js';
 
 export class DiscordServer {
     private connection!: VoiceConnection;
