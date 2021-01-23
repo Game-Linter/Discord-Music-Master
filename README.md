@@ -34,6 +34,12 @@
     	<p>__resume</p>
     	<h4>Quit</h4>
     	<p>__fuckoff</p>
+   	<h4>Restart current song</h4>
+    	<p>__restart</p>
+	<h4>Help</h4>
+    	<p>__help</p>
+	<h4>Get Lyrics (if they exist)</h4>
+    	<p>__lyrics</p>
     	<h4>Autoplay Toggle (playing Recommended Songs)</h4>
     	<p>__autoplay</p>
     	<h4>Loop Toogle current song forever or until you type the command again</h4>
