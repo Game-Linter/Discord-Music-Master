@@ -34,12 +34,14 @@ export const setPlaylist = async (
     playlistLink: string,
 ) => {
     const { url } = await getData(playlistLink, message);
+    if (url === '') {
+        throw Error('Playlist type not supported');
+    }
     let tbll = await getAsync(message.guild!.id);
     if (tbll) {
         const arr = Object.keys(JSON.parse(tbll) as { [x: string]: string });
         if (arr.includes(playlistName)) {
-            message.channel.send('Playlist already exists by this name');
-            return;
+            throw Error('Playlist already exists by this name');
         }
         await setPlAsync(
             message.guild!.id,

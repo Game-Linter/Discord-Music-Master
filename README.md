@@ -34,6 +34,10 @@
     	<p>__resume</p>
     	<h4>Quit</h4>
     	<p>__fuckoff</p>
+    	<h4>Save playlist for server</h4>
+    	<p>__save [nameOfPlaylist] [linkToPlaylist]</p>
+    	<h4>Load Saved Playlist</h4>
+    	<p>__load [nameOfPlaylist]</p>
    	<h4>Restart current song</h4>
     	<p>__restart</p>
 	<h4>Help</h4>
