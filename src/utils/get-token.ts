@@ -16,14 +16,67 @@
  *
  */
 
+import { Message } from 'discord.js';
 import qs from 'qs';
 import { promisify } from 'util';
 import { BASE } from '../config/base-spotify.config';
+import { getData } from '../core/get-data-youtube';
 import { redisClient } from '../core/redis.server';
 import { tokenAx } from './axios-instance';
 
-const getAsync = promisify(redisClient.get).bind(redisClient);
+export const getAsync = promisify(redisClient.get).bind(redisClient);
 const setAsync = promisify(redisClient.setex).bind(redisClient);
+const setPlAsync = promisify(redisClient.set).bind(redisClient);
+
+export const setPlaylist = async (
+    message: Message,
+    playlistName: string,
+    playlistLink: string,
+) => {
+    const { url } = await getData(playlistLink, message);
+    let tbll = await getAsync(message.guild!.id);
+    if (tbll) {
+        const arr = Object.keys(JSON.parse(tbll) as { [x: string]: string });
+        if (arr.includes(playlistName)) {
+            message.channel.send('Playlist already exists by this name');
+            return;
+        }
+        await setPlAsync(
+            message.guild!.id,
+            JSON.stringify({
+                ...JSON.parse(tbll),
+                [playlistName.trim()]: url,
+            }),
+        );
+    } else {
+        await setPlAsync(
+            message.guild!.id,
+            JSON.stringify({
+                [playlistName.trim()]: url,
+            }),
+        );
+    }
+};
+
+export const loadPlaylist = async (message: Message, playlistName: string) => {
+    const data = await getAsync(message.guild!.id);
+    if (data) {
+        const jsonData: { [x: string]: string | string[] } = JSON.parse(data);
+        const arr = Object.keys(jsonData);
+        if (arr.includes(playlistName)) {
+            return jsonData[playlistName];
+        } else {
+            message.channel.send(
+                'No playlist found with this name, these are the playlists found:',
+            );
+            message.channel.send(arr.join(' | '));
+            return null;
+        }
+    } else {
+        message.channel.send('No playlist found for this server');
+        return null;
+    }
+};
 
 export const getAccessToken = async () => {
     let aatoken: string = '';

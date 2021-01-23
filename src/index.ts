@@ -25,7 +25,7 @@ import { getTitleYoutube, play } from './core/play-core';
 import { Discord } from './core/server';
 import { getLyrics } from './utils/get-lyrics';
 import { getSpotifyTrack } from './utils/get-spotify-track';
-import { getAccessToken } from './utils/get-token';
+import { getAccessToken, loadPlaylist, setPlaylist } from './utils/get-token';
 
 const PREFIX = '__';
 
@@ -54,6 +54,66 @@ const messageHandler = (message: Message) => {
     ) {
         const { command, id } = getCommand(message, PREFIX);
         switch (command) {
+            case 'save':
+                (async () => {
+                    const msgContent = message.content
+                        .trim()
+                        .replace(/\s+/g, ' ');
+                    const args = msgContent.split(' ');
+                    if (!args[1] || !args[2]) {
+                        return message.channel.send(
+                            'Give a playlist name and a link',
+                        );
+                    }
+                    try {
+                        await setPlaylist(message, args[1], args[2]);
+                        message.channel.send(
+                            'Playlist save for this guild with the name ' +
+                                '`' +
+                                args[1] +
+                                '`',
+                        );
+                    } catch (error) {
+                        message.channel.send(error.message);
+                    }
+                })();
+                return;
+            case 'load':
+                const msgContent = message.content.trim().replace(/\s+/g, ' ');
+                const args = msgContent.split(' ');
+                if (!args[1]) {
+                    return message.channel.send('Give a playlist name');
+                }
+                (async () => {
+                    const pl = await loadPlaylist(message, args[1]);
+                    if (pl) {
+                        if (!servers[id]) {
+                            servers[id] = new DiscordServer(
+                                message,
+                                servers,
+                                id,
+                                pl,
+                            );
+                        } else {
+                            if (forbidden(message)) {
+                                message.channel.send(
+                                    'get into a channel first',
+                                );
+                                return;
+                            }
+                            if (Array.isArray(pl)) {
+                                servers[id].queue.push(...pl);
+                            } else {
+                                servers[id].queue.push(pl);
+                            }
+
+                            message.channel.send(
+                                'Queud the playlist ' + args[1],
+                            );
+                        }
+                    }
+                })();
+                break;
             case 'audio':
                 if (message.member?.voice.channelID) {
                     (async () => {

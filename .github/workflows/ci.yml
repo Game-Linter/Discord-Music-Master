@@ -47,4 +47,4 @@ jobs:
                       git pull origin master
                       docker rm $(docker stop $(docker ps -a -q --filter ancestor=darklight147/discord-music:latest --format="{{.ID}}"))
                       docker build -t darklight147/discord-music:latest .
-                      docker run  -d --env-file ./.env darklight147/discord-music:latest
+                      docker run  -d — restart unless-stopped --env-file ./.env darklight147/discord-music:latest
