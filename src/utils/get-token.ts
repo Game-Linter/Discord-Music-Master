@@ -71,7 +71,7 @@ export const loadPlaylist = async (message: Message, playlistName: string) => {
             message.channel.send(
                 'No playlist found with this name, these are the playlists found:',
             );
-            message.channel.send(arr.join(' | '));
+            message.channel.send(`\`${arr.join(' | ')}\``);
             return null;
         }
     } else {
