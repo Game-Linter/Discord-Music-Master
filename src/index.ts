@@ -460,3 +460,17 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
         }
     }
 });
+
+const signHandler = () => {
+    const srvs = Object.keys(servers) as string[];
+
+    srvs.forEach((srv) => {
+        const element: DiscordServer = servers[srv];
+        element?.getConnection.disconnect();
+    });
+};
+
+process.on('SIGINT', signHandler);
+process.on('SIGTERM', signHandler);
+process.on('uncaughtException', signHandler);
+process.on('unhandledRejection', signHandler);
