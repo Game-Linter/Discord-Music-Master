@@ -427,8 +427,8 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
     if (arg0.member?.id === client.client.user?.id) {
         // Triggered by something happened to the bot
         console.log({
-            old: arg0.channel?.members.array().map((vl) => vl.guild.id),
-            new: arg1.channel?.members.array().map((va) => va.guild.id),
+            old: arg0.channel?.members.array().map((vl) => vl.user.id),
+            new: arg1.channel?.members.array().map((va) => va.user.id),
         });
         if (
             arg1.channel?.members.array().length &&
