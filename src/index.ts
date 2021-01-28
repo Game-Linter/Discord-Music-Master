@@ -79,6 +79,9 @@ const messageHandler = (message: Message) => {
                 })();
                 return;
             case 'load':
+                if (!message.member?.voice.channelID) {
+                    return message.channel.send('Connect to a channel first');
+                }
                 const msgContent = message.content.trim().replace(/\s+/g, ' ');
                 const args = msgContent.split(' ');
                 if (!args[1]) {
