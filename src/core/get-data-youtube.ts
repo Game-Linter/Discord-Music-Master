@@ -17,6 +17,7 @@
  */
 
 import { Message } from 'discord.js';
+import { parseUrl } from 'query-string';
 import validator from 'validator';
 import { getInfo } from 'ytdl-core-discord';
 import ytpl from 'ytpl';
@@ -92,9 +93,10 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
 
     if (validator.isURL(urlOrQuery) && urlOrQuery.indexOf('list=') !== -1) {
         return (async () => {
-            const plId = urlOrQuery.slice(
-                urlOrQuery.indexOf('list=') + 'list='.length,
-            );
+            const {
+                query: { list },
+            } = parseUrl(urlOrQuery);
+            const plId = list as string;
             const items = await ytpl(plId)
                 .then((res) => {
                     return res.items.map((item) => {
