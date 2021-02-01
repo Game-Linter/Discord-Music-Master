@@ -475,5 +475,5 @@ const signHandler = () => {
 
 process.on('SIGINT', signHandler);
 process.on('SIGTERM', signHandler);
-process.on('uncaughtException', signHandler);
-process.on('unhandledRejection', signHandler);
+// process.on('uncaughtException', signHandler);
+// process.on('unhandledRejection', signHandler);
