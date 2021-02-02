@@ -125,7 +125,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
     }
 
     return (async () => {
-        const [, ...tmp] = message.content.split(' ');
+        const [, ...tmp] = message.content.trim().split(' ');
         const { url, title } = await ytsr(tmp.join(' '), {
             limit: 1,
             pages: 1,
