@@ -24,6 +24,10 @@ export class Discord {
     constructor(init: { messageHandler: (message: Message) => void }) {
         this.client = new Client();
         this.client.on('ready', () => {
+            console.log(
+                'Server count',
+                this.client.guilds.cache.array().length,
+            );
             this.client.user?.setPresence({
                 status: 'online',
                 activity: {
