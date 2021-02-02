@@ -29,7 +29,7 @@
     	<h4>Pause</h4>
     	<p><code>__pause</code></p>
     	<h4>Skip</h4>
-    	<p><code><code>$1</code></code></p>
+    	<p><code><code>__skip</code></code></p>
     	<h4>Resume</h4>
     	<p><code><code>__resume</code></code></p>
     	<h4>Quit</h4>
