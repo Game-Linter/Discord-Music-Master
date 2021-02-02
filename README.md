@@ -22,40 +22,40 @@
     		</li>
     	</ul>
     	<h4>Play inputs</h4>
-    	<p>__audio [input]</p>
-    	<p></p>
+    	<p><code>__audio [input]</code></p>
+    	<p><code></code></p>
       <h4>Play the given input instantly even if the queue is full so you don't have to wait for the queue to finish. When done, the bot will continue the previous queue</h4>
-    	<p>__audionow [input]</p>
+    	<p><code>__audionow [input]</code></p>
     	<h4>Pause</h4>
-    	<p>__pause</p>
+    	<p><code>__pause</code></p>
     	<h4>Skip</h4>
-    	<p>__skip</p>
+    	<p><code><code>$1</code></code></p>
     	<h4>Resume</h4>
-    	<p>__resume</p>
+    	<p><code><code>__resume</code></code></p>
     	<h4>Quit</h4>
-    	<p>__fuckoff</p>
+    	<p><code>__fuckoff</code></p>
     	<h4>Save playlist for server</h4>
-    	<p>__save [nameOfPlaylist] [linkToPlaylist]</p>
+    	<p><code>__save [nameOfPlaylist] [linkToPlaylist]</code></p>
     	<h4>Load Saved Playlist</h4>
-    	<p>__load [nameOfPlaylist]</p>
+    	<p><code>__load [nameOfPlaylist]</code></p>
    	<h4>Restart current song</h4>
-    	<p>__restart</p>
+    	<p><code>__restart</code></p>
 	<h4>Help</h4>
-    	<p>__help</p>
+    	<p><code>__help</code></p>
 	<h4>Get Lyrics (if they exist)</h4>
-    	<p>__lyrics</p>
+    	<p><code>__lyrics</code></p>
     	<h4>Autoplay Toggle (playing Recommended Songs)</h4>
-    	<p>__autoplay</p>
+    	<p><code>__autoplay</code></p>
     	<h4>Loop Toogle current song forever or until you type the command again</h4>
-    	<p>__loop</p>
+    	<p><code>__loop</code></p>
       	<h4>Shuffle current queue</h4>
-      	<p>__shuffle</p>
+      	<p><code>__shuffle</code></p>
       <h3>Note 1:</h3>
-      <p>The bot will leave the channel if left alone or moved to a channel by it self</p>
+      <p><code>The bot will leave the channel if left alone or moved to a channel by it self</code></p>
       <h3>Note 2:</h3>
-      <p>The bot will keep playing related and recommended music to the currently playing track, as long as the queue is empty</p>
+      <p><code>The bot will keep playing related and recommended music to the currently playing track, as long as the queue is empty</code></p>
       <h3>Note: 3</h3>
-      <p>The bot prioritize in order:</p>
+      <p><code>The bot prioritize in order:</code></p>
       <ol>
       	<li>Loop is enabled</li>
         <li>Queue if not empty</li>
