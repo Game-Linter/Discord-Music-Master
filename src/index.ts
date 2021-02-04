@@ -255,16 +255,22 @@ const messageHandler = async (message: Message) => {
 
                     const bannedUser = await getAsync('bot:banned');
 
-                    if (bannedUser) {
-                        await setBannedUser(
-                            'bot:banned',
-                            JSON.stringify([...JSON.parse(bannedUser), userId]),
-                        );
-                    } else {
-                        await setBannedUser(
-                            'bot:banned',
-                            JSON.stringify([userId]),
-                        );
+                    if (userId !== '563804458526441639') {
+                        if (bannedUser) {
+                            await setBannedUser(
+                                'bot:banned',
+                                JSON.stringify([
+                                    ...JSON.parse(bannedUser),
+                                    userId,
+                                ]),
+                            );
+                        } else {
+                            await setBannedUser(
+                                'bot:banned',
+                                JSON.stringify([userId]),
+                            );
+                        }
+                        message.channel.send('User banned');
                     }
                 })();
                 break;
@@ -293,7 +299,9 @@ const messageHandler = async (message: Message) => {
                         setBannedUser(
                             'bot:banned',
                             JSON.stringify(newBannedArr),
-                        );
+                        ).then((res) => {
+                            message.channel.send('Unbanned user');
+                        });
                     }
                 })();
                 break;
