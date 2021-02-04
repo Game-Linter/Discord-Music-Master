@@ -270,7 +270,12 @@ const messageHandler = async (message: Message) => {
                                 JSON.stringify([userId]),
                             );
                         }
-                        message.channel.send('User banned');
+                        message.channel.send(
+                            `${
+                                (await client.client.users.fetch(userId))
+                                    .username
+                            } banned`,
+                        );
                     }
                 })();
                 break;
@@ -299,8 +304,13 @@ const messageHandler = async (message: Message) => {
                         setBannedUser(
                             'bot:banned',
                             JSON.stringify(newBannedArr),
-                        ).then((res) => {
-                            message.channel.send('Unbanned user');
+                        ).then(async (res) => {
+                            message.channel.send(
+                                `Unbanned ${
+                                    (await client.client.users.fetch(userId))
+                                        .username
+                                }`,
+                            );
                         });
                     }
                 })();
