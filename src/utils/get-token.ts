@@ -28,6 +28,8 @@ export const getAsync = promisify(redisClient.get).bind(redisClient);
 const setAsync = promisify(redisClient.setex).bind(redisClient);
 const setPlAsync = promisify(redisClient.set).bind(redisClient);
 
+export const setBannedUser = promisify(redisClient.set).bind(redisClient);
+
 export const setPlaylist = async (
     message: Message,
     playlistName: string,

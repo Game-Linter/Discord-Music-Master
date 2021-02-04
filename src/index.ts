@@ -25,7 +25,13 @@ import { getTitleYoutube, play } from './core/play-core';
 import { Discord } from './core/server';
 import { getLyrics } from './utils/get-lyrics';
 import { getSpotifyTrack } from './utils/get-spotify-track';
-import { getAccessToken, loadPlaylist, setPlaylist } from './utils/get-token';
+import {
+    getAccessToken,
+    getAsync,
+    loadPlaylist,
+    setBannedUser,
+    setPlaylist,
+} from './utils/get-token';
 
 const PREFIX = '__';
 
@@ -38,19 +44,22 @@ const forbidden = (message: Message) => {
     return message.member?.voice.channelID !== message.guild?.voice?.channelID;
 };
 
-const bannedUsers: string[] = ['434778137788678184'];
+const isBanned = async (id: string) => {
+    const bannedUsers = await getAsync('bot:banned');
+    if (bannedUsers) {
+        return JSON.parse(bannedUsers).filter((bannedUser: string) => {
+            return bannedUser === id;
+        }).length;
+    }
 
-const isBanned = (id: string) => {
-    return bannedUsers.filter((bannedUser) => {
-        return bannedUser === id;
-    }).length;
+    return 0;
 };
 
-const messageHandler = (message: Message) => {
+const messageHandler = async (message: Message) => {
     if (
         message.content.startsWith(PREFIX) &&
         !message.author.bot &&
-        !isBanned(message.author.id)
+        !(await isBanned(message.author.id))
     ) {
         const { command, id } = getCommand(message, PREFIX);
         switch (command) {
@@ -231,6 +240,62 @@ const messageHandler = (message: Message) => {
                 }
                 message.react('⏸');
                 servers[id]?.dispatcher?.pause();
+                break;
+            case 'banfrombot':
+                (async () => {
+                    if (message.author.id !== '563804458526441639') {
+                        return message.reply(
+                            "You're not allowed to ban users from bot",
+                        );
+                    }
+                    const [, userId] = message.content
+                        .trim()
+                        .replace(/\s+/g, ' ')
+                        .split(' ');
+
+                    const bannedUser = await getAsync('bot:banned');
+
+                    if (bannedUser) {
+                        await setBannedUser(
+                            'bot:banned',
+                            JSON.stringify([...JSON.parse(bannedUser), userId]),
+                        );
+                    } else {
+                        await setBannedUser(
+                            'bot:banned',
+                            JSON.stringify([userId]),
+                        );
+                    }
+                })();
+                break;
+
+            case 'unbanfrombot':
+                (async () => {
+                    if (message.author.id !== '563804458526441639') {
+                        return message.reply(
+                            "You're not allowed to ban users from bot",
+                        );
+                    }
+                    const [, userId] = message.content
+                        .trim()
+                        .replace(/\s+/g, ' ')
+                        .split(' ');
+
+                    const bannedUser = await getAsync('bot:banned');
+
+                    if (bannedUser) {
+                        const bannedArr = JSON.parse(bannedUser) as string[];
+
+                        const newBannedArr = bannedArr.filter((bannedusr) => {
+                            return bannedusr !== userId;
+                        });
+
+                        setBannedUser(
+                            'bot:banned',
+                            JSON.stringify(newBannedArr),
+                        );
+                    }
+                })();
                 break;
             case 'restart':
                 if (forbidden(message)) {
