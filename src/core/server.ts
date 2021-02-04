@@ -32,7 +32,7 @@ export class Discord {
                 status: 'online',
                 activity: {
                     type: 'COMPETING',
-                    name: '__audio',
+                    name: '__help',
                 },
             });
             console.log('Ready!');
