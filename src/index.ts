@@ -272,8 +272,7 @@ const messageHandler = async (message: Message) => {
                         }
                         message.channel.send(
                             `${
-                                (await client.client.users.fetch(userId))
-                                    .username
+                                (await client.users.fetch(userId)).username
                             } banned`,
                         );
                     }
@@ -307,8 +306,7 @@ const messageHandler = async (message: Message) => {
                         ).then(async (res) => {
                             message.channel.send(
                                 `Unbanned ${
-                                    (await client.client.users.fetch(userId))
-                                        .username
+                                    (await client.users.fetch(userId)).username
                                 }`,
                             );
                         });
@@ -505,16 +503,16 @@ __shuffle (Shuffle Current Queue)
     }
 };
 
-const client = new Discord({
+const { client } = new Discord({
     messageHandler,
 });
 
-client.client.on('voiceStateUpdate', (arg0, arg1) => {
+client.on('voiceStateUpdate', (arg0, arg1) => {
     // console.log('triggered');
     const oldGuildID = arg0.channel?.guild.id;
     const newGuildID = arg1.channel?.guild.id;
 
-    if (arg0.member?.id === client.client.user?.id) {
+    if (arg0.member?.id === client.user?.id) {
         // Triggered by something happened to the bot
         console.log({
             old: arg0.channel?.members.array().map((vl) => vl.user.id),
@@ -524,7 +522,7 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
             arg1.channel?.members.array().length &&
             arg1.channel?.members
                 .array()
-                .every((member) => member.user.id === client.client.user!.id) &&
+                .every((member) => member.user.id === client.user!.id) &&
             newGuildID
         ) {
             console.log('Moved to an empty channel');
@@ -540,9 +538,7 @@ client.client.on('voiceStateUpdate', (arg0, arg1) => {
         const Members = arg0.channel?.members.array();
         if (
             Members?.length &&
-            Members?.every(
-                (member) => member.user.id === client.client.user?.id,
-            )
+            Members?.every((member) => member.user.id === client.user?.id)
         ) {
             const glId = arg0.channel?.guild.id;
             servers[glId!]?.getConnection.disconnect();
