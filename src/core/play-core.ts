@@ -109,9 +109,6 @@ export async function play(
     if (queue.length) {
         servers[id].setQueue = queue;
         const [firstUrl] = queue;
-        if (servers[id].autoplay) {
-            servers[id].setAuto = firstUrl;
-        }
         // console.log(queue.length, firstUrl);
         if (firstUrl.startsWith(SPOTIFY_URI)) {
             try {
