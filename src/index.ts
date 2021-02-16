@@ -475,12 +475,12 @@ const messageHandler = async (message: Message) => {
             case 'help':
                 message.channel.send(`
 					  	\`\`\`
-__audio any Youtube Search
-__audio youtube Url
-__audio youtube Playlist url
-__audio spotify Track Link
-__audio spotify Playlist Link
-__audio spotify Album Link
+__audio [any Youtube Search]
+__audio [youtube Url]
+__audio [youtube Playlist url]
+__audio [spotify Track Link]
+__audio [spotify Playlist Link]
+__audio [spotify Album Link]
 __audionow  [input] (Plays the given track instantly even tho the queue is full,  continues the queue afterwards)
 __load [saved playlist name]
 __save [nameofplaylist] [playlist link]
@@ -493,6 +493,8 @@ __fuckoff (Quit)
 __loop (Loop current Song )
 __autoplay (Toogle autoplay, Keep Playing recommended songs after the queue is done)
 __shuffle (Shuffle Current Queue)
+
+Full Readme: https://github.com/Game-Linter/Discord-Music-Master#readme
 						\`\`\`
 				`);
                 break;
