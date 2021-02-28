@@ -556,6 +556,8 @@ const signHandler = () => {
         const element: DiscordServer = servers[srv];
         element?.getConnection.disconnect();
     });
+
+    process.exit();
 };
 
 process.on('SIGINT', signHandler);

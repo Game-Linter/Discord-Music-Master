@@ -589,6 +589,7 @@ var signHandler = function () {
         var element = servers[srv];
         element === null || element === void 0 ? void 0 : element.getConnection.disconnect();
     });
+    process.exit();
 };
 process.on('SIGINT', signHandler);
 process.on('SIGTERM', signHandler);
