@@ -472,6 +472,32 @@ const messageHandler = async (message: Message) => {
                 })();
                 break;
 
+            case 'next':
+                if (forbidden(message)) {
+                    return message.channel.send(
+                        'Connect to the same channel as the bot',
+                    );
+                }
+                if (servers[id].getQueue.length > 1) {
+                    const { title } = await getData(
+                        servers[id].getQueue[1],
+                        message,
+                    );
+                    if (title) {
+                        return message.channel.send(`Up next: ${title}`);
+                    } else {
+                        const tmpTitle = await getTitleYoutube(
+                            servers[id].getQueue[1],
+                        );
+                        return message.channel.send(`Up next: ${tmpTitle}`);
+                    }
+                } else {
+                    return message.channel.send(
+                        'Nothing next, autoplay to the save',
+                    );
+                }
+            // break;
+
             case 'help':
                 message.channel.send(`
 					  	\`\`\`

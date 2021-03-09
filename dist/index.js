@@ -98,453 +98,486 @@ var isBanned = function (id) { return __awaiter(void 0, void 0, void 0, function
     });
 }); };
 var messageHandler = function (message) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _b, command, id_1, msgContent, args_1, _c, tmp_1, first, url_1;
-    var _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
-    return __generator(this, function (_z) {
-        switch (_z.label) {
+    var _a, _b, command, id_1, _c, msgContent, args_1, _d, tmp_1, first, url_1, title, tmpTitle;
+    var _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z;
+    return __generator(this, function (_0) {
+        switch (_0.label) {
             case 0:
                 _a = message.content.startsWith(PREFIX) &&
                     !message.author.bot;
                 if (!_a) return [3 /*break*/, 2];
                 return [4 /*yield*/, isBanned(message.author.id)];
             case 1:
-                _a = !(_z.sent());
-                _z.label = 2;
+                _a = !(_0.sent());
+                _0.label = 2;
             case 2:
-                if (_a) {
-                    _b = getCommand_1.getCommand(message, PREFIX), command = _b.command, id_1 = _b.id;
-                    switch (command) {
-                        case 'save':
-                            (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var msgContent, args, error_1;
-                                return __generator(this, function (_a) {
-                                    switch (_a.label) {
-                                        case 0:
-                                            msgContent = message.content
-                                                .trim()
-                                                .replace(/\s+/g, ' ');
-                                            args = msgContent.split(' ');
-                                            if (!args[1] || !args[2]) {
-                                                return [2 /*return*/, message.channel.send('Give a playlist name and a link')];
-                                            }
-                                            _a.label = 1;
-                                        case 1:
-                                            _a.trys.push([1, 3, , 4]);
-                                            return [4 /*yield*/, get_token_1.setPlaylist(message, args[1], args[2])];
-                                        case 2:
-                                            _a.sent();
-                                            message.channel.send('Playlist save for this guild with the name ' +
-                                                '`' +
-                                                args[1] +
-                                                '`');
-                                            return [3 /*break*/, 4];
-                                        case 3:
-                                            error_1 = _a.sent();
-                                            message.channel.send(error_1.message);
-                                            return [3 /*break*/, 4];
-                                        case 4: return [2 /*return*/];
+                if (!_a) return [3 /*break*/, 26];
+                _b = getCommand_1.getCommand(message, PREFIX), command = _b.command, id_1 = _b.id;
+                _c = command;
+                switch (_c) {
+                    case 'save': return [3 /*break*/, 3];
+                    case 'load': return [3 /*break*/, 4];
+                    case 'audio': return [3 /*break*/, 5];
+                    case 'audionow': return [3 /*break*/, 6];
+                    case 'pause': return [3 /*break*/, 7];
+                    case 'banfrombot': return [3 /*break*/, 8];
+                    case 'unbanfrombot': return [3 /*break*/, 9];
+                    case 'restart': return [3 /*break*/, 10];
+                    case 'shuffle': return [3 /*break*/, 11];
+                    case 'resume': return [3 /*break*/, 12];
+                    case 'fuckoff': return [3 /*break*/, 13];
+                    case 'skip': return [3 /*break*/, 14];
+                    case 'loop': return [3 /*break*/, 15];
+                    case 'autoplay': return [3 /*break*/, 16];
+                    case 'lyrics': return [3 /*break*/, 17];
+                    case 'next': return [3 /*break*/, 18];
+                    case 'help': return [3 /*break*/, 24];
+                }
+                return [3 /*break*/, 25];
+            case 3:
+                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var msgContent, args, error_1;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                msgContent = message.content
+                                    .trim()
+                                    .replace(/\s+/g, ' ');
+                                args = msgContent.split(' ');
+                                if (!args[1] || !args[2]) {
+                                    return [2 /*return*/, message.channel.send('Give a playlist name and a link')];
+                                }
+                                _a.label = 1;
+                            case 1:
+                                _a.trys.push([1, 3, , 4]);
+                                return [4 /*yield*/, get_token_1.setPlaylist(message, args[1], args[2])];
+                            case 2:
+                                _a.sent();
+                                message.channel.send('Playlist save for this guild with the name ' +
+                                    '`' +
+                                    args[1] +
+                                    '`');
+                                return [3 /*break*/, 4];
+                            case 3:
+                                error_1 = _a.sent();
+                                message.channel.send(error_1.message);
+                                return [3 /*break*/, 4];
+                            case 4: return [2 /*return*/];
+                        }
+                    });
+                }); })();
+                return [2 /*return*/];
+            case 4:
+                if (!((_e = message.member) === null || _e === void 0 ? void 0 : _e.voice.channelID)) {
+                    return [2 /*return*/, message.channel.send('Connect to a channel first')];
+                }
+                msgContent = message.content.trim().replace(/\s+/g, ' ');
+                args_1 = msgContent.split(' ');
+                if (!args_1[1]) {
+                    return [2 /*return*/, message.channel.send('Give a playlist name')];
+                }
+                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var pl;
+                    var _a;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0: return [4 /*yield*/, get_token_1.loadPlaylist(message, args_1[1])];
+                            case 1:
+                                pl = _b.sent();
+                                if (pl) {
+                                    if (!servers[id_1]) {
+                                        servers[id_1] = new discordServer_1.DiscordServer(message, servers, id_1, pl);
                                     }
-                                });
-                            }); })();
-                            return [2 /*return*/];
-                        case 'load':
-                            if (!((_d = message.member) === null || _d === void 0 ? void 0 : _d.voice.channelID)) {
-                                return [2 /*return*/, message.channel.send('Connect to a channel first')];
-                            }
-                            msgContent = message.content.trim().replace(/\s+/g, ' ');
-                            args_1 = msgContent.split(' ');
-                            if (!args_1[1]) {
-                                return [2 /*return*/, message.channel.send('Give a playlist name')];
-                            }
-                            (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var pl;
-                                var _a;
-                                return __generator(this, function (_b) {
-                                    switch (_b.label) {
-                                        case 0: return [4 /*yield*/, get_token_1.loadPlaylist(message, args_1[1])];
-                                        case 1:
-                                            pl = _b.sent();
-                                            if (pl) {
-                                                if (!servers[id_1]) {
-                                                    servers[id_1] = new discordServer_1.DiscordServer(message, servers, id_1, pl);
-                                                }
-                                                else {
-                                                    if (forbidden(message)) {
-                                                        message.channel.send('get into a channel first');
-                                                        return [2 /*return*/];
-                                                    }
-                                                    if (Array.isArray(pl)) {
-                                                        (_a = servers[id_1].queue).push.apply(_a, pl);
-                                                    }
-                                                    else {
-                                                        servers[id_1].queue.push(pl);
-                                                    }
-                                                    message.channel.send('Queud the playlist ' + args_1[1]);
-                                                }
-                                            }
+                                    else {
+                                        if (forbidden(message)) {
+                                            message.channel.send('get into a channel first');
                                             return [2 /*return*/];
-                                    }
-                                });
-                            }); })();
-                            break;
-                        case 'audio':
-                            if ((_e = message.member) === null || _e === void 0 ? void 0 : _e.voice.channelID) {
-                                (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                    var msgContent, args, _a, url, title;
-                                    var _b;
-                                    var _c, _d;
-                                    return __generator(this, function (_e) {
-                                        switch (_e.label) {
-                                            case 0:
-                                                msgContent = message.content
-                                                    .trim()
-                                                    .replace(/\s+/g, ' ');
-                                                args = msgContent.split(' ');
-                                                if (!args[1]) {
-                                                    return [2 /*return*/, message.channel.send('Give a link or a youtube search')];
-                                                }
-                                                return [4 /*yield*/, get_data_youtube_1.getData(args[1], message).catch(function (err) {
-                                                        console.log(err);
-                                                        return {
-                                                            url: '',
-                                                            title: '',
-                                                        };
-                                                    })];
-                                            case 1:
-                                                _a = _e.sent(), url = _a.url, title = _a.title;
-                                                try {
-                                                    if (!servers[id_1]) {
-                                                        servers[id_1] = new discordServer_1.DiscordServer(message, servers, id_1, url, title);
-                                                    }
-                                                    else {
-                                                        if (forbidden(message)) {
-                                                            return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
-                                                        }
-                                                        if (Array.isArray(url)) {
-                                                            (_c = servers[id_1]) === null || _c === void 0 ? void 0 : (_b = _c.queue).push.apply(_b, url);
-                                                        }
-                                                        else {
-                                                            (_d = servers[id_1]) === null || _d === void 0 ? void 0 : _d.queue.push(url);
-                                                        }
-                                                        message.react('🦆');
-                                                        title &&
-                                                            message.channel.send("Queued | " + title);
-                                                    }
-                                                    // console.log(connection);
-                                                }
-                                                catch (error) {
-                                                    console.log(error.message);
-                                                }
-                                                return [2 /*return*/];
                                         }
-                                    });
-                                }); })();
-                            }
-                            else {
-                                message.channel.send('Connect to a channel first');
-                            }
-                            break;
-                        case 'audionow':
-                            (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var msgContent, args, _a, url, title, _b, tobeShifted, rest, _c;
-                                var _d;
-                                return __generator(this, function (_e) {
-                                    switch (_e.label) {
-                                        case 0:
-                                            msgContent = message.content
-                                                .trim()
-                                                .replace(/\s+/g, ' ');
-                                            args = msgContent.split(' ');
-                                            if (!args[1]) {
-                                                return [2 /*return*/, message.channel.send('Give a link or a youtube search')];
-                                            }
-                                            return [4 /*yield*/, get_data_youtube_1.getData(args[1], message).catch(function (err) {
-                                                    console.log(err);
-                                                    return {
-                                                        url: '',
-                                                        title: '',
-                                                    };
-                                                })];
-                                        case 1:
-                                            _a = _e.sent(), url = _a.url, title = _a.title;
+                                        if (Array.isArray(pl)) {
+                                            (_a = servers[id_1].queue).push.apply(_a, pl);
+                                        }
+                                        else {
+                                            servers[id_1].queue.push(pl);
+                                        }
+                                        message.channel.send('Queud the playlist ' + args_1[1]);
+                                    }
+                                }
+                                return [2 /*return*/];
+                        }
+                    });
+                }); })();
+                return [3 /*break*/, 26];
+            case 5:
+                if ((_f = message.member) === null || _f === void 0 ? void 0 : _f.voice.channelID) {
+                    (function () { return __awaiter(void 0, void 0, void 0, function () {
+                        var msgContent, args, _a, url, title;
+                        var _b;
+                        var _c, _d;
+                        return __generator(this, function (_e) {
+                            switch (_e.label) {
+                                case 0:
+                                    msgContent = message.content
+                                        .trim()
+                                        .replace(/\s+/g, ' ');
+                                    args = msgContent.split(' ');
+                                    if (!args[1]) {
+                                        return [2 /*return*/, message.channel.send('Give a link or a youtube search')];
+                                    }
+                                    return [4 /*yield*/, get_data_youtube_1.getData(args[1], message).catch(function (err) {
+                                            console.log(err);
+                                            return {
+                                                url: '',
+                                                title: '',
+                                            };
+                                        })];
+                                case 1:
+                                    _a = _e.sent(), url = _a.url, title = _a.title;
+                                    try {
+                                        if (!servers[id_1]) {
+                                            servers[id_1] = new discordServer_1.DiscordServer(message, servers, id_1, url, title);
+                                        }
+                                        else {
                                             if (forbidden(message)) {
-                                                return [2 /*return*/, message.channel.send('Use "__audio" first to play a song')];
+                                                return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                                             }
-                                            _b = servers[id_1].getQueue, tobeShifted = _b[0], rest = _b.slice(1);
                                             if (Array.isArray(url)) {
-                                                rest.unshift.apply(rest, url);
+                                                (_c = servers[id_1]) === null || _c === void 0 ? void 0 : (_b = _c.queue).push.apply(_b, url);
                                             }
                                             else {
-                                                rest.unshift(url);
+                                                (_d = servers[id_1]) === null || _d === void 0 ? void 0 : _d.queue.push(url);
                                             }
-                                            servers[id_1].setQueue = __spreadArrays(rest);
                                             message.react('🦆');
-                                            title && message.channel.send("Next | " + title);
-                                            _c = servers[id_1];
-                                            return [4 /*yield*/, play_core_1.play((_d = servers[id_1]) === null || _d === void 0 ? void 0 : _d.getConnection, servers[id_1].getQueue, id_1, message, servers).catch(function (err) {
-                                                    console.log(err.message);
-                                                    return null;
-                                                })];
-                                        case 2:
-                                            _c.dispatcher = _e.sent();
-                                            return [2 /*return*/];
-                                    }
-                                });
-                            }); })();
-                            break;
-                        case 'pause':
-                            if (forbidden(message)) {
-                                return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
-                            }
-                            message.react('⏸');
-                            (_g = (_f = servers[id_1]) === null || _f === void 0 ? void 0 : _f.dispatcher) === null || _g === void 0 ? void 0 : _g.pause();
-                            break;
-                        case 'banfrombot':
-                            (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var _a, userId, bannedUser, _b, _c;
-                                return __generator(this, function (_d) {
-                                    switch (_d.label) {
-                                        case 0:
-                                            if (message.author.id !== '563804458526441639') {
-                                                return [2 /*return*/, message.reply("You're not allowed to ban users from bot")];
-                                            }
-                                            _a = message.content
-                                                .trim()
-                                                .replace(/\s+/g, ' ')
-                                                .split(' '), userId = _a[1];
-                                            return [4 /*yield*/, get_token_1.getAsync('bot:banned')];
-                                        case 1:
-                                            bannedUser = _d.sent();
-                                            if (!(userId !== '563804458526441639')) return [3 /*break*/, 7];
-                                            if (!bannedUser) return [3 /*break*/, 3];
-                                            return [4 /*yield*/, get_token_1.setBannedUser('bot:banned', JSON.stringify(__spreadArrays(JSON.parse(bannedUser), [
-                                                    userId,
-                                                ])))];
-                                        case 2:
-                                            _d.sent();
-                                            return [3 /*break*/, 5];
-                                        case 3: return [4 /*yield*/, get_token_1.setBannedUser('bot:banned', JSON.stringify([userId]))];
-                                        case 4:
-                                            _d.sent();
-                                            _d.label = 5;
-                                        case 5:
-                                            _c = (_b = message.channel).send;
-                                            return [4 /*yield*/, client.users.fetch(userId)];
-                                        case 6:
-                                            _c.apply(_b, [(_d.sent()).username + " banned"]);
-                                            _d.label = 7;
-                                        case 7: return [2 /*return*/];
-                                    }
-                                });
-                            }); })();
-                            break;
-                        case 'unbanfrombot':
-                            (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var _a, userId, bannedUser, bannedArr, newBannedArr;
-                                return __generator(this, function (_b) {
-                                    switch (_b.label) {
-                                        case 0:
-                                            if (message.author.id !== '563804458526441639') {
-                                                return [2 /*return*/, message.reply("You're not allowed to ban users from bot")];
-                                            }
-                                            _a = message.content
-                                                .trim()
-                                                .replace(/\s+/g, ' ')
-                                                .split(' '), userId = _a[1];
-                                            return [4 /*yield*/, get_token_1.getAsync('bot:banned')];
-                                        case 1:
-                                            bannedUser = _b.sent();
-                                            if (bannedUser) {
-                                                bannedArr = JSON.parse(bannedUser);
-                                                newBannedArr = bannedArr.filter(function (bannedusr) {
-                                                    return bannedusr !== userId;
-                                                });
-                                                get_token_1.setBannedUser('bot:banned', JSON.stringify(newBannedArr)).then(function (res) { return __awaiter(void 0, void 0, void 0, function () {
-                                                    var _a, _b, _c;
-                                                    return __generator(this, function (_d) {
-                                                        switch (_d.label) {
-                                                            case 0:
-                                                                _b = (_a = message.channel).send;
-                                                                _c = "Unbanned ";
-                                                                return [4 /*yield*/, client.users.fetch(userId)];
-                                                            case 1:
-                                                                _b.apply(_a, [_c + (_d.sent()).username]);
-                                                                return [2 /*return*/];
-                                                        }
-                                                    });
-                                                }); });
-                                            }
-                                            return [2 /*return*/];
-                                    }
-                                });
-                            }); })();
-                            break;
-                        case 'restart':
-                            if (forbidden(message)) {
-                                return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
-                            }
-                            message.react('🦎');
-                            (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var _a;
-                                var _b, _c;
-                                return __generator(this, function (_d) {
-                                    switch (_d.label) {
-                                        case 0:
-                                            _a = servers[id_1];
-                                            return [4 /*yield*/, play_core_1.play((_b = servers[id_1]) === null || _b === void 0 ? void 0 : _b.getConnection, (_c = servers[id_1]) === null || _c === void 0 ? void 0 : _c.getQueue, id_1, message, servers).catch(function (err) {
-                                                    console.log(err.message);
-                                                    return null;
-                                                })];
-                                        case 1:
-                                            _a.dispatcher = _d.sent();
-                                            return [2 /*return*/];
-                                    }
-                                });
-                            }); })();
-                            break;
-                        case 'shuffle':
-                            if (forbidden(message)) {
-                                return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
-                            }
-                            message.react('🔀');
-                            _c = ((_h = servers[id_1]) === null || _h === void 0 ? void 0 : _h.getQueue) || [], tmp_1 = _c.slice(1);
-                            (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var _a;
-                                var _b;
-                                return __generator(this, function (_c) {
-                                    switch (_c.label) {
-                                        case 0:
-                                            tmp_1.length && (tmp_1 = lodash_1.default.shuffle(tmp_1));
-                                            _a = servers[id_1];
-                                            return [4 /*yield*/, play_core_1.play((_b = servers[id_1]) === null || _b === void 0 ? void 0 : _b.getConnection, tmp_1, id_1, message, servers).catch(function (err) {
-                                                    console.log(err.message);
-                                                    return null;
-                                                })];
-                                        case 1:
-                                            _a.dispatcher = _c.sent();
-                                            return [2 /*return*/];
-                                    }
-                                });
-                            }); })();
-                            break;
-                        case 'resume':
-                            if (forbidden(message)) {
-                                return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
-                            }
-                            message.react('⏯');
-                            // dispatcher[id]?.resume();
-                            (_k = (_j = servers[id_1]) === null || _j === void 0 ? void 0 : _j.dispatcher) === null || _k === void 0 ? void 0 : _k.resume();
-                            break;
-                        case 'fuckoff':
-                            if (forbidden(message)) {
-                                return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
-                            }
-                            message.react('🙋‍♂️');
-                            (_m = (_l = servers[id_1]) === null || _l === void 0 ? void 0 : _l.getConnection) === null || _m === void 0 ? void 0 : _m.disconnect();
-                            delete servers[id_1];
-                            break;
-                        case 'skip':
-                            if (forbidden(message)) {
-                                return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
-                            }
-                            if (!((_o = servers[id_1]) === null || _o === void 0 ? void 0 : _o.loop)) {
-                                (_q = (_p = servers[id_1]) === null || _p === void 0 ? void 0 : _p.queue) === null || _q === void 0 ? void 0 : _q.shift();
-                                first = (((_r = servers[id_1]) === null || _r === void 0 ? void 0 : _r.getQueue) || [])[0];
-                                if (first && ((_s = servers[id_1]) === null || _s === void 0 ? void 0 : _s.autoplay)) {
-                                    servers[id_1].setAuto = first;
-                                }
-                            }
-                            (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var _a;
-                                var _b, _c;
-                                return __generator(this, function (_d) {
-                                    switch (_d.label) {
-                                        case 0:
-                                            _a = servers[id_1];
-                                            return [4 /*yield*/, play_core_1.play((_b = servers[id_1]) === null || _b === void 0 ? void 0 : _b.getConnection, (_c = servers[id_1]) === null || _c === void 0 ? void 0 : _c.getQueue, id_1, message, servers).catch(function (err) {
-                                                    console.log(err.message);
-                                                    return null;
-                                                })];
-                                        case 1:
-                                            _a.dispatcher = _d.sent();
-                                            return [2 /*return*/];
-                                    }
-                                });
-                            }); })();
-                            break;
-                        case 'loop':
-                            if (forbidden(message)) {
-                                return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
-                            }
-                            servers[id_1].setLoop = ((_t = servers[id_1]) === null || _t === void 0 ? void 0 : _t.loop) ? false
-                                : (_u = servers[id_1]) === null || _u === void 0 ? void 0 : _u.getQueue[0];
-                            message.react('♾');
-                            ((_v = servers[id_1]) === null || _v === void 0 ? void 0 : _v.loop) ? (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var ttl, title_1, _a, title;
-                                return __generator(this, function (_b) {
-                                    switch (_b.label) {
-                                        case 0:
-                                            ttl = servers[id_1].loop;
-                                            if (!ttl.startsWith(get_data_youtube_1.SPOTIFY_URI)) return [3 /*break*/, 3];
-                                            _a = get_spotify_track_1.getSpotifyTrack;
-                                            return [4 /*yield*/, get_token_1.getAccessToken()];
-                                        case 1: return [4 /*yield*/, _a.apply(void 0, [_b.sent(), ttl])];
-                                        case 2:
-                                            title_1 = (_b.sent()).title;
-                                            title_1 &&
-                                                message.channel.send("Now looping forever | " + title_1);
-                                            return [2 /*return*/];
-                                        case 3: return [4 /*yield*/, play_core_1.getTitleYoutube(ttl)];
-                                        case 4:
-                                            title = _b.sent();
                                             title &&
-                                                message.channel.send("Now looping forever | " + title);
-                                            return [2 /*return*/];
+                                                message.channel.send("Queued | " + title);
+                                        }
+                                        // console.log(connection);
                                     }
-                                });
-                            }); })()
-                                : message.channel.send("Loop is now off");
-                            break;
-                        case 'autoplay':
-                            if (forbidden(message)) {
-                                return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
+                                    catch (error) {
+                                        console.log(error.message);
+                                    }
+                                    return [2 /*return*/];
                             }
-                            servers[id_1].setAuto = ((_w = servers[id_1]) === null || _w === void 0 ? void 0 : _w.autoplay) ? false
-                                : (_x = servers[id_1]) === null || _x === void 0 ? void 0 : _x.getQueue[0];
-                            message.react('🤖');
-                            ((_y = servers[id_1]) === null || _y === void 0 ? void 0 : _y.autoplay) ? message.channel.send('AUTOPLAY in now on')
-                                : message.channel.send('AUTOPLAY in now off');
-                            // console.log(id, autoplay[id]);
-                            break;
-                        case 'lyrics':
-                            if (forbidden(message)) {
-                                return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
-                            }
-                            url_1 = servers[id_1].getQueue[0];
-                            (function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var lyrics;
-                                return __generator(this, function (_a) {
-                                    switch (_a.label) {
-                                        case 0: return [4 /*yield*/, get_lyrics_1.getLyrics(url_1)];
-                                        case 1:
-                                            lyrics = (_a.sent());
-                                            // console.log(lyrics.length);
-                                            if (lyrics) {
-                                                return [2 /*return*/, message.channel.send("```\n" + lyrics + "\n```")];
+                        });
+                    }); })();
+                }
+                else {
+                    message.channel.send('Connect to a channel first');
+                }
+                return [3 /*break*/, 26];
+            case 6:
+                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var msgContent, args, _a, url, title, _b, tobeShifted, rest, _c;
+                    var _d;
+                    return __generator(this, function (_e) {
+                        switch (_e.label) {
+                            case 0:
+                                msgContent = message.content
+                                    .trim()
+                                    .replace(/\s+/g, ' ');
+                                args = msgContent.split(' ');
+                                if (!args[1]) {
+                                    return [2 /*return*/, message.channel.send('Give a link or a youtube search')];
+                                }
+                                return [4 /*yield*/, get_data_youtube_1.getData(args[1], message).catch(function (err) {
+                                        console.log(err);
+                                        return {
+                                            url: '',
+                                            title: '',
+                                        };
+                                    })];
+                            case 1:
+                                _a = _e.sent(), url = _a.url, title = _a.title;
+                                if (forbidden(message)) {
+                                    return [2 /*return*/, message.channel.send('Use "__audio" first to play a song')];
+                                }
+                                _b = servers[id_1].getQueue, tobeShifted = _b[0], rest = _b.slice(1);
+                                if (Array.isArray(url)) {
+                                    rest.unshift.apply(rest, url);
+                                }
+                                else {
+                                    rest.unshift(url);
+                                }
+                                servers[id_1].setQueue = __spreadArrays(rest);
+                                message.react('🦆');
+                                title && message.channel.send("Next | " + title);
+                                _c = servers[id_1];
+                                return [4 /*yield*/, play_core_1.play((_d = servers[id_1]) === null || _d === void 0 ? void 0 : _d.getConnection, servers[id_1].getQueue, id_1, message, servers).catch(function (err) {
+                                        console.log(err.message);
+                                        return null;
+                                    })];
+                            case 2:
+                                _c.dispatcher = _e.sent();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); })();
+                return [3 /*break*/, 26];
+            case 7:
+                if (forbidden(message)) {
+                    return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
+                }
+                message.react('⏸');
+                (_h = (_g = servers[id_1]) === null || _g === void 0 ? void 0 : _g.dispatcher) === null || _h === void 0 ? void 0 : _h.pause();
+                return [3 /*break*/, 26];
+            case 8:
+                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var _a, userId, bannedUser, _b, _c;
+                    return __generator(this, function (_d) {
+                        switch (_d.label) {
+                            case 0:
+                                if (message.author.id !== '563804458526441639') {
+                                    return [2 /*return*/, message.reply("You're not allowed to ban users from bot")];
+                                }
+                                _a = message.content
+                                    .trim()
+                                    .replace(/\s+/g, ' ')
+                                    .split(' '), userId = _a[1];
+                                return [4 /*yield*/, get_token_1.getAsync('bot:banned')];
+                            case 1:
+                                bannedUser = _d.sent();
+                                if (!(userId !== '563804458526441639')) return [3 /*break*/, 7];
+                                if (!bannedUser) return [3 /*break*/, 3];
+                                return [4 /*yield*/, get_token_1.setBannedUser('bot:banned', JSON.stringify(__spreadArrays(JSON.parse(bannedUser), [
+                                        userId,
+                                    ])))];
+                            case 2:
+                                _d.sent();
+                                return [3 /*break*/, 5];
+                            case 3: return [4 /*yield*/, get_token_1.setBannedUser('bot:banned', JSON.stringify([userId]))];
+                            case 4:
+                                _d.sent();
+                                _d.label = 5;
+                            case 5:
+                                _c = (_b = message.channel).send;
+                                return [4 /*yield*/, client.users.fetch(userId)];
+                            case 6:
+                                _c.apply(_b, [(_d.sent()).username + " banned"]);
+                                _d.label = 7;
+                            case 7: return [2 /*return*/];
+                        }
+                    });
+                }); })();
+                return [3 /*break*/, 26];
+            case 9:
+                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var _a, userId, bannedUser, bannedArr, newBannedArr;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0:
+                                if (message.author.id !== '563804458526441639') {
+                                    return [2 /*return*/, message.reply("You're not allowed to ban users from bot")];
+                                }
+                                _a = message.content
+                                    .trim()
+                                    .replace(/\s+/g, ' ')
+                                    .split(' '), userId = _a[1];
+                                return [4 /*yield*/, get_token_1.getAsync('bot:banned')];
+                            case 1:
+                                bannedUser = _b.sent();
+                                if (bannedUser) {
+                                    bannedArr = JSON.parse(bannedUser);
+                                    newBannedArr = bannedArr.filter(function (bannedusr) {
+                                        return bannedusr !== userId;
+                                    });
+                                    get_token_1.setBannedUser('bot:banned', JSON.stringify(newBannedArr)).then(function (res) { return __awaiter(void 0, void 0, void 0, function () {
+                                        var _a, _b, _c;
+                                        return __generator(this, function (_d) {
+                                            switch (_d.label) {
+                                                case 0:
+                                                    _b = (_a = message.channel).send;
+                                                    _c = "Unbanned ";
+                                                    return [4 /*yield*/, client.users.fetch(userId)];
+                                                case 1:
+                                                    _b.apply(_a, [_c + (_d.sent()).username]);
+                                                    return [2 /*return*/];
                                             }
-                                            return [2 /*return*/, message.channel.send('Lyrics not found this song')];
-                                    }
-                                });
-                            }); })();
-                            break;
-                        case 'help':
-                            message.channel.send("\n\t\t\t\t\t  \t```\n__audio [any Youtube Search]\n__audio [youtube Url]\n__audio [youtube Playlist url]\n__audio [spotify Track Link]\n__audio [spotify Playlist Link]\n__audio [spotify Album Link]\n__audionow  [input] (Plays the given track instantly even tho the queue is full,  continues the queue afterwards)\n__load [saved playlist name]\n__save [nameofplaylist] [playlist link]\n__restart (restarts current track)\n__lyrics (Gets lyrics of current playing song)\n__skip (Skip current track)\n__pause\n__resume \n__fuckoff (Quit)\n__loop (Loop current Song )\n__autoplay (Toogle autoplay, Keep Playing recommended songs after the queue is done)\n__shuffle (Shuffle Current Queue)\n\nFull Readme: https://github.com/Game-Linter/Discord-Music-Master#readme\n\t\t\t\t\t\t```\n\t\t\t\t");
-                            break;
-                        default:
-                            break;
+                                        });
+                                    }); });
+                                }
+                                return [2 /*return*/];
+                        }
+                    });
+                }); })();
+                return [3 /*break*/, 26];
+            case 10:
+                if (forbidden(message)) {
+                    return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
+                }
+                message.react('🦎');
+                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var _a;
+                    var _b, _c;
+                    return __generator(this, function (_d) {
+                        switch (_d.label) {
+                            case 0:
+                                _a = servers[id_1];
+                                return [4 /*yield*/, play_core_1.play((_b = servers[id_1]) === null || _b === void 0 ? void 0 : _b.getConnection, (_c = servers[id_1]) === null || _c === void 0 ? void 0 : _c.getQueue, id_1, message, servers).catch(function (err) {
+                                        console.log(err.message);
+                                        return null;
+                                    })];
+                            case 1:
+                                _a.dispatcher = _d.sent();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); })();
+                return [3 /*break*/, 26];
+            case 11:
+                if (forbidden(message)) {
+                    return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
+                }
+                message.react('🔀');
+                _d = ((_j = servers[id_1]) === null || _j === void 0 ? void 0 : _j.getQueue) || [], tmp_1 = _d.slice(1);
+                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var _a;
+                    var _b;
+                    return __generator(this, function (_c) {
+                        switch (_c.label) {
+                            case 0:
+                                tmp_1.length && (tmp_1 = lodash_1.default.shuffle(tmp_1));
+                                _a = servers[id_1];
+                                return [4 /*yield*/, play_core_1.play((_b = servers[id_1]) === null || _b === void 0 ? void 0 : _b.getConnection, tmp_1, id_1, message, servers).catch(function (err) {
+                                        console.log(err.message);
+                                        return null;
+                                    })];
+                            case 1:
+                                _a.dispatcher = _c.sent();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); })();
+                return [3 /*break*/, 26];
+            case 12:
+                if (forbidden(message)) {
+                    return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
+                }
+                message.react('⏯');
+                // dispatcher[id]?.resume();
+                (_l = (_k = servers[id_1]) === null || _k === void 0 ? void 0 : _k.dispatcher) === null || _l === void 0 ? void 0 : _l.resume();
+                return [3 /*break*/, 26];
+            case 13:
+                if (forbidden(message)) {
+                    return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
+                }
+                message.react('🙋‍♂️');
+                (_o = (_m = servers[id_1]) === null || _m === void 0 ? void 0 : _m.getConnection) === null || _o === void 0 ? void 0 : _o.disconnect();
+                delete servers[id_1];
+                return [3 /*break*/, 26];
+            case 14:
+                if (forbidden(message)) {
+                    return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
+                }
+                if (!((_p = servers[id_1]) === null || _p === void 0 ? void 0 : _p.loop)) {
+                    (_r = (_q = servers[id_1]) === null || _q === void 0 ? void 0 : _q.queue) === null || _r === void 0 ? void 0 : _r.shift();
+                    first = (((_s = servers[id_1]) === null || _s === void 0 ? void 0 : _s.getQueue) || [])[0];
+                    if (first && ((_t = servers[id_1]) === null || _t === void 0 ? void 0 : _t.autoplay)) {
+                        servers[id_1].setAuto = first;
                     }
                 }
-                return [2 /*return*/];
+                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var _a;
+                    var _b, _c;
+                    return __generator(this, function (_d) {
+                        switch (_d.label) {
+                            case 0:
+                                _a = servers[id_1];
+                                return [4 /*yield*/, play_core_1.play((_b = servers[id_1]) === null || _b === void 0 ? void 0 : _b.getConnection, (_c = servers[id_1]) === null || _c === void 0 ? void 0 : _c.getQueue, id_1, message, servers).catch(function (err) {
+                                        console.log(err.message);
+                                        return null;
+                                    })];
+                            case 1:
+                                _a.dispatcher = _d.sent();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); })();
+                return [3 /*break*/, 26];
+            case 15:
+                if (forbidden(message)) {
+                    return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
+                }
+                servers[id_1].setLoop = ((_u = servers[id_1]) === null || _u === void 0 ? void 0 : _u.loop) ? false
+                    : (_v = servers[id_1]) === null || _v === void 0 ? void 0 : _v.getQueue[0];
+                message.react('♾');
+                ((_w = servers[id_1]) === null || _w === void 0 ? void 0 : _w.loop) ? (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var ttl, title_1, _a, title;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0:
+                                ttl = servers[id_1].loop;
+                                if (!ttl.startsWith(get_data_youtube_1.SPOTIFY_URI)) return [3 /*break*/, 3];
+                                _a = get_spotify_track_1.getSpotifyTrack;
+                                return [4 /*yield*/, get_token_1.getAccessToken()];
+                            case 1: return [4 /*yield*/, _a.apply(void 0, [_b.sent(), ttl])];
+                            case 2:
+                                title_1 = (_b.sent()).title;
+                                title_1 &&
+                                    message.channel.send("Now looping forever | " + title_1);
+                                return [2 /*return*/];
+                            case 3: return [4 /*yield*/, play_core_1.getTitleYoutube(ttl)];
+                            case 4:
+                                title = _b.sent();
+                                title &&
+                                    message.channel.send("Now looping forever | " + title);
+                                return [2 /*return*/];
+                        }
+                    });
+                }); })()
+                    : message.channel.send("Loop is now off");
+                return [3 /*break*/, 26];
+            case 16:
+                if (forbidden(message)) {
+                    return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
+                }
+                servers[id_1].setAuto = ((_x = servers[id_1]) === null || _x === void 0 ? void 0 : _x.autoplay) ? false
+                    : (_y = servers[id_1]) === null || _y === void 0 ? void 0 : _y.getQueue[0];
+                message.react('🤖');
+                ((_z = servers[id_1]) === null || _z === void 0 ? void 0 : _z.autoplay) ? message.channel.send('AUTOPLAY in now on')
+                    : message.channel.send('AUTOPLAY in now off');
+                // console.log(id, autoplay[id]);
+                return [3 /*break*/, 26];
+            case 17:
+                if (forbidden(message)) {
+                    return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
+                }
+                url_1 = servers[id_1].getQueue[0];
+                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var lyrics;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, get_lyrics_1.getLyrics(url_1)];
+                            case 1:
+                                lyrics = (_a.sent());
+                                // console.log(lyrics.length);
+                                if (lyrics) {
+                                    return [2 /*return*/, message.channel.send("```\n" + lyrics + "\n```")];
+                                }
+                                return [2 /*return*/, message.channel.send('Lyrics not found this song')];
+                        }
+                    });
+                }); })();
+                return [3 /*break*/, 26];
+            case 18:
+                if (forbidden(message)) {
+                    return [2 /*return*/, message.channel.send('Connect to the same channel as the bot')];
+                }
+                if (!(servers[id_1].getQueue.length > 1)) return [3 /*break*/, 23];
+                return [4 /*yield*/, get_data_youtube_1.getData(servers[id_1].getQueue[1], message)];
+            case 19:
+                title = (_0.sent()).title;
+                if (!title) return [3 /*break*/, 20];
+                return [2 /*return*/, message.channel.send("Up next: " + title)];
+            case 20: return [4 /*yield*/, play_core_1.getTitleYoutube(servers[id_1].getQueue[1])];
+            case 21:
+                tmpTitle = _0.sent();
+                return [2 /*return*/, message.channel.send("Up next: " + tmpTitle)];
+            case 22: return [3 /*break*/, 24];
+            case 23: return [2 /*return*/, message.channel.send('Nothing next, autoplay to the save')];
+            case 24:
+                message.channel.send("\n\t\t\t\t\t  \t```\n__audio [any Youtube Search]\n__audio [youtube Url]\n__audio [youtube Playlist url]\n__audio [spotify Track Link]\n__audio [spotify Playlist Link]\n__audio [spotify Album Link]\n__audionow  [input] (Plays the given track instantly even tho the queue is full,  continues the queue afterwards)\n__load [saved playlist name]\n__save [nameofplaylist] [playlist link]\n__restart (restarts current track)\n__lyrics (Gets lyrics of current playing song)\n__skip (Skip current track)\n__pause\n__resume \n__fuckoff (Quit)\n__loop (Loop current Song )\n__autoplay (Toogle autoplay, Keep Playing recommended songs after the queue is done)\n__shuffle (Shuffle Current Queue)\n\nFull Readme: https://github.com/Game-Linter/Discord-Music-Master#readme\n\t\t\t\t\t\t```\n\t\t\t\t");
+                return [3 /*break*/, 26];
+            case 25: return [3 /*break*/, 26];
+            case 26: return [2 /*return*/];
         }
     });
 }); };
