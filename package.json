@@ -15,7 +15,7 @@
         "query-string": "^6.13.8",
         "redis": "^3.0.2",
         "validator": "^13.5.2",
-        "ytdl-core": "^4.4.1",
+        "ytdl-core": "^4.5.0",
         "ytdl-core-discord": "^1.2.5",
         "ytpl": "^2.0.4",
         "ytsr": "^3.2.1"
