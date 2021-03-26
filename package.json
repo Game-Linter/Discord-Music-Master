@@ -29,6 +29,9 @@
         "@types/validator": "^13.1.2",
         "typescript": "*"
     },
+    "engines": {
+        "node": "14"
+    },
     "scripts": {
         "start": "node .",
         "prestart": "yarn run build",
