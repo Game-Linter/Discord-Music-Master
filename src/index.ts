@@ -437,6 +437,18 @@ const messageHandler = async (message: Message) => {
                       })()
                     : message.channel.send(`Loop is now off`);
                 break;
+            case 'current':
+                if (forbidden(message)) {
+                    return message.channel.send('No channel on bot');
+                }
+                (async () => {
+                    const { title } = await getData(
+                        servers[id].getQueue[0],
+                        message,
+                    );
+                    return message.channel.send(`Now playing, ${title}`);
+                })();
+                break;
             case 'autoplay':
                 if (forbidden(message)) {
                     return message.channel.send(
@@ -519,6 +531,8 @@ __fuckoff (Quit)
 __loop (Loop current Song )
 __autoplay (Toogle autoplay, Keep Playing recommended songs after the queue is done)
 __shuffle (Shuffle Current Queue)
+__next (Gets you next track)
+__current
 
 Full Readme: https://github.com/Game-Linter/Discord-Music-Master#readme
 						\`\`\`
