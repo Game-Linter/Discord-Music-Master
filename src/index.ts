@@ -391,7 +391,10 @@ const messageHandler = async (message: Message) => {
                     }
                 }
                 (async () => {
-                    servers[id]?.dispatcher = await play(
+                    if (!servers[id]) {
+                        return;
+                    }
+                    servers[id].dispatcher = await play(
                         servers[id]?.getConnection,
                         servers[id]?.getQueue,
                         id,
