@@ -18,7 +18,6 @@
 
 import { Message } from 'discord.js';
 import _ from 'lodash';
-import { getInfo } from 'ytdl-core';
 import { DiscordServer } from './core/discordServer';
 import { getData, SPOTIFY_URI } from './core/get-data-youtube';
 import { getCommand } from './core/getCommand';
@@ -443,30 +442,11 @@ const messageHandler = async (message: Message) => {
                     return message.channel.send('No channel on bot');
                 }
                 (async () => {
-                    const { title, url } = await getData(
+                    const { title } = await getData(
                         servers[id].getQueue[0],
                         message,
                     );
-                    let Author;
-                    if (Array.isArray(url)) {
-                        const { author } = await getInfo(url[0]).then((res) => {
-                            return {
-                                author: res.videoDetails.author.name,
-                            };
-                        });
-                        Author = author;
-                        // getTitleYoutube;
-                    } else {
-                        const { author } = await getInfo(url).then((res) => {
-                            return {
-                                author: res.videoDetails.author.name,
-                            };
-                        });
-                        Author = author;
-                    }
-                    return message.channel.send(
-                        `Currently playing, ${title} by ${Author}`,
-                    );
+                    return message.channel.send(`Now playing, ${title}`);
                 })();
                 break;
             case 'autoplay':
