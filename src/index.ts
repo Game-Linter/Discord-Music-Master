@@ -445,11 +445,14 @@ const messageHandler = async (message: Message) => {
                     return message.channel.send('No channel on bot');
                 }
                 (async () => {
-                    const { title } = await getData(
-                        servers[id].getQueue[0],
-                        message,
-                    );
-                    return message.channel.send(`Now playing, ${title}`);
+                    const current_track = servers[id].getQueue[0];
+                    const { url } = await getData(current_track, message);
+
+                    if (Array.isArray(url)) {
+                        message.channel.send(`Current track: ${url[0]}`);
+                    } else {
+                        message.channel.send(`Current track: ${url}`);
+                    }
                 })();
                 break;
             case 'autoplay':
