@@ -16,7 +16,7 @@
  *
  */
 
-import { Message } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import _ from 'lodash';
 import { DiscordServer } from './core/discordServer';
 import { getData, SPOTIFY_URI } from './core/get-data-youtube';
@@ -454,6 +454,20 @@ const messageHandler = async (message: Message) => {
                         message.channel.send(`Current track: ${url}`);
                     }
                 })();
+                break;
+            case 'ping':
+                message.channel.send('Pinging...').then((m) => {
+                    // The math thingy to calculate the user's ping
+                    const ping = m.createdTimestamp - message.createdTimestamp;
+
+                    // Basic embed
+                    const embed = new MessageEmbed()
+                        .setAuthor(`Your ping is ${ping}`)
+                        .setColor('Your Color');
+
+                    // Then It Edits the message with the ping variable embed that you created
+                    m.edit(embed);
+                });
                 break;
             case 'autoplay':
                 if (forbidden(message)) {
