@@ -18,5 +18,4 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.redisUri = void 0;
-exports.redisUri = process.env.REDIS ||
-    'redis://darklight147:4iHaUHg8os9wAZicxO2qJMzhjDiesg5h@redis-15601.c14.us-east-1-3.ec2.cloud.redislabs.com:15601';
+exports.redisUri = process.env.REDIS;

@@ -18,5 +18,4 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.token = void 0;
-exports.token = process.env.DISCORD_TOKEN ||
-    'NzI0MDEwNjY4NzUxMzIzMTk2.Xwdsfg.4Sv2FMSYIs5uHQ6nZi41zRL1N10';
+exports.token = process.env.DISCORD_TOKEN;

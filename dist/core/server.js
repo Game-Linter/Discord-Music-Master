@@ -73,11 +73,11 @@ var Discord = /** @class */ (function () {
         });
         var transaction = Sentry.startTransaction({
             op: 'test',
-            name: 'My First Test Transaction',
+            name: 'Production monitoring',
         });
         setTimeout(function () {
             try {
-                console.log('aight');
+                console.log('Sentry monitoring');
             }
             catch (e) {
                 Sentry.captureException(e);
