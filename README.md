@@ -23,7 +23,7 @@
     	</ul>
     	<h4>Play inputs</h4>
     	<p><code>__audio [input]</code></p>
-    	<p><code></code></p>
+    <p></p>
       <h4>Play the given input instantly even if the queue is full so you don't have to wait for the queue to finish. When done, the bot will continue the previous queue</h4>
     	<p><code>__audionow [input]</code></p>
     	<h4>Pause</h4>
@@ -57,7 +57,7 @@
       <h3>Note: 3</h3>
       <p><code>The bot prioritize in order:</code></p>
       <ol>
-      	<li>Loop is enabled</li>
+      	<li>Loop if enabled</li>
         <li>Queue if not empty</li>
         <li>Autoplay which is enabled by default</li>
       </ol>
