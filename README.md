@@ -4,8 +4,8 @@
     <h4 style="margin-top: 0">Revision 1</h4>
 <a  href="https://www.codacy.com/gh/Game-Linter/Discord-Music-Master/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Game-Linter/Discord-Music-Master&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8ce4f4a7f73e49339485747ec0c298e7"/></a>
     <br />
-	<b style="width: 100%"> Feel like supporting hosting and developement of this project??</b>
-<a href="https://www.buymeacoffee.com/quasimodo64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+	<b> Feel like supporting hosting and developement of this project??</b>
+	<a href="https://www.buymeacoffee.com/quasimodo64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 </div>
 <html lang="en">
 	    <body>
