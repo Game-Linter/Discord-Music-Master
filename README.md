@@ -1,3 +1,4 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/8ce4f4a7f73e49339485747ec0c298e7)](https://www.codacy.com/gh/Game-Linter/Discord-Music-Master/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Game-Linter/Discord-Music-Master&amp;utm_campaign=Badge_Grade)
 <div align="center">
     <img src="https://i.imgur.com/tQrygFc.png" width="128px" style="max-width:100%;">
     <h3 style="font-size: 2rem; margin-bottom: 0">Game-Linter Music Master README</h3>
