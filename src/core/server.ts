@@ -18,6 +18,8 @@
 
 import { Client, Message } from 'discord.js';
 import { token } from '../config/discord.config';
+import * as Sentry from '@sentry/node';
+import * as Tracing from '@sentry/tracing';
 
 export class Discord {
     client: Client;
@@ -39,6 +41,36 @@ export class Discord {
     }
 
     Login() {
+        // const Sentry = require('@sentry/node');
+        // or use es6 import statements
+
+        // const Tracing = require('@sentry/tracing');
+        // or use es6 import statements
+
+        Sentry.init({
+            dsn:
+                'https://abd380ace54d45b69c0fbb409abe5884@o337865.ingest.sentry.io/5742982',
+
+            // Set tracesSampleRate to 1.0 to capture 100%
+            // of transactions for performance monitoring.
+            // We recommend adjusting this value in production
+            tracesSampleRate: 1.0,
+        });
+
+        const transaction = Sentry.startTransaction({
+            op: 'test',
+            name: 'Production monitoring',
+        });
+
+        setTimeout(() => {
+            try {
+                console.log('Sentry monitoring');
+            } catch (e) {
+                Sentry.captureException(e);
+            } finally {
+                transaction.finish();
+            }
+        }, 99);
         this.client.login(token);
     }
 }

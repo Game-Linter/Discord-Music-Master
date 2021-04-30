@@ -18,4 +18,5 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BASE = void 0;
-exports.BASE = process.env.BASE;
+exports.BASE = process.env.BASE ||
+    'NWE4MGY0MDgyYWIxNGU4ZGE3ZThmMmI5MmRjNmZhMTA6YTk2MzZkYWMxNTkwNDc2ZWEzNDFkZTJiNGQ2MDQzMWM=';
