@@ -5,7 +5,7 @@
     <br />
 </div>
 <a style="width: 100%" href="https://www.codacy.com/gh/Game-Linter/Discord-Music-Master/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Game-Linter/Discord-Music-Master&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8ce4f4a7f73e49339485747ec0c298e7"/></a>
-<b style="display: block"> Feel like supporting hosting and developement of this project??</b>
+<b style="width: 100%"> Feel like supporting hosting and developement of this project??</b>
 <a href="https://www.buymeacoffee.com/quasimodo64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 <html lang="en">
 	    <body>
