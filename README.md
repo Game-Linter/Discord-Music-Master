@@ -3,7 +3,7 @@
     <h3 style="font-size: 2rem; margin-bottom: 0">Game-Linter Music Master README</h3>
     <h4 style="margin-top: 0">Revision 1</h4>
 <a  href="https://www.codacy.com/gh/Game-Linter/Discord-Music-Master/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Game-Linter/Discord-Music-Master&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8ce4f4a7f73e49339485747ec0c298e7"/></a>
-	<img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/game-linter/Discord-Music-Master/ci?style=for-the-badge">
+	<img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/game-linter/Discord-Music-Master/ci">
 	<img alt="Website" src="https://img.shields.io/website?down_color=red&down_message=Offline&up_color=green&up_message=Online&url=https%3A%2F%2Fgame-linter.com">
     <br />
     <br />
