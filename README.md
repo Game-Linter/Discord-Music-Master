@@ -4,8 +4,9 @@
     <h4 style="margin-top: 0">Revision 1</h4>
     <br />
 </div>
-
+**Feel like supporting this free plugin?**
 <html lang="en">
+	<a href="https://ko-fi.com/mohamedbelkamel" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 	    <body>
     	<h1>Play almost any type of songs</h1>
     	<h4>Types of inputs</h4>
