@@ -1,10 +1,10 @@
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/8ce4f4a7f73e49339485747ec0c298e7)](https://www.codacy.com/gh/Game-Linter/Discord-Music-Master/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Game-Linter/Discord-Music-Master&amp;utm_campaign=Badge_Grade)
 <div align="center">
     <img src="https://i.imgur.com/tQrygFc.png" width="128px" style="max-width:100%;">
     <h3 style="font-size: 2rem; margin-bottom: 0">Game-Linter Music Master README</h3>
     <h4 style="margin-top: 0">Revision 1</h4>
     <br />
 </div>
+<a href="https://www.codacy.com/gh/Game-Linter/Discord-Music-Master/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Game-Linter/Discord-Music-Master&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8ce4f4a7f73e49339485747ec0c298e7"/></a>
 <b style="display: flex"> Feel like supporting hosting and developement of this project??</b>
 <a href="https://www.buymeacoffee.com/quasimodo64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 <html lang="en">
