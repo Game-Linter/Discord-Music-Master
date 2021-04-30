@@ -5,6 +5,8 @@ on:
         branches: [oop, master]
     pull_request:
         branches: master
+    paths-ignore:
+        - '**/README.md'
 
 jobs:
     CI:
