@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:lts as build
 
 
 WORKDIR /usr/app
@@ -22,6 +22,6 @@ COPY yarn.lock .
 
 RUN yarn --forzen-lockfile
 
-COPY --from=0 /usr/app/dist ./
+COPY --from=build /usr/app/dist ./
 
 CMD [ "node", "." ]
