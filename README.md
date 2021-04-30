@@ -4,8 +4,8 @@
     <h4 style="margin-top: 0">Revision 1</h4>
     <br />
 </div>
-<b> Feel like supporting this free plugin?</b>
-<a href="https://www.buymeacoffee.com/garmeeh" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+<b display="flex"> Feel like supporting this free plugin?</b>
+<a href="https://www.buymeacoffee.com/quasimodo64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 <html lang="en">
 	    <body>
     	<h1>Play almost any type of songs</h1>
