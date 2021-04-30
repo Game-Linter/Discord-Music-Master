@@ -4,7 +4,7 @@
     <h4 style="margin-top: 0">Revision 1</h4>
     <br />
 </div>
-<b display="flex"> Feel like supporting this free plugin?</b>
+<b style="display: flex"> Feel like supporting hosting and developement of this project??</b>
 <a href="https://www.buymeacoffee.com/quasimodo64" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 <html lang="en">
 	    <body>
