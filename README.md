@@ -7,6 +7,7 @@
 	<img alt="Website" src="https://img.shields.io/website?down_color=red&down_message=Offline&up_color=green&up_message=Online&url=https%3A%2F%2Fgame-linter.com">
 	<img alt="GitHub" src="https://img.shields.io/github/license/game-linter/Discord-Music-Master">
 	<img alt="Discord" src="https://img.shields.io/discord/626833340560965652">
+	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/game-linter/discord-music-master">
     <br />
     <br />
 	<b> Feel like supporting hosting and developement of this project??</b>
