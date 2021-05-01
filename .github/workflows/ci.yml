@@ -31,7 +31,7 @@ jobs:
                   context: .
                   file: ./Dockerfile
                   push: true
-                  tags: registry.gitlab.com/darklight147/discord-music-master:latest
+                  tags: registry.gitlab.com/darklight147/discord-music-master:latest, registry.gitlab.com/darklight147/discord-music-master:{{version}}
 
     CD:
         name: Deploy to production server
