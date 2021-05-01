@@ -4,6 +4,7 @@
     <h4 style="margin-top: 0">Revision 1</h4>
 <a  href="https://www.codacy.com/gh/Game-Linter/Discord-Music-Master/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Game-Linter/Discord-Music-Master&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8ce4f4a7f73e49339485747ec0c298e7"/></a>
 	<a href="https://github.com/Game-Linter/Discord-Music-Master/actions/workflows/ci.yml"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/game-linter/Discord-Music-Master/ci"></a>
+	<img alt="Azure DevOps builds" src="https://img.shields.io/azure-devops/build/BELKAMELMOHAMED/1e28e23e-3ec9-425b-a6e6-fc94e5377c90/1?label=azure%20pipeline">
 	<a href="https://game-linter.com"><img alt="Website" src="https://img.shields.io/website?down_color=red&down_message=Offline&up_color=green&up_message=Online&url=https%3A%2F%2Fgame-linter.com"></a>
 	<a href="https://github.com/Game-Linter/Discord-Music-Master/blob/master/LICENSE.md"><img alt="GitHub" src="https://img.shields.io/github/license/game-linter/Discord-Music-Master"></a>
 	<a href="https://discord.gg/QFrgdV3"><img alt="Discord" src="https://img.shields.io/discord/626833340560965652"></a>
