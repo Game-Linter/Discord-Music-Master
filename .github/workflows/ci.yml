@@ -4,12 +4,13 @@ on:
     push:
         branches: [oop, master]
         paths-ignore:
-          - '**/README.md'
+            - '**/README.md'
     pull_request:
         branches: master
 
 jobs:
     CI:
+        name: Running CI to build / push docker image
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
