@@ -464,13 +464,11 @@ const messageHandler = async (message: Message) => {
                     // message.channel.send();
                     const embed = new MessageEmbed()
                         .setAuthor(
-                            `⏲ Latency is ${
-                                Date.now() - message.createdTimestamp
-                            }ms. API Latency is ${Math.round(
+                            `⏲ Latency is ${ping}ms. WS Latency is ${Math.round(
                                 client.ws.ping,
                             )}ms`,
                         )
-                        .setColor('#eeeeee');
+                        .setColor('#00ff28');
 
                     // Then It Edits the message with the ping variable embed that you created
                     m.edit(embed);
