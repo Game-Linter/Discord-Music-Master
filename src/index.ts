@@ -466,7 +466,7 @@ const messageHandler = async (message: Message) => {
                         .setAuthor(
                             `⏲ Latency is ${ping}ms. WS Latency is ${Math.round(
                                 client.ws.ping,
-                            )}ms`,
+                            )}ms.`,
                         )
                         .setColor('#00ff28');
 
