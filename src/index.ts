@@ -456,7 +456,7 @@ const messageHandler = async (message: Message) => {
                 })();
                 break;
             case 'ping':
-                message.channel.send('Pinging...').then((m) => {
+                message.channel.send('🎯 Pinging...').then((m) => {
                     // The math thingy to calculate the user's ping
                     const ping = m.createdTimestamp - message.createdTimestamp;
 
