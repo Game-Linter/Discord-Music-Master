@@ -25,7 +25,7 @@ export class Donation {
                     } else {
                         setASYNC(
                             `donation:${author}`,
-                            this.ttl.toString(),
+                            (+amount + +donations).toString(),
                         ).then((result) => {
                             resolve(+amount + +donations);
                         });
