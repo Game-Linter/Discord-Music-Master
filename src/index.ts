@@ -25,6 +25,7 @@ import { getTitleYoutube, play } from './core/play-core';
 import { Discord } from './core/server';
 import { getLyrics } from './utils/get-lyrics';
 import { getSpotifyTrack } from './utils/get-spotify-track';
+import { Donation } from './utils/donation';
 import {
     getAccessToken,
     getAsync,
@@ -533,6 +534,28 @@ const messageHandler = async (message: Message) => {
                         'Nothing next, autoplay to the save',
                     );
                 }
+            // As a joke
+            case 'donate':
+                (async () => {
+                    const msgContent = message.content
+                        .trim()
+                        .replace(/\s+/g, ' ');
+                    const args = msgContent.split(' ');
+
+                    if (!args[1]) {
+                        return message.channel.send('No amount given');
+                    }
+
+                    const donation = new Donation(message, args[1]);
+
+                    return message.channel.send(
+                        `GG, ${
+                            (await client.users.fetch(message.author.id))
+                                .username
+                        } Donated ${donation.total}, Thank you - ~jk~`,
+                    );
+                })();
+                return;
             // break;
 
             case 'help':
