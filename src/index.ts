@@ -548,12 +548,16 @@ const messageHandler = async (message: Message) => {
 
                     const donation = new Donation(message, args[1]);
 
-                    return message.channel.send(
-                        `GG, ${
-                            (await client.users.fetch(message.author.id))
-                                .username
-                        } Donated ${donation.total}, Thank you - ~jk~`,
-                    );
+                    if (donation.total !== 0) {
+                        return message.channel.send(
+                            `GG, ${
+                                (await client.users.fetch(message.author.id))
+                                    .username
+                            } Donated ${
+                                donation.total
+                            } credits, Thank you - ~jk~`,
+                        );
+                    }
                 })();
                 return;
             // break;

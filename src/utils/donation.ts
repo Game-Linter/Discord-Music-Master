@@ -9,21 +9,23 @@ export class Donation {
     private ttl: number = 0;
 
     constructor(message: Message, amount: string) {
-        const author = message.author.id;
+        (async () => {
+            const author = message.author.id;
 
-        const author_donations = getASYNC(`donation:${author}`);
+            const author_donations = await getASYNC(`donation:${author}`);
 
-        if (isNaN(+amount)) {
-            message.channel.send('(-_-) (-_-)');
-        } else {
-            if (!author_donations) {
-                setASYNC(`donation:${author}`, amount);
-                this.ttl = +amount;
+            if (isNaN(+amount)) {
+                message.channel.send('(-_-) (-_-)');
             } else {
-                this.ttl = +amount + +author_donations;
-                setASYNC(`donation:${author}`, this.ttl.toString());
+                if (!author_donations) {
+                    await setASYNC(`donation:${author}`, amount);
+                    this.ttl = +amount;
+                } else {
+                    this.ttl = +amount + +author_donations;
+                    await setASYNC(`donation:${author}`, this.ttl.toString());
+                }
             }
-        }
+        })();
     }
 
     public get total(): number {
