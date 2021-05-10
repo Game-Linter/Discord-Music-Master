@@ -6,29 +6,32 @@ const getASYNC = promisify(redisClient.get).bind(redisClient);
 const setASYNC = promisify(redisClient.set).bind(redisClient);
 
 export class Donation {
-    private ttl: number = 0;
+    public ttl: Promise<number>;
 
     constructor(message: Message, amount: string) {
-        (async () => {
+        this.ttl = new Promise((resolve, reject) => {
             const author = message.author.id;
 
-            const author_donations = await getASYNC(`donation:${author}`);
-
-            if (isNaN(+amount)) {
-                message.channel.send('(-_-) (-_-)');
-            } else {
-                if (!author_donations) {
-                    await setASYNC(`donation:${author}`, amount);
-                    this.ttl = +amount;
+            getASYNC(`donation:${author}`).then((donations) => {
+                if (isNaN(+amount)) {
+                    message.channel.send('(-_-) (-_-)');
                 } else {
-                    this.ttl = +amount + +author_donations;
-                    await setASYNC(`donation:${author}`, this.ttl.toString());
+                    if (!donations) {
+                        setASYNC(`donation:${author}`, amount).then(
+                            (result) => {
+                                resolve(+amount);
+                            },
+                        );
+                    } else {
+                        setASYNC(
+                            `donation:${author}`,
+                            this.ttl.toString(),
+                        ).then((result) => {
+                            resolve(+amount + +donations);
+                        });
+                    }
                 }
-            }
-        })();
-    }
-
-    public get total(): number {
-        return this.ttl;
+            });
+        });
     }
 }
