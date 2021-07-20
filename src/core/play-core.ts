@@ -116,8 +116,8 @@ export async function play(
                     await getAccessToken(),
                     firstUrl,
                 );
-                title && message.react('😳');
-                title && message.channel.send(`Now playing | ${title}`);
+                title && await message.react('😳');
+                title && await message.channel.send(`Now playing | ${title}`);
                 const { url } = await ytsr(search, { pages: 1, limit: 1 })
                     .then((__res) => __res.items[0] as any)
                     .catch((err) => {
@@ -201,8 +201,8 @@ export async function play(
             }
         }
         const title = await getTitleYoutube(queue[0]);
-        title && message.react('😳');
-        title && message.channel.send(`Now playing | ${title}`);
+        title && await message.react('😳');
+        title && await message.channel.send(`Now playing | ${title}`);
         return connection
             ?.play(
                 await ytdl(queue[0], {

@@ -72,6 +72,7 @@ var play_core_1 = require("./core/play-core");
 var server_1 = require("./core/server");
 var get_lyrics_1 = require("./utils/get-lyrics");
 var get_spotify_track_1 = require("./utils/get-spotify-track");
+var donation_1 = require("./utils/donation");
 var get_token_1 = require("./utils/get-token");
 var PREFIX = '__';
 var servers = {};
@@ -112,7 +113,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                 _a = !(_0.sent());
                 _0.label = 2;
             case 2:
-                if (!_a) return [3 /*break*/, 28];
+                if (!_a) return [3 /*break*/, 29];
                 _b = getCommand_1.getCommand(message, PREFIX), command = _b.command, id_1 = _b.id;
                 _c = command;
                 switch (_c) {
@@ -134,9 +135,10 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                     case 'autoplay': return [3 /*break*/, 18];
                     case 'lyrics': return [3 /*break*/, 19];
                     case 'next': return [3 /*break*/, 20];
-                    case 'help': return [3 /*break*/, 26];
+                    case 'donate': return [3 /*break*/, 26];
+                    case 'help': return [3 /*break*/, 27];
                 }
-                return [3 /*break*/, 27];
+                return [3 /*break*/, 28];
             case 3:
                 (function () { return __awaiter(void 0, void 0, void 0, function () {
                     var msgContent, args, error_1;
@@ -209,7 +211,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 5:
                 if ((_f = message.member) === null || _f === void 0 ? void 0 : _f.voice.channelID) {
                     (function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -266,7 +268,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                 else {
                     message.channel.send('Connect to a channel first');
                 }
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 6:
                 (function () { return __awaiter(void 0, void 0, void 0, function () {
                     var msgContent, args, _a, url, title, _b, tobeShifted, rest, _c;
@@ -314,14 +316,14 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 7:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                 }
                 message.react('⏸');
                 (_h = (_g = servers[id_1]) === null || _g === void 0 ? void 0 : _g.dispatcher) === null || _h === void 0 ? void 0 : _h.pause();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 8:
                 (function () { return __awaiter(void 0, void 0, void 0, function () {
                     var _a, userId, bannedUser, _b, _c;
@@ -360,7 +362,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 9:
                 (function () { return __awaiter(void 0, void 0, void 0, function () {
                     var _a, userId, bannedUser, bannedArr, newBannedArr;
@@ -401,7 +403,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 10:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
@@ -424,7 +426,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 11:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
@@ -449,7 +451,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 12:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
@@ -457,7 +459,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                 message.react('⏯');
                 // dispatcher[id]?.resume();
                 (_l = (_k = servers[id_1]) === null || _k === void 0 ? void 0 : _k.dispatcher) === null || _l === void 0 ? void 0 : _l.resume();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 13:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
@@ -465,7 +467,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                 message.react('🙋‍♂️');
                 (_o = (_m = servers[id_1]) === null || _m === void 0 ? void 0 : _m.getConnection) === null || _o === void 0 ? void 0 : _o.disconnect();
                 delete servers[id_1];
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 14:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
@@ -497,7 +499,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 15:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
@@ -530,7 +532,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                     });
                 }); })()
                     : message.channel.send("Loop is now off");
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 16:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('No channel on bot')];
@@ -554,19 +556,20 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 17:
-                message.channel.send('Pinging...').then(function (m) {
+                message.channel.send('🎯 Pinging...').then(function (m) {
                     // The math thingy to calculate the user's ping
                     var ping = m.createdTimestamp - message.createdTimestamp;
                     // Basic embed
+                    // message.channel.send();
                     var embed = new discord_js_1.MessageEmbed()
-                        .setAuthor("Your ping is " + ping)
-                        .setColor('Your Color');
+                        .setAuthor("\u23F2 Latency is " + ping + "ms. WS Latency is " + Math.round(client.ws.ping) + "ms.")
+                        .setColor('#00ff28');
                     // Then It Edits the message with the ping variable embed that you created
                     m.edit(embed);
                 });
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 18:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
@@ -577,7 +580,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                 ((_z = servers[id_1]) === null || _z === void 0 ? void 0 : _z.autoplay) ? message.channel.send('AUTOPLAY in now on')
                     : message.channel.send('AUTOPLAY in now off');
                 // console.log(id, autoplay[id]);
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 19:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
@@ -598,7 +601,7 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 28];
+                return [3 /*break*/, 29];
             case 20:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Connect to the same channel as the bot')];
@@ -616,10 +619,39 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
             case 24: return [3 /*break*/, 26];
             case 25: return [2 /*return*/, message.channel.send('Nothing next, autoplay to the save')];
             case 26:
+                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var msgContent, args, donation;
+                    return __generator(this, function (_a) {
+                        msgContent = message.content
+                            .trim()
+                            .replace(/\s+/g, ' ');
+                        args = msgContent.split(' ');
+                        if (!args[1]) {
+                            return [2 /*return*/, message.channel.send('No amount given')];
+                        }
+                        donation = new donation_1.Donation(message, args[1]);
+                        donation.ttl.then(function (res) { return __awaiter(void 0, void 0, void 0, function () {
+                            var _a, _b, _c;
+                            return __generator(this, function (_d) {
+                                switch (_d.label) {
+                                    case 0:
+                                        _b = (_a = message.channel).send;
+                                        _c = "GG, ";
+                                        return [4 /*yield*/, client.users.fetch(message.author.id)];
+                                    case 1: return [2 /*return*/, _b.apply(_a, [_c + (_d.sent())
+                                                .username + " Donated " + res + " credits, Thank you - ~jk~"])];
+                                }
+                            });
+                        }); });
+                        return [2 /*return*/];
+                    });
+                }); })();
+                return [2 /*return*/];
+            case 27:
                 message.channel.send("\n\t\t\t\t\t  \t```\n__audio [any Youtube Search]\n__audio [youtube Url]\n__audio [youtube Playlist url]\n__audio [spotify Track Link]\n__audio [spotify Playlist Link]\n__audio [spotify Album Link]\n__audionow  [input] (Plays the given track instantly even tho the queue is full,  continues the queue afterwards)\n__load [saved playlist name]\n__save [nameofplaylist] [playlist link]\n__restart (restarts current track)\n__lyrics (Gets lyrics of current playing song)\n__skip (Skip current track)\n__pause\n__resume \n__fuckoff (Quit)\n__loop (Loop current Song )\n__autoplay (Toogle autoplay, Keep Playing recommended songs after the queue is done)\n__shuffle (Shuffle Current Queue)\n__next (Gets you next track)\n__current\n\nFull Readme: https://github.com/Game-Linter/Discord-Music-Master#readme\n\t\t\t\t\t\t```\n\t\t\t\t");
-                return [3 /*break*/, 28];
-            case 27: return [3 /*break*/, 28];
-            case 28: return [2 /*return*/];
+                return [3 /*break*/, 29];
+            case 28: return [3 /*break*/, 29];
+            case 29: return [2 /*return*/];
         }
     });
 }); };

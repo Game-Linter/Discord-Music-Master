@@ -65,7 +65,7 @@ const messageHandler = async (message: Message) => {
         const { command, id } = getCommand(message, PREFIX);
         switch (command) {
             case 'save':
-                (async () => {
+                await (async () => {
                     const msgContent = message.content
                         .trim()
                         .replace(/\s+/g, ' ');
@@ -77,14 +77,14 @@ const messageHandler = async (message: Message) => {
                     }
                     try {
                         await setPlaylist(message, args[1], args[2]);
-                        message.channel.send(
+                        await message.channel.send(
                             'Playlist save for this guild with the name ' +
-                                '`' +
-                                args[1] +
-                                '`',
+                            '`' +
+                            args[1] +
+                            '`',
                         );
                     } catch (error) {
-                        message.channel.send(error.message);
+                        await message.channel.send(error.message);
                     }
                 })();
                 return;
@@ -97,7 +97,7 @@ const messageHandler = async (message: Message) => {
                 if (!args[1]) {
                     return message.channel.send('Give a playlist name');
                 }
-                (async () => {
+                await (async () => {
                     const pl = await loadPlaylist(message, args[1]);
                     if (pl) {
                         if (!servers[id]) {
@@ -109,7 +109,7 @@ const messageHandler = async (message: Message) => {
                             );
                         } else {
                             if (forbidden(message)) {
-                                message.channel.send(
+                                await message.channel.send(
                                     'get into a channel first',
                                 );
                                 return;
@@ -120,7 +120,7 @@ const messageHandler = async (message: Message) => {
                                 servers[id].queue.push(pl);
                             }
 
-                            message.channel.send(
+                            await message.channel.send(
                                 'Queud the playlist ' + args[1],
                             );
                         }
@@ -129,7 +129,7 @@ const messageHandler = async (message: Message) => {
                 break;
             case 'audio':
                 if (message.member?.voice.channelID) {
-                    (async () => {
+                    await (async () => {
                         const msgContent = message.content
                             .trim()
                             .replace(/\s+/g, ' ');
@@ -172,7 +172,7 @@ const messageHandler = async (message: Message) => {
                                 }
                                 message.react('🦆');
                                 title &&
-                                    message.channel.send(`Queued | ${title}`);
+                                message.channel.send(`Queued | ${title}`);
                             }
                             // console.log(connection);
                         } catch (error) {
@@ -184,7 +184,7 @@ const messageHandler = async (message: Message) => {
                 }
                 break;
             case 'audionow':
-                (async () => {
+                await (async () => {
                     const msgContent = message.content
                         .trim()
                         .replace(/\s+/g, ' ');
@@ -218,7 +218,7 @@ const messageHandler = async (message: Message) => {
                     }
 
                     servers[id].setQueue = [...rest];
-                    message.react('🦆');
+                    await message.react('🦆');
                     title && message.channel.send(`Next | ${title}`);
                     servers[id].dispatcher = await play(
                         servers[id]?.getConnection,
@@ -243,7 +243,7 @@ const messageHandler = async (message: Message) => {
                 servers[id]?.dispatcher?.pause();
                 break;
             case 'banfrombot':
-                (async () => {
+                await (async () => {
                     if (message.author.id !== '563804458526441639') {
                         return message.reply(
                             "You're not allowed to ban users from bot",
@@ -281,7 +281,7 @@ const messageHandler = async (message: Message) => {
                 break;
 
             case 'unbanfrombot':
-                (async () => {
+                await (async () => {
                     if (message.author.id !== '563804458526441639') {
                         return message.reply(
                             "You're not allowed to ban users from bot",
@@ -321,7 +321,7 @@ const messageHandler = async (message: Message) => {
                     );
                 }
                 message.react('🦎');
-                (async () => {
+                await (async () => {
                     servers[id].dispatcher = await play(
                         servers[id]?.getConnection,
                         servers[id]?.getQueue,
@@ -342,7 +342,7 @@ const messageHandler = async (message: Message) => {
                 }
                 message.react('🔀');
                 let [, ...tmp] = servers[id]?.getQueue || [];
-                (async () => {
+                await (async () => {
                     tmp.length && (tmp = _.shuffle(tmp));
                     servers[id].dispatcher = await play(
                         servers[id]?.getConnection,

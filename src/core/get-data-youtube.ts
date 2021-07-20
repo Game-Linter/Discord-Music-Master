@@ -63,7 +63,7 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
                                 itemId,
                                 aatoken,
                             );
-                            (await loading).edit('Playlist Loaded');
+                            await (await loading).edit('Playlist Loaded');
                             return { url: trackUrls };
 
                         case 'album':
