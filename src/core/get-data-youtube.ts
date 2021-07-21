@@ -19,7 +19,7 @@
 import { Message } from 'discord.js';
 import { parseUrl } from 'query-string';
 import validator from 'validator';
-import { getInfo } from 'ytdl-core-discord';
+import { getInfo } from 'ytdl-core';
 import ytpl from 'ytpl';
 import ytsr from 'ytsr';
 import { getAlbumSpotify } from '../utils/get-album-spotify';
