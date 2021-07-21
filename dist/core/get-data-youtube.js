@@ -91,9 +91,9 @@ var getData = function (urlOrQuery, message) {
                                             switch (_a) {
                                                 case 'track': return [3 /*break*/, 1];
                                                 case 'playlist': return [3 /*break*/, 3];
-                                                case 'album': return [3 /*break*/, 6];
+                                                case 'album': return [3 /*break*/, 7];
                                             }
-                                            return [3 /*break*/, 8];
+                                            return [3 /*break*/, 9];
                                         case 1: return [4 /*yield*/, get_spotify_track_1.getSpotifyTrack(aatoken_1, urlOrQuery)];
                                         case 2:
                                             title = (_b.sent()).title;
@@ -104,14 +104,15 @@ var getData = function (urlOrQuery, message) {
                                         case 4:
                                             trackUrls = _b.sent();
                                             return [4 /*yield*/, loading];
-                                        case 5:
-                                            (_b.sent()).edit('Playlist Loaded');
+                                        case 5: return [4 /*yield*/, (_b.sent()).edit('Playlist Loaded')];
+                                        case 6:
+                                            _b.sent();
                                             return [2 /*return*/, { url: trackUrls }];
-                                        case 6: return [4 /*yield*/, get_album_spotify_1.getAlbumSpotify(type_1, itemId_1, aatoken_1)];
-                                        case 7:
+                                        case 7: return [4 /*yield*/, get_album_spotify_1.getAlbumSpotify(type_1, itemId_1, aatoken_1)];
+                                        case 8:
                                             albumTracks = _b.sent();
                                             return [2 /*return*/, { url: albumTracks }];
-                                        case 8: return [2 /*return*/, {
+                                        case 9: return [2 /*return*/, {
                                                 url: '',
                                                 title: '',
                                             }];

@@ -38,6 +38,12 @@ const PREFIX = '__';
 
 let servers: { [x: string]: DiscordServer } = {};
 
+import dotenv from 'dotenv';
+
+dotenv.config({
+    path: '.env'
+});
+
 const forbidden = (message: Message) => {
     if (!message.member?.voice) {
         return true;

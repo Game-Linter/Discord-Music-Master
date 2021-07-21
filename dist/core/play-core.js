@@ -134,10 +134,10 @@ exports.getTitleYoutube = getTitleYoutube;
 function play(connection, queue, id, message, servers, title) {
     var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var trackUrl, searchUri, finalTitle, _b, search, title_1, _c, _d, url, title_2, _e, _f, _g, _h, firstUrl_1, _j, search, title_3, _k, url, _l, _m, _o, error_1, _p, search, title_4, _q, url, _r, _s, _t, title_5, _u, _v, _w, qq, tmpQ, spotifyLink, video_url;
+        var trackUrl, searchUri, finalTitle, _b, search, title_1, _c, _d, url, title_2, _e, _f, _g, _h, firstUrl_1, _j, search, title_3, _k, _l, _m, url, _o, _p, _q, error_1, _r, search, title_4, _s, url, _t, _u, _v, title_5, _w, _x, _y, _z, _0, qq, tmpQ, spotifyLink, video_url;
         var _this = this;
-        return __generator(this, function (_x) {
-            switch (_x.label) {
+        return __generator(this, function (_1) {
+            switch (_1.label) {
                 case 0:
                     if (!servers[id].loop) return [3 /*break*/, 11];
                     trackUrl = servers[id].loop;
@@ -145,22 +145,22 @@ function play(connection, queue, id, message, servers, title) {
                     if (!trackUrl.startsWith(get_data_youtube_1.SPOTIFY_URI)) return [3 /*break*/, 3];
                     _c = get_spotify_track_1.getSpotifyTrack;
                     return [4 /*yield*/, get_token_1.getAccessToken()];
-                case 1: return [4 /*yield*/, _c.apply(void 0, [_x.sent(), trackUrl])];
+                case 1: return [4 /*yield*/, _c.apply(void 0, [_1.sent(), trackUrl])];
                 case 2:
-                    _b = _x.sent(), search = _b.search, title_1 = _b.title;
+                    _b = _1.sent(), search = _b.search, title_1 = _b.title;
                     searchUri = search;
                     finalTitle = title_1;
-                    _x.label = 3;
+                    _1.label = 3;
                 case 3:
                     if (!searchUri) return [3 /*break*/, 5];
                     return [4 /*yield*/, ytsr_1.default(searchUri, { pages: 1, limit: 1 }).then(function (res) { return res.items[0]; })];
                 case 4:
-                    _e = _x.sent();
+                    _e = _1.sent();
                     return [3 /*break*/, 7];
                 case 5: return [4 /*yield*/, get_data_youtube_1.getData(trackUrl, message)];
                 case 6:
-                    _e = _x.sent();
-                    _x.label = 7;
+                    _e = _1.sent();
+                    _1.label = 7;
                 case 7:
                     _d = _e, url = _d.url, title_2 = _d.title;
                     message.react('🔁');
@@ -174,7 +174,7 @@ function play(connection, queue, id, message, servers, title) {
                             filter: 'audioonly',
                         })];
                 case 9:
-                    _f = _h.apply(_g, [_x.sent(), {
+                    _f = _h.apply(_g, [_1.sent(), {
                             type: 'opus',
                         }]).on('finish', function () {
                         (function () { return __awaiter(_this, void 0, void 0, function () {
@@ -191,23 +191,37 @@ function play(connection, queue, id, message, servers, title) {
                             });
                         }); })();
                     });
-                    _x.label = 10;
+                    _1.label = 10;
                 case 10: return [2 /*return*/, _f];
                 case 11:
-                    if (!queue.length) return [3 /*break*/, 31];
+                    if (!queue.length) return [3 /*break*/, 39];
                     servers[id].setQueue = queue;
                     firstUrl_1 = queue[0];
-                    if (!firstUrl_1.startsWith(get_data_youtube_1.SPOTIFY_URI)) return [3 /*break*/, 26];
-                    _x.label = 12;
+                    if (!firstUrl_1.startsWith(get_data_youtube_1.SPOTIFY_URI)) return [3 /*break*/, 30];
+                    _1.label = 12;
                 case 12:
-                    _x.trys.push([12, 19, , 26]);
+                    _1.trys.push([12, 23, , 30]);
                     _k = get_spotify_track_1.getSpotifyTrack;
                     return [4 /*yield*/, get_token_1.getAccessToken()];
-                case 13: return [4 /*yield*/, _k.apply(void 0, [_x.sent(), firstUrl_1])];
+                case 13: return [4 /*yield*/, _k.apply(void 0, [_1.sent(), firstUrl_1])];
                 case 14:
-                    _j = _x.sent(), search = _j.search, title_3 = _j.title;
-                    title_3 && message.react('😳');
-                    title_3 && message.channel.send("Now playing | " + title_3);
+                    _j = _1.sent(), search = _j.search, title_3 = _j.title;
+                    _l = title_3;
+                    if (!_l) return [3 /*break*/, 16];
+                    return [4 /*yield*/, message.react('😳')];
+                case 15:
+                    _l = (_1.sent());
+                    _1.label = 16;
+                case 16:
+                    _l;
+                    _m = title_3;
+                    if (!_m) return [3 /*break*/, 18];
+                    return [4 /*yield*/, message.channel.send("Now playing | " + title_3)];
+                case 17:
+                    _m = (_1.sent());
+                    _1.label = 18;
+                case 18:
+                    _m;
                     return [4 /*yield*/, ytsr_1.default(search, { pages: 1, limit: 1 })
                             .then(function (__res) { return __res.items[0]; })
                             .catch(function (err) {
@@ -216,18 +230,18 @@ function play(connection, queue, id, message, servers, title) {
                                 url: null,
                             };
                         })];
-                case 15:
-                    url = (_x.sent()).url;
-                    if (!(connection === null || connection === void 0)) return [3 /*break*/, 16];
-                    _l = void 0;
-                    return [3 /*break*/, 18];
-                case 16:
-                    _o = (_m = connection).play;
+                case 19:
+                    url = (_1.sent()).url;
+                    if (!(connection === null || connection === void 0)) return [3 /*break*/, 20];
+                    _o = void 0;
+                    return [3 /*break*/, 22];
+                case 20:
+                    _q = (_p = connection).play;
                     return [4 /*yield*/, ytdl_core_discord_1.default(url, {
                             filter: 'audioonly',
                         })];
-                case 17:
-                    _l = _o.apply(_m, [_x.sent(), {
+                case 21:
+                    _o = _q.apply(_p, [_1.sent(), {
                             type: 'opus',
                         }]).on('finish', function () {
                         var _a;
@@ -253,17 +267,17 @@ function play(connection, queue, id, message, servers, title) {
                             });
                         }); })();
                     });
-                    _x.label = 18;
-                case 18: return [2 /*return*/, _l];
-                case 19:
-                    error_1 = _x.sent();
+                    _1.label = 22;
+                case 22: return [2 /*return*/, _o];
+                case 23:
+                    error_1 = _1.sent();
                     console.log(error_1.message);
                     queue.shift();
-                    _q = get_spotify_track_1.getSpotifyTrack;
+                    _s = get_spotify_track_1.getSpotifyTrack;
                     return [4 /*yield*/, get_token_1.getAccessToken()];
-                case 20: return [4 /*yield*/, _q.apply(void 0, [_x.sent(), queue[0]])];
-                case 21:
-                    _p = _x.sent(), search = _p.search, title_4 = _p.title;
+                case 24: return [4 /*yield*/, _s.apply(void 0, [_1.sent(), queue[0]])];
+                case 25:
+                    _r = _1.sent(), search = _r.search, title_4 = _r.title;
                     title_4 && message.react('😳');
                     title_4 && message.channel.send("Now playing | " + title_4);
                     return [4 /*yield*/, ytsr_1.default(search, { pages: 1, limit: 1 })
@@ -272,18 +286,18 @@ function play(connection, queue, id, message, servers, title) {
                             console.log(error_1.message);
                             return { url: null };
                         })];
-                case 22:
-                    url = (_x.sent()).url;
-                    if (!(connection === null || connection === void 0)) return [3 /*break*/, 23];
-                    _r = void 0;
-                    return [3 /*break*/, 25];
-                case 23:
-                    _t = (_s = connection).play;
+                case 26:
+                    url = (_1.sent()).url;
+                    if (!(connection === null || connection === void 0)) return [3 /*break*/, 27];
+                    _t = void 0;
+                    return [3 /*break*/, 29];
+                case 27:
+                    _v = (_u = connection).play;
                     return [4 /*yield*/, ytdl_core_discord_1.default(url, {
                             filter: 'audioonly',
                         })];
-                case 24:
-                    _r = _t.apply(_s, [_x.sent(), {
+                case 28:
+                    _t = _v.apply(_u, [_1.sent(), {
                             type: 'opus',
                         }]).on('finish', function () {
                         if (servers[id].autoplay) {
@@ -306,23 +320,37 @@ function play(connection, queue, id, message, servers, title) {
                             });
                         }); })();
                     });
-                    _x.label = 25;
-                case 25: return [2 /*return*/, _r];
-                case 26: return [4 /*yield*/, exports.getTitleYoutube(queue[0])];
-                case 27:
-                    title_5 = _x.sent();
-                    title_5 && message.react('😳');
-                    title_5 && message.channel.send("Now playing | " + title_5);
-                    if (!(connection === null || connection === void 0)) return [3 /*break*/, 28];
-                    _u = void 0;
-                    return [3 /*break*/, 30];
-                case 28:
-                    _w = (_v = connection).play;
+                    _1.label = 29;
+                case 29: return [2 /*return*/, _t];
+                case 30: return [4 /*yield*/, exports.getTitleYoutube(queue[0])];
+                case 31:
+                    title_5 = _1.sent();
+                    _w = title_5;
+                    if (!_w) return [3 /*break*/, 33];
+                    return [4 /*yield*/, message.react('😳')];
+                case 32:
+                    _w = (_1.sent());
+                    _1.label = 33;
+                case 33:
+                    _w;
+                    _x = title_5;
+                    if (!_x) return [3 /*break*/, 35];
+                    return [4 /*yield*/, message.channel.send("Now playing | " + title_5)];
+                case 34:
+                    _x = (_1.sent());
+                    _1.label = 35;
+                case 35:
+                    _x;
+                    if (!(connection === null || connection === void 0)) return [3 /*break*/, 36];
+                    _y = void 0;
+                    return [3 /*break*/, 38];
+                case 36:
+                    _0 = (_z = connection).play;
                     return [4 /*yield*/, ytdl_core_discord_1.default(queue[0], {
                             filter: 'audioonly',
                         })];
-                case 29:
-                    _u = _w.apply(_v, [_x.sent(), {
+                case 37:
+                    _y = _0.apply(_z, [_1.sent(), {
                             type: 'opus',
                         }]).on('finish', function () {
                         var firstUrl = queue[0], tmpQueue = queue.slice(1);
@@ -345,22 +373,22 @@ function play(connection, queue, id, message, servers, title) {
                             });
                         }); })();
                     });
-                    _x.label = 30;
-                case 30: return [2 /*return*/, _u];
-                case 31:
-                    if (!servers[id].autoplay) return [3 /*break*/, 37];
+                    _1.label = 38;
+                case 38: return [2 /*return*/, _y];
+                case 39:
+                    if (!servers[id].autoplay) return [3 /*break*/, 45];
                     qq = servers[id].autoplay;
                     tmpQ = [];
-                    if (!qq.startsWith(get_data_youtube_1.SPOTIFY_URI)) return [3 /*break*/, 33];
+                    if (!qq.startsWith(get_data_youtube_1.SPOTIFY_URI)) return [3 /*break*/, 41];
                     return [4 /*yield*/, exports.getRecommended(qq)];
-                case 32:
-                    spotifyLink = (_x.sent()).spotifyLink;
+                case 40:
+                    spotifyLink = (_1.sent()).spotifyLink;
                     console.log('Used spotify recommendation');
                     servers[id].setAuto = spotifyLink;
                     tmpQ = queue;
                     tmpQ.push(spotifyLink);
-                    return [3 /*break*/, 35];
-                case 33: return [4 /*yield*/, ytdl_core_discord_1.getInfo(servers[id].autoplay).then(function (info) { return __awaiter(_this, void 0, void 0, function () {
+                    return [3 /*break*/, 43];
+                case 41: return [4 /*yield*/, ytdl_core_discord_1.getInfo(servers[id].autoplay).then(function (info) { return __awaiter(_this, void 0, void 0, function () {
                         var videoId;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
@@ -371,15 +399,15 @@ function play(connection, queue, id, message, servers, title) {
                             }
                         });
                     }); })];
-                case 34:
-                    video_url = (_x.sent()).video_url;
+                case 42:
+                    video_url = (_1.sent()).video_url;
                     servers[id].setAuto = video_url;
                     tmpQ = queue;
                     tmpQ.push(video_url);
-                    _x.label = 35;
-                case 35: return [4 /*yield*/, play(connection, tmpQ, id, message, servers)];
-                case 36: return [2 /*return*/, (_x.sent())];
-                case 37:
+                    _1.label = 43;
+                case 43: return [4 /*yield*/, play(connection, tmpQ, id, message, servers)];
+                case 44: return [2 /*return*/, (_1.sent())];
+                case 45:
                     (_a = servers[id].getConnection) === null || _a === void 0 ? void 0 : _a.disconnect();
                     delete servers[id];
                     return [2 /*return*/, null];
