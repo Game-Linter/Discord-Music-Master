@@ -6,3 +6,5 @@ cred.txt
 .git.bfg-report
 
 .env
+
+yarn-error.log

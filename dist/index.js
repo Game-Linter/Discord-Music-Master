@@ -76,6 +76,10 @@ var donation_1 = require("./utils/donation");
 var get_token_1 = require("./utils/get-token");
 var PREFIX = '__';
 var servers = {};
+var dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config({
+    path: '.env'
+});
 var forbidden = function (message) {
     var _a, _b, _c, _d;
     if (!((_a = message.member) === null || _a === void 0 ? void 0 : _a.voice)) {
@@ -113,34 +117,33 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                 _a = !(_0.sent());
                 _0.label = 2;
             case 2:
-                if (!_a) return [3 /*break*/, 29];
+                if (!_a) return [3 /*break*/, 39];
                 _b = getCommand_1.getCommand(message, PREFIX), command = _b.command, id_1 = _b.id;
                 _c = command;
                 switch (_c) {
                     case 'save': return [3 /*break*/, 3];
-                    case 'load': return [3 /*break*/, 4];
-                    case 'audio': return [3 /*break*/, 5];
-                    case 'audionow': return [3 /*break*/, 6];
-                    case 'pause': return [3 /*break*/, 7];
-                    case 'banfrombot': return [3 /*break*/, 8];
-                    case 'unbanfrombot': return [3 /*break*/, 9];
-                    case 'restart': return [3 /*break*/, 10];
-                    case 'shuffle': return [3 /*break*/, 11];
-                    case 'resume': return [3 /*break*/, 12];
-                    case 'fuckoff': return [3 /*break*/, 13];
-                    case 'skip': return [3 /*break*/, 14];
-                    case 'loop': return [3 /*break*/, 15];
-                    case 'current': return [3 /*break*/, 16];
-                    case 'ping': return [3 /*break*/, 17];
-                    case 'autoplay': return [3 /*break*/, 18];
-                    case 'lyrics': return [3 /*break*/, 19];
-                    case 'next': return [3 /*break*/, 20];
-                    case 'donate': return [3 /*break*/, 26];
-                    case 'help': return [3 /*break*/, 27];
+                    case 'load': return [3 /*break*/, 5];
+                    case 'audio': return [3 /*break*/, 7];
+                    case 'audionow': return [3 /*break*/, 11];
+                    case 'pause': return [3 /*break*/, 13];
+                    case 'banfrombot': return [3 /*break*/, 14];
+                    case 'unbanfrombot': return [3 /*break*/, 16];
+                    case 'restart': return [3 /*break*/, 18];
+                    case 'shuffle': return [3 /*break*/, 20];
+                    case 'resume': return [3 /*break*/, 22];
+                    case 'fuckoff': return [3 /*break*/, 23];
+                    case 'skip': return [3 /*break*/, 24];
+                    case 'loop': return [3 /*break*/, 25];
+                    case 'current': return [3 /*break*/, 26];
+                    case 'ping': return [3 /*break*/, 27];
+                    case 'autoplay': return [3 /*break*/, 28];
+                    case 'lyrics': return [3 /*break*/, 29];
+                    case 'next': return [3 /*break*/, 30];
+                    case 'donate': return [3 /*break*/, 36];
+                    case 'help': return [3 /*break*/, 37];
                 }
-                return [3 /*break*/, 28];
-            case 3:
-                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                return [3 /*break*/, 38];
+            case 3: return [4 /*yield*/, (function () { return __awaiter(void 0, void 0, void 0, function () {
                     var msgContent, args, error_1;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
@@ -154,25 +157,31 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                                 }
                                 _a.label = 1;
                             case 1:
-                                _a.trys.push([1, 3, , 4]);
+                                _a.trys.push([1, 4, , 6]);
                                 return [4 /*yield*/, get_token_1.setPlaylist(message, args[1], args[2])];
                             case 2:
                                 _a.sent();
-                                message.channel.send('Playlist save for this guild with the name ' +
-                                    '`' +
-                                    args[1] +
-                                    '`');
-                                return [3 /*break*/, 4];
+                                return [4 /*yield*/, message.channel.send('Playlist save for this guild with the name ' +
+                                        '`' +
+                                        args[1] +
+                                        '`')];
                             case 3:
+                                _a.sent();
+                                return [3 /*break*/, 6];
+                            case 4:
                                 error_1 = _a.sent();
-                                message.channel.send(error_1.message);
-                                return [3 /*break*/, 4];
-                            case 4: return [2 /*return*/];
+                                return [4 /*yield*/, message.channel.send(error_1.message)];
+                            case 5:
+                                _a.sent();
+                                return [3 /*break*/, 6];
+                            case 6: return [2 /*return*/];
                         }
                     });
-                }); })();
-                return [2 /*return*/];
+                }); })()];
             case 4:
+                _0.sent();
+                return [2 /*return*/];
+            case 5:
                 if (!((_e = message.member) === null || _e === void 0 ? void 0 : _e.voice.channelID)) {
                     return [2 /*return*/, message.channel.send('Connect to a channel first')];
                 }
@@ -181,40 +190,45 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                 if (!args_1[1]) {
                     return [2 /*return*/, message.channel.send('Give a playlist name')];
                 }
-                (function () { return __awaiter(void 0, void 0, void 0, function () {
-                    var pl;
-                    var _a;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0: return [4 /*yield*/, get_token_1.loadPlaylist(message, args_1[1])];
-                            case 1:
-                                pl = _b.sent();
-                                if (pl) {
-                                    if (!servers[id_1]) {
-                                        servers[id_1] = new discordServer_1.DiscordServer(message, servers, id_1, pl);
+                return [4 /*yield*/, (function () { return __awaiter(void 0, void 0, void 0, function () {
+                        var pl;
+                        var _a;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0: return [4 /*yield*/, get_token_1.loadPlaylist(message, args_1[1])];
+                                case 1:
+                                    pl = _b.sent();
+                                    if (!pl) return [3 /*break*/, 6];
+                                    if (!!servers[id_1]) return [3 /*break*/, 2];
+                                    servers[id_1] = new discordServer_1.DiscordServer(message, servers, id_1, pl);
+                                    return [3 /*break*/, 6];
+                                case 2:
+                                    if (!forbidden(message)) return [3 /*break*/, 4];
+                                    return [4 /*yield*/, message.channel.send('get into a channel first')];
+                                case 3:
+                                    _b.sent();
+                                    return [2 /*return*/];
+                                case 4:
+                                    if (Array.isArray(pl)) {
+                                        (_a = servers[id_1].queue).push.apply(_a, pl);
                                     }
                                     else {
-                                        if (forbidden(message)) {
-                                            message.channel.send('get into a channel first');
-                                            return [2 /*return*/];
-                                        }
-                                        if (Array.isArray(pl)) {
-                                            (_a = servers[id_1].queue).push.apply(_a, pl);
-                                        }
-                                        else {
-                                            servers[id_1].queue.push(pl);
-                                        }
-                                        message.channel.send('Queud the playlist ' + args_1[1]);
+                                        servers[id_1].queue.push(pl);
                                     }
-                                }
-                                return [2 /*return*/];
-                        }
-                    });
-                }); })();
-                return [3 /*break*/, 29];
-            case 5:
-                if ((_f = message.member) === null || _f === void 0 ? void 0 : _f.voice.channelID) {
-                    (function () { return __awaiter(void 0, void 0, void 0, function () {
+                                    return [4 /*yield*/, message.channel.send('Queud the playlist ' + args_1[1])];
+                                case 5:
+                                    _b.sent();
+                                    _b.label = 6;
+                                case 6: return [2 /*return*/];
+                            }
+                        });
+                    }); })()];
+            case 6:
+                _0.sent();
+                return [3 /*break*/, 39];
+            case 7:
+                if (!((_f = message.member) === null || _f === void 0 ? void 0 : _f.voice.channelID)) return [3 /*break*/, 9];
+                return [4 /*yield*/, (function () { return __awaiter(void 0, void 0, void 0, function () {
                         var msgContent, args, _a, url, title;
                         var _b;
                         var _c, _d;
@@ -263,14 +277,15 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                                     return [2 /*return*/];
                             }
                         });
-                    }); })();
-                }
-                else {
-                    message.channel.send('Connect to a channel first');
-                }
-                return [3 /*break*/, 29];
-            case 6:
-                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                    }); })()];
+            case 8:
+                _0.sent();
+                return [3 /*break*/, 10];
+            case 9:
+                message.channel.send('Connect to a channel first');
+                _0.label = 10;
+            case 10: return [3 /*break*/, 39];
+            case 11: return [4 /*yield*/, (function () { return __awaiter(void 0, void 0, void 0, function () {
                     var msgContent, args, _a, url, title, _b, tobeShifted, rest, _c;
                     var _d;
                     return __generator(this, function (_e) {
@@ -303,29 +318,32 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                                     rest.unshift(url);
                                 }
                                 servers[id_1].setQueue = __spreadArrays(rest);
-                                message.react('🦆');
+                                return [4 /*yield*/, message.react('🦆')];
+                            case 2:
+                                _e.sent();
                                 title && message.channel.send("Next | " + title);
                                 _c = servers[id_1];
                                 return [4 /*yield*/, play_core_1.play((_d = servers[id_1]) === null || _d === void 0 ? void 0 : _d.getConnection, servers[id_1].getQueue, id_1, message, servers).catch(function (err) {
                                         console.log(err.message);
                                         return null;
                                     })];
-                            case 2:
+                            case 3:
                                 _c.dispatcher = _e.sent();
                                 return [2 /*return*/];
                         }
                     });
-                }); })();
-                return [3 /*break*/, 29];
-            case 7:
+                }); })()];
+            case 12:
+                _0.sent();
+                return [3 /*break*/, 39];
+            case 13:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                 }
                 message.react('⏸');
                 (_h = (_g = servers[id_1]) === null || _g === void 0 ? void 0 : _g.dispatcher) === null || _h === void 0 ? void 0 : _h.pause();
-                return [3 /*break*/, 29];
-            case 8:
-                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                return [3 /*break*/, 39];
+            case 14: return [4 /*yield*/, (function () { return __awaiter(void 0, void 0, void 0, function () {
                     var _a, userId, bannedUser, _b, _c;
                     return __generator(this, function (_d) {
                         switch (_d.label) {
@@ -361,10 +379,11 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                             case 7: return [2 /*return*/];
                         }
                     });
-                }); })();
-                return [3 /*break*/, 29];
-            case 9:
-                (function () { return __awaiter(void 0, void 0, void 0, function () {
+                }); })()];
+            case 15:
+                _0.sent();
+                return [3 /*break*/, 39];
+            case 16: return [4 /*yield*/, (function () { return __awaiter(void 0, void 0, void 0, function () {
                     var _a, userId, bannedUser, bannedArr, newBannedArr;
                     return __generator(this, function (_b) {
                         switch (_b.label) {
@@ -402,73 +421,79 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                                 return [2 /*return*/];
                         }
                     });
-                }); })();
-                return [3 /*break*/, 29];
-            case 10:
+                }); })()];
+            case 17:
+                _0.sent();
+                return [3 /*break*/, 39];
+            case 18:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                 }
                 message.react('🦎');
-                (function () { return __awaiter(void 0, void 0, void 0, function () {
-                    var _a;
-                    var _b, _c;
-                    return __generator(this, function (_d) {
-                        switch (_d.label) {
-                            case 0:
-                                _a = servers[id_1];
-                                return [4 /*yield*/, play_core_1.play((_b = servers[id_1]) === null || _b === void 0 ? void 0 : _b.getConnection, (_c = servers[id_1]) === null || _c === void 0 ? void 0 : _c.getQueue, id_1, message, servers).catch(function (err) {
-                                        console.log(err.message);
-                                        return null;
-                                    })];
-                            case 1:
-                                _a.dispatcher = _d.sent();
-                                return [2 /*return*/];
-                        }
-                    });
-                }); })();
-                return [3 /*break*/, 29];
-            case 11:
+                return [4 /*yield*/, (function () { return __awaiter(void 0, void 0, void 0, function () {
+                        var _a;
+                        var _b, _c;
+                        return __generator(this, function (_d) {
+                            switch (_d.label) {
+                                case 0:
+                                    _a = servers[id_1];
+                                    return [4 /*yield*/, play_core_1.play((_b = servers[id_1]) === null || _b === void 0 ? void 0 : _b.getConnection, (_c = servers[id_1]) === null || _c === void 0 ? void 0 : _c.getQueue, id_1, message, servers).catch(function (err) {
+                                            console.log(err.message);
+                                            return null;
+                                        })];
+                                case 1:
+                                    _a.dispatcher = _d.sent();
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); })()];
+            case 19:
+                _0.sent();
+                return [3 /*break*/, 39];
+            case 20:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                 }
                 message.react('🔀');
                 _d = ((_j = servers[id_1]) === null || _j === void 0 ? void 0 : _j.getQueue) || [], tmp_1 = _d.slice(1);
-                (function () { return __awaiter(void 0, void 0, void 0, function () {
-                    var _a;
-                    var _b;
-                    return __generator(this, function (_c) {
-                        switch (_c.label) {
-                            case 0:
-                                tmp_1.length && (tmp_1 = lodash_1.default.shuffle(tmp_1));
-                                _a = servers[id_1];
-                                return [4 /*yield*/, play_core_1.play((_b = servers[id_1]) === null || _b === void 0 ? void 0 : _b.getConnection, tmp_1, id_1, message, servers).catch(function (err) {
-                                        console.log(err.message);
-                                        return null;
-                                    })];
-                            case 1:
-                                _a.dispatcher = _c.sent();
-                                return [2 /*return*/];
-                        }
-                    });
-                }); })();
-                return [3 /*break*/, 29];
-            case 12:
+                return [4 /*yield*/, (function () { return __awaiter(void 0, void 0, void 0, function () {
+                        var _a;
+                        var _b;
+                        return __generator(this, function (_c) {
+                            switch (_c.label) {
+                                case 0:
+                                    tmp_1.length && (tmp_1 = lodash_1.default.shuffle(tmp_1));
+                                    _a = servers[id_1];
+                                    return [4 /*yield*/, play_core_1.play((_b = servers[id_1]) === null || _b === void 0 ? void 0 : _b.getConnection, tmp_1, id_1, message, servers).catch(function (err) {
+                                            console.log(err.message);
+                                            return null;
+                                        })];
+                                case 1:
+                                    _a.dispatcher = _c.sent();
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); })()];
+            case 21:
+                _0.sent();
+                return [3 /*break*/, 39];
+            case 22:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                 }
                 message.react('⏯');
                 // dispatcher[id]?.resume();
                 (_l = (_k = servers[id_1]) === null || _k === void 0 ? void 0 : _k.dispatcher) === null || _l === void 0 ? void 0 : _l.resume();
-                return [3 /*break*/, 29];
-            case 13:
+                return [3 /*break*/, 39];
+            case 23:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                 }
                 message.react('🙋‍♂️');
                 (_o = (_m = servers[id_1]) === null || _m === void 0 ? void 0 : _m.getConnection) === null || _o === void 0 ? void 0 : _o.disconnect();
                 delete servers[id_1];
-                return [3 /*break*/, 29];
-            case 14:
+                return [3 /*break*/, 39];
+            case 24:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                 }
@@ -499,8 +524,8 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 29];
-            case 15:
+                return [3 /*break*/, 39];
+            case 25:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                 }
@@ -532,8 +557,8 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                     });
                 }); })()
                     : message.channel.send("Loop is now off");
-                return [3 /*break*/, 29];
-            case 16:
+                return [3 /*break*/, 39];
+            case 26:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('No channel on bot')];
                 }
@@ -556,8 +581,8 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 29];
-            case 17:
+                return [3 /*break*/, 39];
+            case 27:
                 message.channel.send('🎯 Pinging...').then(function (m) {
                     // The math thingy to calculate the user's ping
                     var ping = m.createdTimestamp - message.createdTimestamp;
@@ -569,8 +594,8 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                     // Then It Edits the message with the ping variable embed that you created
                     m.edit(embed);
                 });
-                return [3 /*break*/, 29];
-            case 18:
+                return [3 /*break*/, 39];
+            case 28:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                 }
@@ -580,8 +605,8 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                 ((_z = servers[id_1]) === null || _z === void 0 ? void 0 : _z.autoplay) ? message.channel.send('AUTOPLAY in now on')
                     : message.channel.send('AUTOPLAY in now off');
                 // console.log(id, autoplay[id]);
-                return [3 /*break*/, 29];
-            case 19:
+                return [3 /*break*/, 39];
+            case 29:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Get into the same channel as the bot')];
                 }
@@ -601,24 +626,24 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                         }
                     });
                 }); })();
-                return [3 /*break*/, 29];
-            case 20:
+                return [3 /*break*/, 39];
+            case 30:
                 if (forbidden(message)) {
                     return [2 /*return*/, message.channel.send('Connect to the same channel as the bot')];
                 }
-                if (!(servers[id_1].getQueue.length > 1)) return [3 /*break*/, 25];
+                if (!(servers[id_1].getQueue.length > 1)) return [3 /*break*/, 35];
                 return [4 /*yield*/, get_data_youtube_1.getData(servers[id_1].getQueue[1], message)];
-            case 21:
+            case 31:
                 title = (_0.sent()).title;
-                if (!title) return [3 /*break*/, 22];
+                if (!title) return [3 /*break*/, 32];
                 return [2 /*return*/, message.channel.send("Up next: " + title)];
-            case 22: return [4 /*yield*/, play_core_1.getTitleYoutube(servers[id_1].getQueue[1])];
-            case 23:
+            case 32: return [4 /*yield*/, play_core_1.getTitleYoutube(servers[id_1].getQueue[1])];
+            case 33:
                 tmpTitle = _0.sent();
                 return [2 /*return*/, message.channel.send("Up next: " + tmpTitle)];
-            case 24: return [3 /*break*/, 26];
-            case 25: return [2 /*return*/, message.channel.send('Nothing next, autoplay to the save')];
-            case 26:
+            case 34: return [3 /*break*/, 36];
+            case 35: return [2 /*return*/, message.channel.send('Nothing next, autoplay to the save')];
+            case 36:
                 (function () { return __awaiter(void 0, void 0, void 0, function () {
                     var msgContent, args, donation;
                     return __generator(this, function (_a) {
@@ -647,11 +672,11 @@ var messageHandler = function (message) { return __awaiter(void 0, void 0, void 
                     });
                 }); })();
                 return [2 /*return*/];
-            case 27:
+            case 37:
                 message.channel.send("\n\t\t\t\t\t  \t```\n__audio [any Youtube Search]\n__audio [youtube Url]\n__audio [youtube Playlist url]\n__audio [spotify Track Link]\n__audio [spotify Playlist Link]\n__audio [spotify Album Link]\n__audionow  [input] (Plays the given track instantly even tho the queue is full,  continues the queue afterwards)\n__load [saved playlist name]\n__save [nameofplaylist] [playlist link]\n__restart (restarts current track)\n__lyrics (Gets lyrics of current playing song)\n__skip (Skip current track)\n__pause\n__resume \n__fuckoff (Quit)\n__loop (Loop current Song )\n__autoplay (Toogle autoplay, Keep Playing recommended songs after the queue is done)\n__shuffle (Shuffle Current Queue)\n__next (Gets you next track)\n__current\n\nFull Readme: https://github.com/Game-Linter/Discord-Music-Master#readme\n\t\t\t\t\t\t```\n\t\t\t\t");
-                return [3 /*break*/, 29];
-            case 28: return [3 /*break*/, 29];
-            case 29: return [2 /*return*/];
+                return [3 /*break*/, 39];
+            case 38: return [3 /*break*/, 39];
+            case 39: return [2 /*return*/];
         }
     });
 }); };

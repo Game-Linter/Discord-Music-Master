@@ -1,5 +1,6 @@
 FROM node:lts as build
 
+MAINTAINER Mohamed Belkamel
 
 WORKDIR /usr/app
 
