@@ -18,7 +18,8 @@
 
 import axios from 'axios';
 import { Message, StreamDispatcher, VoiceConnection } from 'discord.js';
-import ytdl, { getInfo } from 'ytdl-core-discord';
+import ytdl from 'ytdl-core-discord';
+import { getInfo } from 'ytdl-core'
 // import {} from './get-data-youtube';
 import ytsr from 'ytsr';
 import { getSpotifyTrack } from '../utils/get-spotify-track';
@@ -200,6 +201,7 @@ export async function play(
                     });
             }
         }
+        console.log(queue[0], 'looking for');
         const title = await getTitleYoutube(queue[0]);
         title && await message.react('😳');
         title && await message.channel.send(`Now playing | ${title}`);
