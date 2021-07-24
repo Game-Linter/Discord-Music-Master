@@ -2,6 +2,9 @@
     <img src="https://i.imgur.com/tQrygFc.png" width="128px" style="max-width:100%;">
     <h3 style="font-size: 2rem; margin-bottom: 0">Game-Linter Music Master README</h3>
     <h4 style="margin-top: 0">Revision 1</h4>
+	<a href="https://hub.docker.com/repository/docker/gamelinter/discord-music-master/" target="__blank">
+		<img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/gamelinter/discord-music-master?color=bright%20green">
+	</a>
 <a  href="https://www.codacy.com/gh/Game-Linter/Discord-Music-Master/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Game-Linter/Discord-Music-Master&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/8ce4f4a7f73e49339485747ec0c298e7"/></a>
 	<a href="https://github.com/Game-Linter/Discord-Music-Master/actions/workflows/ci.yml"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/game-linter/Discord-Music-Master/ci"></a>
 <a href="https://app.fossa.com/projects/git%2Bgithub.com%2FGame-Linter%2FDiscord-Music-Master?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FGame-Linter%2FDiscord-Music-Master.svg?type=shield"/></a>
