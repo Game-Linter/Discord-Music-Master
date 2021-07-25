@@ -8,3 +8,5 @@ cred.txt
 .env
 
 yarn-error.log
+
+.idea/*
