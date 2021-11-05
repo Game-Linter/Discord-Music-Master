@@ -16,6 +16,8 @@
  *
  */
 
+// test
+
 import { Message, MessageEmbed } from 'discord.js';
 import _ from 'lodash';
 import { DiscordServer } from './core/discordServer';
