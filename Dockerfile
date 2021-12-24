@@ -1,4 +1,4 @@
-FROM node:lts as build
+FROM node:14 as build
 
 MAINTAINER Mohamed Belkamel
 
@@ -13,7 +13,7 @@ COPY . .
 
 RUN yarn run build
 
-FROM node:lts
+FROM node:14
 
 
 WORKDIR /usr/app
