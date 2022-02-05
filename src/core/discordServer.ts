@@ -48,12 +48,26 @@ export class DiscordServer {
                     message,
                     servers,
                     title,
-                ).catch((err) => {
-                    console.log(err.message);
-                    return null;
-                });
+                ).catch(async err => {
+                    console.log(err);
+
+                    await message.channel.send(
+                        `Skipped ${this.queue[0]} because of an error: ${err.message}`,
+                    );
+                    this.queue.shift();
+                    return await play(
+                        this.connection,
+                        this.queue,
+                        id,
+                        message,
+                        servers,
+                        title,
+                    );
+                })
+
+
                 this.setAuto = this.queue[0] as string;
-            } catch (error) {
+            } catch (error: any) {
                 message.channel.send(error.message);
                 delete servers[id];
             }
