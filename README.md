@@ -100,6 +100,12 @@ Then run:
 yarn start
 ```
 
+# Deploying infrastructure using Terraform
+
+## Infra Repo [infra-bot](https://github.com/Game-Linter/infra-bot)
+
+
+
 </div>
       <h3>Everything is Licensed under
       <a href="https://github.com/darklight147/discord-music/blob/master/LICENSE.md">AGPL-3.0 License</a>
