@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { redisClient } from '../core/redis.server';
+import { redisClient } from '../persistence/redis.server';
 import { promisify } from 'util';
 
 const getASYNC = promisify(redisClient.get).bind(redisClient);

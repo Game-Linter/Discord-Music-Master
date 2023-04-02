@@ -19,15 +19,16 @@
 // test
 
 import { Message, MessageEmbed } from 'discord.js';
+import dotenv from 'dotenv';
 import _ from 'lodash';
 import { DiscordServer } from './core/discordServer';
-import { getData, SPOTIFY_URI } from './core/get-data-youtube';
+import { getData, SPOTIFY_URI } from './core/Accessors';
 import { getCommand } from './core/getCommand';
-import { getTitleYoutube, play } from './core/play-core';
+import { getTitleYoutube, play } from './core/CorePlayer';
 import { Discord } from './core/server';
+import { Donation } from './utils/donation';
 import { getLyrics } from './utils/get-lyrics';
 import { getSpotifyTrack } from './utils/get-spotify-track';
-import { Donation } from './utils/donation';
 import {
     getAccessToken,
     getAsync,
@@ -36,14 +37,14 @@ import {
     setPlaylist,
 } from './utils/get-token';
 
-const PREFIX = '__';
+const PREFIX = process.env.PREFIX ?? ('??' as const);
 
-let servers: { [x: string]: DiscordServer } = {};
+console.log('Starting... with prefix: ', PREFIX);
 
-import dotenv from 'dotenv';
+const servers: { [x: string]: DiscordServer } = {};
 
 dotenv.config({
-    path: '.env'
+    path: '.env',
 });
 
 const forbidden = (message: Message) => {
@@ -71,6 +72,7 @@ const messageHandler = async (message: Message) => {
         !(await isBanned(message.author.id))
     ) {
         const { command, id } = getCommand(message, PREFIX);
+        console.log(command, id);
         switch (command) {
             case 'save':
                 await (async () => {
@@ -87,9 +89,9 @@ const messageHandler = async (message: Message) => {
                         await setPlaylist(message, args[1], args[2]);
                         await message.channel.send(
                             'Playlist save for this guild with the name ' +
-                            '`' +
-                            args[1] +
-                            '`',
+                                '`' +
+                                args[1] +
+                                '`',
                         );
                     } catch (error) {
                         await message.channel.send(error.message);
@@ -180,7 +182,7 @@ const messageHandler = async (message: Message) => {
                                 }
                                 message.react('🦆');
                                 title &&
-                                message.channel.send(`Queued | ${title}`);
+                                    message.channel.send(`Queued | ${title}`);
                             }
                             // console.log(connection);
                         } catch (error) {
@@ -608,7 +610,6 @@ const { client } = new Discord({
 });
 
 client.on('voiceStateUpdate', (arg0, arg1) => {
-    // console.log('triggered');
     const oldGuildID = arg0.channel?.guild.id;
     const newGuildID = arg1.channel?.guild.id;
 
@@ -652,7 +653,7 @@ const signHandler = () => {
 
     srvs.forEach((srv) => {
         const element: DiscordServer = servers[srv];
-        element?.getConnection.disconnect();
+        element?.getConnection?.disconnect();
     });
 
     process.exit();
@@ -660,5 +661,3 @@ const signHandler = () => {
 
 process.on('SIGINT', signHandler);
 process.on('SIGTERM', signHandler);
-// process.on('uncaughtException', signHandler);
-// process.on('unhandledRejection', signHandler);

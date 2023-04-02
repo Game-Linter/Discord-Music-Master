@@ -18,7 +18,7 @@
 
 import lyricsParse from 'lyrics-parse';
 import { Author, getInfo } from 'ytdl-core';
-import { SPOTIFY_URI } from '../core/get-data-youtube';
+import { SPOTIFY_URI } from '../core/Accessors';
 import { getSpotifyTrack } from './get-spotify-track';
 import { getAccessToken } from './get-token';
 

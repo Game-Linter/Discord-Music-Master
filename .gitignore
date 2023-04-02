@@ -5,8 +5,9 @@ cred.txt
 ..bfg-report/
 .git.bfg-report
 
-.env
+.env*
 
 yarn-error.log
 
 .idea/*
+infra/

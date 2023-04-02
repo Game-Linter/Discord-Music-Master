@@ -18,7 +18,12 @@
 
 import { redisUri } from '../config/redis.config';
 import redis from 'redis';
+import { promisify } from 'util';
 
 export const redisClient = redis.createClient({
     url: redisUri,
 });
+
+export const getAsync = promisify(redisClient.get).bind(redisClient);
+export const setAsync = promisify(redisClient.setex).bind(redisClient);
+export const setPlAsync = promisify(redisClient.set).bind(redisClient);

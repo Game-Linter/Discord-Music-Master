@@ -17,12 +17,9 @@
  */
 
 import { Message } from 'discord.js';
-import qs from 'qs';
 import { promisify } from 'util';
-import { BASE } from '../config/base-spotify.config';
-import { getData } from '../core/get-data-youtube';
-import { redisClient } from '../core/redis.server';
-import { tokenAx } from './axios-instance';
+import { getData } from '../core/Accessors';
+import { redisClient } from '../persistence/redis.server';
 
 export const getAsync = promisify(redisClient.get).bind(redisClient);
 const setAsync = promisify(redisClient.setex).bind(redisClient);
@@ -80,45 +77,4 @@ export const loadPlaylist = async (message: Message, playlistName: string) => {
         message.channel.send('No playlist found for this server');
         return null;
     }
-};
-
-export const getAccessToken = async () => {
-    let aatoken: string = '';
-    let findToken: string | null = null;
-    try {
-        findToken = await getAsync('redis:token');
-    } catch (error) {
-        console.log(error.message);
-    }
-    if (findToken) {
-        aatoken = findToken;
-    } else {
-        aatoken = await tokenAx
-            .post(
-                '/api/token',
-                qs.stringify({
-                    grant_type: 'client_credentials',
-                }),
-                {
-                    headers: {
-                        Authorization: `Basic ${BASE}`,
-                    },
-                },
-            )
-            .then((_res) => {
-                (async () => {
-                    try {
-                        await setAsync(
-                            'redis:token',
-                            3590,
-                            _res.data.access_token,
-                        );
-                    } catch (error) {
-                        console.log(error.message);
-                    }
-                })();
-                return _res.data.access_token;
-            });
-    }
-    return aatoken;
 };

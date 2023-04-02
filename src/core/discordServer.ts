@@ -17,7 +17,7 @@
  */
 
 import { Message, StreamDispatcher, VoiceConnection } from 'discord.js';
-import { play } from './play-core';
+import { play } from './CorePlayer';
 
 export class DiscordServer {
     private connection!: VoiceConnection;
@@ -35,7 +35,8 @@ export class DiscordServer {
     ) {
         (async () => {
             try {
-                this.connection = (await message.member?.voice.channel?.join()) as VoiceConnection;
+                this.connection =
+                    (await message.member?.voice.channel?.join()) as VoiceConnection;
                 if (Array.isArray(url)) {
                     this.queue.push(...url);
                 } else {
@@ -48,7 +49,7 @@ export class DiscordServer {
                     message,
                     servers,
                     title,
-                ).catch(async err => {
+                ).catch(async (err) => {
                     console.log(err);
 
                     await message.channel.send(
@@ -63,8 +64,7 @@ export class DiscordServer {
                         servers,
                         title,
                     );
-                })
-
+                });
 
                 this.setAuto = this.queue[0] as string;
             } catch (error: any) {
