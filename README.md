@@ -1,4 +1,5 @@
 <div align="center">
+    <h2>Migrating to v13 of discord.js, discord introduced some breaking changes... Coming soon</h2>
     <img src="https://i.imgur.com/tQrygFc.png" width="128px" style="max-width:100%;">
     <h3 style="font-size: 2rem; margin-bottom: 0">Game-Linter Music Master README</h3>
     <h4 style="margin-top: 0">Revision 1</h4>
