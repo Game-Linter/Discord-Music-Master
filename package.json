@@ -8,7 +8,7 @@
     "types": "src/@types",
     "dependencies": {
         "@sentry/node": "^6.3.4",
-        "@sentry/tracing": "^6.3.4",
+        "@sentry/tracing": "^6.19.7",
         "axios": "^0.21.1",
         "discord.js": "^12.5.1",
         "dotenv": "^10.0.0",
