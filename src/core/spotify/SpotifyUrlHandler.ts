@@ -32,7 +32,7 @@ export class SpotifyUrlHandler extends UrlHandler {
             throw new Error('Invalid Url');
         }
 
-        return handler.handleItem(itemId, SpotifyApiWrapper.instance);
+        return handler.handleItem(itemId);
     }
 
     private parseUrl(url: string) {
