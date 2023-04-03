@@ -103,6 +103,24 @@ class SpotifyApiWrapper extends HttpClient {
             };
         });
     }
+
+    async getRecommendations(itemId: string) {
+        const token = await getCachedSpotifyToken();
+
+        const url = await this.instance
+            .get(`/recommendations?seed_tracks=${itemId}&limit=1`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((res) => {
+                return res.data.tracks[0].external_urls.spotify as string;
+            });
+
+        return {
+            url,
+        };
+    }
 }
 
 export default new SpotifyApiWrapper();
