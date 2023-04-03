@@ -16,27 +16,61 @@
  *
  */
 
-import { Client, Message } from 'discord.js';
-import { token } from '../config/discord.config';
 import * as Sentry from '@sentry/node';
-import * as Tracing from '@sentry/tracing';
+import {
+    ActivityType,
+    Client,
+    Events,
+    GatewayIntentBits,
+    Message,
+} from 'discord.js';
+import { Command } from '../commands/command.abstract';
+import { token } from '../config/discord.config';
 
 export class Discord {
     client: Client;
-    constructor(init: { messageHandler: (message: Message) => void }) {
-        this.client = new Client();
-        this.client.on('ready', () => {
+    constructor(init: { commands: Map<string, Command> }) {
+        this.client = new Client({
+            intents: [
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.GuildMessageReactions,
+            ],
+        });
+        this.client.on(Events.ClientReady, () => {
             console.log('Server count', this.client.guilds.cache.size);
             this.client.user?.setPresence({
                 status: 'online',
-                activity: {
-                    type: 'COMPETING',
-                    name: '__help',
-                },
+                activities: [
+                    {
+                        name: 'with your feelings',
+                        type: ActivityType.Playing,
+                    },
+                ],
             });
             console.log('Ready!');
         });
-        this.client.on('message', init.messageHandler);
+
+        this.client.on(Events.InteractionCreate, async (interaction) => {
+            if (!interaction.isCommand()) return;
+            if (!interaction.guild) return;
+
+            if (!interaction.isChatInputCommand()) return;
+
+            const { commandName } = interaction;
+            const command = init.commands.get(commandName);
+            if (!command) return;
+            try {
+                await command.execute(interaction);
+            } catch (error) {
+                console.error(error);
+                await interaction.reply({
+                    content: 'There was an error while executing this command!',
+                    ephemeral: true,
+                });
+            }
+        });
         this.Login();
     }
 
@@ -48,8 +82,7 @@ export class Discord {
         // or use es6 import statements
 
         Sentry.init({
-            dsn:
-                'https://abd380ace54d45b69c0fbb409abe5884@o337865.ingest.sentry.io/5742982',
+            dsn: 'https://abd380ace54d45b69c0fbb409abe5884@o337865.ingest.sentry.io/5742982',
 
             // Set tracesSampleRate to 1.0 to capture 100%
             // of transactions for performance monitoring.

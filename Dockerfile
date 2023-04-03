@@ -1,6 +1,6 @@
-FROM node:14 as build
+FROM node:lts as build
 
-MAINTAINER Mohamed Belkamel
+LABEL MAINTAINER="Mohamed Belkamel <belkamelmohamed@gmail.com>"
 
 WORKDIR /usr/app
 
@@ -13,7 +13,7 @@ COPY . .
 
 RUN yarn run build
 
-FROM node:14
+FROM node:lts
 
 
 WORKDIR /usr/app
@@ -23,6 +23,6 @@ COPY yarn.lock .
 
 RUN yarn --forzen-lockfile
 
-COPY --from=build /usr/app/dist ./
+COPY --from=build /usr/app/dist ./dist
 
 CMD [ "node", "." ]
