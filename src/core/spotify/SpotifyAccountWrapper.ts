@@ -1,6 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import qs from 'qs';
 import { BASE } from '../../config/base-spotify.config';
+import { HttpClient } from './HttpWrapper';
 
 export const SpotifsyHttpClient = axios.create({
     baseURL: 'https://accounts.spotify.com',
@@ -13,8 +14,8 @@ type SpotifyResponse = {
     access_token: string;
 };
 
-export class SpotifyHttpClient {
-    private instance = axios.create({
+class SpotifyAccountWrapper extends HttpClient {
+    readonly instance = axios.create({
         baseURL: 'https://accounts.spotify.com',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -22,7 +23,10 @@ export class SpotifyHttpClient {
     });
 
     async requestToken() {
-        const response = this.instance.post(
+        const response = await this.instance.post<
+            any,
+            AxiosResponse<SpotifyResponse>
+        >(
             '/api/token',
             qs.stringify({
                 grant_type: 'client_credentials',
@@ -32,8 +36,10 @@ export class SpotifyHttpClient {
                     Authorization: `Basic ${BASE}`,
                 },
             },
-        ) as unknown as SpotifyResponse;
+        );
 
-        return response.access_token;
+        return response.data.access_token;
     }
 }
+
+export default new SpotifyAccountWrapper();

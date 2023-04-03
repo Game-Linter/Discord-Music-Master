@@ -45,21 +45,21 @@ export const getData: TGetType = (urlOrQuery: string, message: Message) => {
                 const aatoken = await getAccessToken();
                 return (async () => {
                     switch (type) {
-                        case 'track':
-                            const { title } = await getSpotifyTrack(
-                                aatoken,
-                                urlOrQuery,
-                            );
-                            return { url: urlOrQuery, title };
+                        // case 'track':
+                        //     const { title } = await getSpotifyTrack(
+                        //         aatoken,
+                        //         urlOrQuery,
+                        //     );
+                        //     return { url: urlOrQuery, title };
 
-                        // break;
-                        case 'playlist':
-                            const loading =
-                                message.channel.send('Loading playlist');
-                            const trackUrls: string[] =
-                                await getPlaylistSpotify(type, itemId, aatoken);
-                            await (await loading).edit('Playlist Loaded');
-                            return { url: trackUrls };
+                        // // break;
+                        // case 'playlist':
+                        //     const loading =
+                        //         message.channel.send('Loading playlist');
+                        //     const trackUrls: string[] =
+                        //         await getPlaylistSpotify(type, itemId, aatoken);
+                        //     await (await loading).edit('Playlist Loaded');
+                        //     return { url: trackUrls };
 
                         case 'album':
                             const albumTracks = await getAlbumSpotify(

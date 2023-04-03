@@ -4,5 +4,7 @@ export interface ResultUrl {
 }
 
 export abstract class UrlHandler {
-    public abstract handleUrl(url: string): Promise<ResultUrl | null>;
+    public abstract handleUrl(
+        url: string,
+    ): Promise<ResultUrl | ResultUrl[] | null>;
 }
