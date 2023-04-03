@@ -5,12 +5,28 @@ export abstract class RedisPersistable<T> {
     protected abstract TTL: number;
 
     async get(): Promise<T | null> {
-        const value = (await getAsync(this.dbKey)) as T | null;
+        const value = await getAsync(this.dbKey);
 
-        return value;
+        if (!value) {
+            return null;
+        }
+
+        if (typeof value === 'string') {
+            try {
+                return JSON.parse(value) as T;
+            } catch (error) {
+                return value as unknown as T;
+            }
+        } else {
+            return value as unknown as T;
+        }
     }
 
-    async set(value: string) {
-        await setAsync(this.dbKey, this.TTL, value);
+    async set(value: T) {
+        if (typeof value === 'string') {
+            await setAsync(this.dbKey, this.TTL, value);
+        } else {
+            await setAsync(this.dbKey, this.TTL, JSON.stringify(value));
+        }
     }
 }
