@@ -1,4 +1,4 @@
-FROM node:lts AS build
+FROM node:19-slim AS build
 
 LABEL MAINTAINER="Mohamed Belkamel <belkamelmohamed@gmail.com>"
 
@@ -13,7 +13,7 @@ COPY . .
 
 RUN yarn run build
 
-FROM node:lts
+FROM node:19-slim
 
 
 WORKDIR /usr/app
