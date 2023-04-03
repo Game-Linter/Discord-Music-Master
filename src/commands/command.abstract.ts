@@ -1,8 +1,4 @@
-import {
-    ChatInputCommandInteraction,
-    Message,
-    SlashCommandBuilder,
-} from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 
 export abstract class Command {
     abstract _data: any;

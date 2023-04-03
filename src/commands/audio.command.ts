@@ -1,4 +1,4 @@
-import { joinVoiceChannel } from '@discordjs/voice';
+import { getVoiceConnection, joinVoiceChannel } from '@discordjs/voice';
 import {
     ChatInputCommandInteraction,
     Message,
@@ -16,20 +16,36 @@ class Audio extends Command {
                 .setName('url')
                 .setDescription('The url oh the search query')
                 .setRequired(true),
+        )
+        .setDefaultMemberPermissions(
+            PermissionFlagsBits.Connect |
+                PermissionFlagsBits.Speak |
+                PermissionFlagsBits.ViewChannel,
         );
 
-    execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        interaction.reply('Audio command!');
+    async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+        const voiceChannel = await interaction.guild?.members
+            .fetch(interaction.member?.user.id!)
+            .then((member) => member.voice.channelId);
 
-        const memeber = interaction.guild?.members.cache.get(
-            interaction.member?.user.id!,
-        );
+        if (!voiceChannel) {
+            interaction.reply({
+                content:
+                    'You need to be in a voice channel to use this command!',
+                ephemeral: true,
+            });
+            return Promise.resolve();
+        }
 
-        joinVoiceChannel({
-            channelId: memeber?.voice.channelId!,
+        const voiceConnection = joinVoiceChannel({
+            channelId: voiceChannel,
             guildId: interaction.guildId!,
-            adapterCreator: interaction.guild!.voiceAdapterCreator,
+            adapterCreator: interaction.guild?.voiceAdapterCreator!,
         });
+
+        setTimeout(() => {
+            voiceConnection.disconnect();
+        }, 1000);
 
         return Promise.resolve();
     }
