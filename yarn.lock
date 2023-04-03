@@ -481,6 +481,11 @@ miniget@^4.0.0, miniget@^4.1.0:
   resolved "https://registry.yarnpkg.com/miniget/-/miniget-4.1.0.tgz#018cc1180d2fe4d45ed735ac6bd2ab7224e8bceb"
   integrity sha512-kzhrNv5L7LlomwGmPGQsLQ2PnT1LeJJWfB0wNFGyv426gEM1gsfziBQmfkr6XOBA8EusZg9nowlNT5CbuKTjZg==
 
+miniget@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/miniget/-/miniget-4.2.2.tgz#db20320f265efdc4c1826a0be431d56753074475"
+  integrity sha512-a7voNL1N5lDMxvTMExOkg+Fq89jM2vY8pAi9ZEWzZtfNmdfP6RXkvUtFnCAXoCv2T9k1v/fUJVaAEuepGcvLYA==
+
 minimatch@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
@@ -888,9 +893,9 @@ ytpl@^2.0.4:
   dependencies:
     miniget "^4.1.0"
 
-ytsr@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/ytsr/-/ytsr-3.2.1.tgz#bf148897168844c889ee19b45335f4261247ad1d"
-  integrity sha512-iN2woG5bfXiAWs9Tv6MPVGx3f1zdpeshyevGAbm0ggCYLmOnSNIA3lkgqlkfa0CH5WKIB/yjwRPU1hc49AUN+g==
+ytsr@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/ytsr/-/ytsr-3.8.0.tgz#49a8e5dc413f41515fc3d79d93ee3e073d10e772"
+  integrity sha512-R+RfYXvBBMAr2e4OxrQ5SBv5x/Mdhmcj1Q8TH0f2HK5d2jbhHOtK4BdzPvLriA6MDoMwqqX04GD8Rpf9UNtSTg==
   dependencies:
-    miniget "^4.1.0"
+    miniget "^4.2.2"
