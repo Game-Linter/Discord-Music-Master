@@ -8,6 +8,7 @@ import { Command } from './command.abstract';
 export class Audio extends Command {
     _data = new SlashCommandBuilder()
         .setDescription('Play audio')
+        .setName('audio')
         .addStringOption((option) =>
             option
                 .setName('url')

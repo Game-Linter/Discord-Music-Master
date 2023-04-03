@@ -22,6 +22,7 @@ import { Events } from 'discord.js';
 import dotenv from 'dotenv';
 import { Audio } from './commands/audio.command';
 import { DiscordServer } from './core/discordServer';
+import { hydrateCommands } from './core/hydrateCommands';
 import { Discord } from './core/server';
 import { getAsync } from './utils/get-token';
 
@@ -48,11 +49,17 @@ const isBanned = async (id: string) => {
 
 const commands = new Map();
 
-commands.set('audio', new Audio());
+const allCommands = [new Audio()];
+
+for (const command of allCommands) {
+    commands.set(command.data.name, command);
+}
 
 const { client } = new Discord({
     commands,
 });
+
+hydrateCommands(allCommands);
 
 client.on(Events.VoiceStateUpdate, (arg0, arg1) => {
     const oldGuildID = arg0.guild.id;
