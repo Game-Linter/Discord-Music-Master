@@ -20,56 +20,56 @@
 
 import { Events } from 'discord.js';
 import dotenv from 'dotenv';
-import { Audio } from './commands/audio.command';
-import { DiscordServer } from './core/discordServer';
+import { globSync } from 'glob';
+import { Command } from './commands/command.abstract';
 import { hydrateCommands } from './core/hydrateCommands';
 import { Discord } from './core/server';
-import { getAsync } from './utils/get-token';
-
-const PREFIX = process.env.PREFIX ?? ('??' as const);
-
-console.log('Starting... with prefix: ', PREFIX);
-
-const servers: { [x: string]: DiscordServer } = {};
 
 dotenv.config({
-    path: '.env',
+    path: '.env.local',
 });
-
-const isBanned = async (id: string) => {
-    const bannedUsers = await getAsync('bot:banned');
-    if (bannedUsers) {
-        return JSON.parse(bannedUsers).filter((bannedUser: string) => {
-            return bannedUser === id;
-        }).length;
-    }
-
-    return 0;
-};
 
 const commands = new Map();
 
-const allCommands = [new Audio()];
+const commandsList = new Array();
 
-for (const command of allCommands) {
-    commands.set(command.data.name, command);
-}
+// use glob to get all commands
 
-const { handleVoiceStateUpdate, client } = new Discord({
+const commandFiles = globSync('./commands/*.command.js', {
+    dotRelative: true,
+    cwd: __dirname,
+});
+
+commandFiles.forEach((file) => {
+    const command = require(file).default;
+
+    if (!command) {
+        throw new Error(`Command ${file} does not export a default export!`);
+    }
+
+    const commandInstance = new command() as Command;
+
+    commands.set(commandInstance.data.name, commandInstance);
+    commandsList.push(commandInstance);
+});
+
+const { handleVoiceStateUpdate, client, servers } = new Discord({
     commands,
 });
 
-hydrateCommands(allCommands);
+hydrateCommands(commandsList);
 
 client.on(Events.VoiceStateUpdate, handleVoiceStateUpdate);
 
 const signHandler = () => {
-    const srvs = Object.keys(servers) as string[];
+    const srvs = servers.entries();
 
-    srvs.forEach((srv) => {
-        const element: DiscordServer = servers[srv];
-        element?.getConnection?.disconnect();
-    });
+    const server = srvs.next();
+
+    while (!server.done) {
+        server.value[1].getConnection()?.disconnect();
+        srvs.next();
+    }
 
     process.exit();
 };

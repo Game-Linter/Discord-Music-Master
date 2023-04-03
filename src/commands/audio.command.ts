@@ -1,11 +1,13 @@
+import { joinVoiceChannel } from '@discordjs/voice';
 import {
     ChatInputCommandInteraction,
     Message,
+    PermissionFlagsBits,
     SlashCommandBuilder,
 } from 'discord.js';
 import { Command } from './command.abstract';
 
-export class Audio extends Command {
+class Audio extends Command {
     _data = new SlashCommandBuilder()
         .setDescription('Play audio')
         .setName('audio')
@@ -16,11 +18,25 @@ export class Audio extends Command {
                 .setRequired(true),
         );
 
-    execute(message: ChatInputCommandInteraction): Promise<void> {
-        throw new Error('Method not implemented.');
+    execute(interaction: ChatInputCommandInteraction): Promise<void> {
+        interaction.reply('Audio command!');
+
+        const memeber = interaction.guild?.members.cache.get(
+            interaction.member?.user.id!,
+        );
+
+        joinVoiceChannel({
+            channelId: memeber?.voice.channelId!,
+            guildId: interaction.guildId!,
+            adapterCreator: interaction.guild!.voiceAdapterCreator,
+        });
+
+        return Promise.resolve();
     }
 
     get data() {
         return this._data;
     }
 }
+
+export default Audio;
