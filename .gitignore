@@ -5,7 +5,8 @@ cred.txt
 ..bfg-report/
 .git.bfg-report
 
-.env*
+.env
+.env.local
 
 yarn-error.log
 

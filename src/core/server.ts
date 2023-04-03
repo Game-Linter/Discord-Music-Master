@@ -23,13 +23,19 @@ import {
     Events,
     GatewayIntentBits,
     Message,
+    VoiceState,
 } from 'discord.js';
 import { Command } from '../commands/command.abstract';
 import { token } from '../config/discord.config';
+import { DiscordServer } from './discordServer';
 
 export class Discord {
+    servers: Map<string, DiscordServer>;
+
     client: Client;
     constructor(init: { commands: Map<string, Command> }) {
+        this.servers = new Map();
+
         this.client = new Client({
             intents: [
                 GatewayIntentBits.Guilds,
@@ -105,5 +111,47 @@ export class Discord {
             }
         }, 99);
         this.client.login(token);
+    }
+
+    public async handleVoiceStateUpdate(arg0: VoiceState, arg1: VoiceState) {
+        const oldGuildID = arg0.guild.id;
+        const newGuildID = arg1.guild.id;
+
+        if (arg0.member?.id === this.client.user?.id) {
+            // Triggered by something happened to the bot
+            console.log({
+                old: arg0.channel?.members.map((v) => v.user.id),
+                new: arg1.channel?.members.map((va) => va.user.id),
+            });
+            if (
+                arg1.channel?.members.size &&
+                arg1.channel?.members.every(
+                    (member) => member.user.id === this.client.user!.id,
+                ) &&
+                newGuildID
+            ) {
+                console.log('Moved to an empty channel');
+                this.servers.get(newGuildID)?.getConnection.connect();
+
+                this.servers.delete(oldGuildID);
+            }
+            if (!newGuildID && oldGuildID && this.servers.has(oldGuildID)) {
+                console.log('deleted');
+                this.servers.delete(oldGuildID);
+            }
+        } else {
+            // Triggered by other people
+            const Members = arg0.channel?.members;
+            if (
+                Members?.size &&
+                Members?.every(
+                    (member) => member.user.id === this.client.user?.id,
+                )
+            ) {
+                const glId = arg0.guild.id;
+                this.servers.get(glId)?.getConnection.disconnect();
+                this.servers.delete(glId);
+            }
+        }
     }
 }

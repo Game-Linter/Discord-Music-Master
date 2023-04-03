@@ -55,50 +55,13 @@ for (const command of allCommands) {
     commands.set(command.data.name, command);
 }
 
-const { client } = new Discord({
+const { handleVoiceStateUpdate, client } = new Discord({
     commands,
 });
 
 hydrateCommands(allCommands);
 
-client.on(Events.VoiceStateUpdate, (arg0, arg1) => {
-    const oldGuildID = arg0.guild.id;
-    const newGuildID = arg1.guild.id;
-
-    if (arg0.member?.id === client.user?.id) {
-        // Triggered by something happened to the bot
-        console.log({
-            old: arg0.channel?.members.map((v) => v.user.id),
-            new: arg1.channel?.members.map((va) => va.user.id),
-        });
-        if (
-            arg1.channel?.members.size &&
-            arg1.channel?.members.every(
-                (member) => member.user.id === client.user!.id,
-            ) &&
-            newGuildID
-        ) {
-            console.log('Moved to an empty channel');
-            servers[newGuildID]?.getConnection.disconnect();
-            delete servers[newGuildID];
-        }
-        if (!newGuildID && oldGuildID && servers[oldGuildID]) {
-            console.log('deleted');
-            delete servers[oldGuildID];
-        }
-    } else {
-        // Triggered by other people
-        const Members = arg0.channel?.members;
-        if (
-            Members?.size &&
-            Members?.every((member) => member.user.id === client.user?.id)
-        ) {
-            const glId = arg0.guild.id;
-            servers[glId!]?.getConnection.disconnect();
-            delete servers[glId!];
-        }
-    }
-});
+client.on(Events.VoiceStateUpdate, handleVoiceStateUpdate);
 
 const signHandler = () => {
     const srvs = Object.keys(servers) as string[];

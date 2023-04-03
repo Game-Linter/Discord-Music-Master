@@ -1,5 +1,5 @@
 export interface ResultUrl {
-    url: string;
+    url?: string;
     title?: string;
 }
 

@@ -1,8 +1,9 @@
 import { getAsync, setAsync } from '../redis.server';
+import { RedisPersistable } from './RedisPersistence.abstract';
 
-export class SpotifyToken {
-    private readonly dbKey = 'redis:token';
-    private readonly TTL = 3590 as const;
+export class SpotifyToken extends RedisPersistable {
+    protected dbKey = 'redis:token';
+    protected TTL = 3590 as const;
 
     async getToken() {
         const token = await getAsync(this.dbKey);

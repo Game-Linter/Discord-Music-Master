@@ -16,7 +16,12 @@
  *
  */
 
-import { Message, StreamDispatcher, VoiceConnection } from 'discord.js';
+import {
+    Message,
+    StreamDispatcher,
+    VoiceConnection,
+    VoiceState,
+} from 'discord.js';
 import { play } from './play-core';
 
 export class DiscordServer {
@@ -36,7 +41,7 @@ export class DiscordServer {
         (async () => {
             try {
                 this.connection =
-                    (await message.member?.voice.channel?.join()) as VoiceConnection;
+                    (await message.member?.voice.channel?.) as VoiceConnection;
                 if (Array.isArray(url)) {
                     this.queue.push(...url);
                 } else {
