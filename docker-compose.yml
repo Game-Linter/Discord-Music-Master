@@ -3,7 +3,7 @@ version: '3.1'
 services:
     bot:
         image: gamelinter/discord-music-master:latest
-        env_file: .env
+        env_file: .env.local
         restart: always
         networks:
             - bot-network
