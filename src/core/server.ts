@@ -22,7 +22,6 @@ import {
     Client,
     Events,
     GatewayIntentBits,
-    Message,
     VoiceState,
 } from 'discord.js';
 import { Command } from '../commands/command.abstract';

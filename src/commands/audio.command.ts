@@ -96,8 +96,6 @@ class Audio extends Command {
             ),
         );
 
-        const subscription = voiceConnection.subscribe(audioPlayer);
-
         interaction.reply({
             content: `Playing ${handler.title ?? handler.url}`,
             ephemeral: true,
