@@ -50,7 +50,7 @@ class Audio extends Command {
             return Promise.resolve();
         }
 
-        const voiceConnection = joinVoiceChannel({
+        joinVoiceChannel({
             channelId: voiceChannel,
             guildId: interaction.guildId!,
             adapterCreator: interaction.guild?.voiceAdapterCreator!,
