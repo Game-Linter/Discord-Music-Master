@@ -24,7 +24,7 @@ import {
     GatewayIntentBits,
     VoiceState,
 } from 'discord.js';
-import { Command } from '../commands/command.abstract';
+import { Command } from '../commands/abstract/command.abstract';
 import { token } from '../config/discord.config';
 
 export class Discord {

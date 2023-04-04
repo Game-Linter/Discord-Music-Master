@@ -1,20 +1,18 @@
 import {
     createAudioPlayer,
     createAudioResource,
-    getVoiceConnection,
     joinVoiceChannel,
     NoSubscriberBehavior,
     StreamType,
 } from '@discordjs/voice';
 import {
     ChatInputCommandInteraction,
-    Message,
     PermissionFlagsBits,
     SlashCommandBuilder,
 } from 'discord.js';
-import queryHandler from '../core/queryHandler';
-import { Command } from './command.abstract';
 import ytdl from 'ytdl-core-discord';
+import queryHandler from '../core/QueryHandler';
+import { Command } from './abstract/command.abstract';
 
 class Audio extends Command {
     _data = new SlashCommandBuilder()
@@ -61,9 +59,8 @@ class Audio extends Command {
         );
 
         if (!handler) {
-            interaction.followUp({
+            await interaction.editReply({
                 content: 'No results found!',
-                ephemeral: true,
             });
 
             return Promise.resolve();
@@ -96,9 +93,8 @@ class Audio extends Command {
             ),
         );
 
-        interaction.reply({
+        await interaction.editReply({
             content: `Playing ${handler.title ?? handler.url}`,
-            ephemeral: true,
         });
 
         return Promise.resolve();

@@ -21,7 +21,7 @@
 import { Events } from 'discord.js';
 import dotenv from 'dotenv';
 import { globSync } from 'glob';
-import { Command } from './commands/command.abstract';
+import { Command } from './commands/abstract/command.abstract';
 import { hydrateCommands } from './core/hydrateCommands';
 import { Discord } from './core/server';
 

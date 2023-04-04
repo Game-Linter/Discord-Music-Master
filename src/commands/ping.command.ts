@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
-import { Command } from './command.abstract';
+import { Command } from './abstract/command.abstract';
 
 class Ping extends Command {
     _data = new SlashCommandBuilder().setDescription('Ping!').setName('ping');

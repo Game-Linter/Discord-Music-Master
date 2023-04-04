@@ -1,7 +1,7 @@
 import { REST } from 'discord.js';
 import { Routes } from 'discord-api-types/v10';
 
-import { Command } from '../commands/command.abstract';
+import { Command } from '../commands/abstract/command.abstract';
 
 export const hydrateCommands = (commands: Command[]) => {
     const rest = new REST({
