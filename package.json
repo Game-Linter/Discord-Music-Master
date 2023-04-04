@@ -45,6 +45,6 @@
     "scripts": {
         "start": "node .",
         "prestart": "yarn run build",
-        "build": "tsc -p . --sourceMap"
+        "build": "tsc -p ."
     }
 }
