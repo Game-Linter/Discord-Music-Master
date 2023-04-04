@@ -1,4 +1,11 @@
-import { getVoiceConnection, joinVoiceChannel } from '@discordjs/voice';
+import {
+    createAudioPlayer,
+    createAudioResource,
+    getVoiceConnection,
+    joinVoiceChannel,
+    NoSubscriberBehavior,
+    StreamType,
+} from '@discordjs/voice';
 import {
     ChatInputCommandInteraction,
     Message,
@@ -7,6 +14,7 @@ import {
 } from 'discord.js';
 import queryHandler from '../core/queryHandler';
 import { Command } from './command.abstract';
+import ytdl from 'ytdl-core-discord';
 
 class Audio extends Command {
     _data = new SlashCommandBuilder()
@@ -25,12 +33,16 @@ class Audio extends Command {
         );
 
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+        await interaction.deferReply({
+            ephemeral: true,
+        });
+
         const voiceChannel = await interaction.guild?.members
             .fetch(interaction.member?.user.id!)
             .then((member) => member.voice.channelId);
 
         if (!voiceChannel) {
-            interaction.reply({
+            interaction.followUp({
                 content:
                     'You need to be in a voice channel to use this command!',
                 ephemeral: true,
@@ -48,7 +60,48 @@ class Audio extends Command {
             interaction.options.getString('url-or-query')!,
         );
 
-        console.log(handler);
+        if (!handler) {
+            interaction.followUp({
+                content: 'No results found!',
+                ephemeral: true,
+            });
+
+            return Promise.resolve();
+        }
+
+        if (Array.isArray(handler)) {
+            interaction.reply({
+                content: 'Multiple results found!',
+                ephemeral: true,
+            });
+
+            return Promise.resolve();
+        }
+
+        const audioPlayer = createAudioPlayer({
+            behaviors: {
+                noSubscriber: NoSubscriberBehavior.Pause,
+            },
+        });
+
+        audioPlayer.play(
+            createAudioResource(
+                await ytdl(handler.url!, {
+                    filter: 'audioonly',
+                    highWaterMark: 1 << 25,
+                }),
+                {
+                    inputType: StreamType.Opus,
+                },
+            ),
+        );
+
+        const subscription = voiceConnection.subscribe(audioPlayer);
+
+        interaction.reply({
+            content: `Playing ${handler.title ?? handler.url}`,
+            ephemeral: true,
+        });
 
         return Promise.resolve();
     }

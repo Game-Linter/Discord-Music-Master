@@ -1,8 +1,6 @@
-import { AxiosInstance, AxiosResponse } from 'axios';
-import { ResultUrl } from '../../abstract/UrlHandler';
-import { getCachedSpotifyToken } from '../CachedSpotifyToken';
-import SpotifyApiWrapper, { SpotifyResponse } from '../SpotifyApiWrapper';
 import { SpotifyItemHandler } from '../../abstract/ItemHandler.abstract';
+import { ResultUrl } from '../../abstract/UrlHandler';
+import SpotifyApiWrapper from '../SpotifyApiWrapper';
 
 export class TrackHandler extends SpotifyItemHandler {
     public async handleItem(itemId: string): Promise<ResultUrl | null> {
