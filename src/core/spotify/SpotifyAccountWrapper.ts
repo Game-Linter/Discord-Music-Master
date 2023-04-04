@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import qs from 'qs';
 import { BASE } from '../../config/base-spotify.config';
-import { HttpClient } from './HttpWrapper';
+import { HttpClient } from '../abstract/HttpWrapper';
 
 export const SpotifsyHttpClient = axios.create({
     baseURL: 'https://accounts.spotify.com',

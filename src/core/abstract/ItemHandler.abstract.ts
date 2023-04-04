@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
-import { ResultUrl } from '../../abstract/UrlHandler';
+import { ResultUrl } from './UrlHandler';
 
-export abstract class ItemHandler {
+export abstract class SpotifyItemHandler {
     public abstract handleItem(
         item: string,
     ): Promise<ResultUrl | ResultUrl[] | null>;

@@ -1,19 +1,25 @@
 import validator from 'validator';
 import { ResultUrl, UrlHandler } from '../abstract/UrlHandler';
 import { SPOTIFY_URI } from '../Accessors';
-import { ItemHandler } from './ItemHandlers/ItemHandler.abstract';
+import { SpotifyItemHandler } from '../abstract/ItemHandler.abstract';
 import { PlaylistHandler } from './ItemHandlers/PlaylistHandler';
 import { TrackHandler } from './ItemHandlers/TrackHandler';
 import SpotifyApiWrapper from './SpotifyApiWrapper';
+import { AlbumHandler } from './ItemHandlers/AlbumHandler';
+
+type SpotifyUrlType = 'track' | 'playlist' | 'album';
+
+type SpotifyHandlers = {
+    [key in SpotifyUrlType]: SpotifyItemHandler;
+};
 
 export class SpotifyUrlHandler extends UrlHandler {
     public static readonly SPOTIFY_URI = 'https://open.spotify.com/' as const;
 
-    private readonly spotifyHandlers: {
-        [key: string]: ItemHandler;
-    } = {
+    private readonly spotifyHandlers: SpotifyHandlers = {
         track: new TrackHandler(),
         playlist: new PlaylistHandler(),
+        album: new AlbumHandler(),
     };
 
     public async handleUrl(
@@ -26,7 +32,7 @@ export class SpotifyUrlHandler extends UrlHandler {
         // undertand which spotify url got passed
         const { type, itemId } = this.parseUrl(url);
 
-        const handler = this.spotifyHandlers[type];
+        const handler = this.spotifyHandlers[type as SpotifyUrlType];
 
         if (!handler) {
             throw new Error('Invalid Url');

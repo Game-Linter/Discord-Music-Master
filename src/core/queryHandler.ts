@@ -1,41 +1,43 @@
 import validator from 'validator';
 import { ResultUrl, UrlHandler } from './abstract/UrlHandler';
+import { SearchHandler } from './searchHandler';
 import { SpotifyUrlHandler } from './spotify/SpotifyUrlHandler';
 
-type SupportedHandlers = 'spotify';
+enum SupportedHandlers {
+    Spotify = 'spotify',
+    // Youtube = 'youtube',
+}
+
+type Handler = {
+    prefixUrl: string;
+    handler: UrlHandler;
+};
 
 type Handlers = {
-    [key in SupportedHandlers]: {
-        url: string;
-        handler: UrlHandler;
-    };
+    [key in SupportedHandlers]: Handler;
 };
 
 class QueryHandler {
     private handlers: Handlers = {
-        spotify: {
-            url: SpotifyUrlHandler.SPOTIFY_URI,
+        [SupportedHandlers.Spotify]: {
+            prefixUrl: SpotifyUrlHandler.SPOTIFY_URI,
             handler: new SpotifyUrlHandler(),
         },
     };
 
-    async handle(urlOrQuery: string): Promise<ResultUrl | ResultUrl[] | null> {
-        if (validator.isURL(urlOrQuery)) {
-            if (urlOrQuery.startsWith(this.handlers['spotify'].url)) {
-                return await this.handlers['spotify'].handler.handleUrl(
-                    urlOrQuery,
-                );
-            } else {
-                return null;
-            }
-        } else {
-            // handle with search
+    private defaultHandler = new SearchHandler();
 
-            return {
-                url: '',
-                title: '',
-            };
+    async handle(urlOrQuery: string): Promise<ResultUrl | ResultUrl[] | null> {
+        // handle with url
+        const Handler = Object.values(this.handlers).find(
+            ({ prefixUrl: url }) => urlOrQuery.startsWith(url),
+        );
+
+        if (!Handler) {
+            return this.defaultHandler.handle(urlOrQuery);
         }
+
+        return Handler.handler.handleUrl(urlOrQuery);
     }
 }
 

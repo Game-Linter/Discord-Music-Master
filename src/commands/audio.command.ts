@@ -5,6 +5,7 @@ import {
     PermissionFlagsBits,
     SlashCommandBuilder,
 } from 'discord.js';
+import queryHandler from '../core/queryHandler';
 import { Command } from './command.abstract';
 
 class Audio extends Command {
@@ -13,8 +14,8 @@ class Audio extends Command {
         .setName('audio')
         .addStringOption((option) =>
             option
-                .setName('url')
-                .setDescription('The url oh the search query')
+                .setName('url-or-query')
+                .setDescription('The url or the search query')
                 .setRequired(true),
         )
         .setDefaultMemberPermissions(
@@ -43,9 +44,11 @@ class Audio extends Command {
             adapterCreator: interaction.guild?.voiceAdapterCreator!,
         });
 
-        setTimeout(() => {
-            voiceConnection.disconnect();
-        }, 1000);
+        const handler = await queryHandler.handle(
+            interaction.options.getString('url-or-query')!,
+        );
+
+        console.log(handler);
 
         return Promise.resolve();
     }

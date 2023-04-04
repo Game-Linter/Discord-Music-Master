@@ -1,8 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import qs from 'qs';
-import { BASE } from '../../config/base-spotify.config';
+import { HttpClient } from '../abstract/HttpWrapper';
 import { getCachedSpotifyToken } from './CachedSpotifyToken';
-import { HttpClient } from './HttpWrapper';
 
 export const SpotifsyHttpClient = axios.create({
     baseURL: 'https://api.spotify.com/v1',

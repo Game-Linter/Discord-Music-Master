@@ -1,9 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { getCachedSpotifyToken } from '../CachedSpotifyToken';
 import SpotifyApiWrapper from '../SpotifyApiWrapper';
-import { ItemHandler } from './ItemHandler.abstract';
+import { SpotifyItemHandler } from '../../abstract/ItemHandler.abstract';
 
-export class PlaylistHandler extends ItemHandler {
+export class PlaylistHandler extends SpotifyItemHandler {
     public async handleItem(itemId: string) {
         const token = await getCachedSpotifyToken();
 
