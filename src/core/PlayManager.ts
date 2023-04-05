@@ -57,7 +57,10 @@ class PlayManager {
     public async enqueueAudio(
         query: Result,
         voiceConnection: VoiceConnection,
-    ): Promise<string | null> {
+    ): Promise<{
+        title: string;
+        action: 'play' | 'queue';
+    } | null> {
         if (!query) return Promise.resolve(null);
 
         let connectionState = this.getConnectionState(
@@ -81,7 +84,10 @@ class PlayManager {
 
         if (connectionState.playing) {
             connectionState.pushQueue(query as any); // TODO: fix this type
-            return Promise.resolve(connectionState.next() || 'Nothing');
+            return Promise.resolve({
+                title: connectionState.next()!,
+                action: 'queue',
+            });
         }
 
         connectionState.pushQueue(query as any); // TODO: fix this type
@@ -103,34 +109,43 @@ class PlayManager {
 
         connectionState.subscription.player.on(
             AudioPlayerStatus.Idle,
-            async () => {
-                connectionState!.playing = false;
-
-                if (connectionState!.isLooping) {
-                    await this.enqueueAudio(query, voiceConnection);
-                } else {
-                    connectionState!.shiftQueue();
-
-                    if (connectionState!.hasNext()) {
-                        const result = await queryHandler.handle(
-                            connectionState!.currentTrack!,
-                        );
-
-                        if (result) {
-                            await this.enqueueAudio(result, voiceConnection);
-                        }
-                    } else {
-                        voiceConnection.destroy();
-                        this.deleteConnectionState(
-                            voiceConnection.joinConfig.guildId,
-                        );
-                        return Promise.resolve(null);
-                    }
-                }
-            },
+            await this.idleHandler(connectionState, voiceConnection, query),
         );
 
-        return Promise.resolve(connectionState.currentTrack!);
+        return Promise.resolve({
+            title: connectionState.currentTrack!,
+            action: 'play',
+        });
+    }
+
+    private async idleHandler(
+        connectionState: ConnectionState,
+        voiceConnection: VoiceConnection,
+        query: Result,
+    ) {
+        return async () => {
+            connectionState!.playing = false;
+
+            if (connectionState!.isLooping) {
+                await this.enqueueAudio(query, voiceConnection);
+            } else {
+                connectionState!.shiftQueue();
+
+                if (connectionState!.hasNext()) {
+                    const result = await queryHandler.handle(
+                        connectionState!.currentTrack!,
+                    );
+
+                    await this.enqueueAudio(result, voiceConnection);
+                } else {
+                    voiceConnection.destroy();
+                    this.deleteConnectionState(
+                        voiceConnection.joinConfig.guildId,
+                    );
+                    return Promise.resolve(null);
+                }
+            }
+        };
     }
 }
 

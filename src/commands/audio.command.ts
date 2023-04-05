@@ -20,6 +20,11 @@ import queryHandler, { Result } from '../core/QueryHandler';
 import { Command } from './abstract/command.abstract';
 
 class Audio extends Command {
+    private message = {
+        queue: 'Added to queue',
+        play: 'Playing',
+    };
+
     _data = new SlashCommandBuilder()
         .setDescription('Play audio')
         .setName('audio')
@@ -84,7 +89,7 @@ class Audio extends Command {
 
         if (played)
             interaction.editReply({
-                content: `Playing ${played}`,
+                content: `${this.message[played.action]} ${played.title}`,
             });
 
         return Promise.resolve();

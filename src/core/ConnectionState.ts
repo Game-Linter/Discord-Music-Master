@@ -86,6 +86,6 @@ export class ConnectionState {
     public next() {
         if (!this.hasNext()) return;
 
-        return this.queue[1];
+        return this.queue[0];
     }
 }
