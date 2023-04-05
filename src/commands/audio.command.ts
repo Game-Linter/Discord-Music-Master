@@ -1,4 +1,5 @@
 import {
+    AudioPlayerStatus,
     createAudioPlayer,
     createAudioResource,
     joinVoiceChannel,
@@ -12,7 +13,9 @@ import {
     SlashCommandBuilder,
 } from 'discord.js';
 import ytdl from 'ytdl-core-discord';
-import queryHandler from '../core/QueryHandler';
+import { ResultUrl } from '../core/abstract/UrlHandler';
+import playManager from '../core/PlayManager';
+import queryHandler, { Result } from '../core/QueryHandler';
 import { Command } from './abstract/command.abstract';
 
 class Audio extends Command {
@@ -49,17 +52,17 @@ class Audio extends Command {
             return Promise.resolve();
         }
 
-        const voicechannel = joinVoiceChannel({
+        const voiceConnection = joinVoiceChannel({
             channelId: voiceChannel,
             guildId: interaction.guildId!,
             adapterCreator: interaction.guild?.voiceAdapterCreator!,
         });
 
-        const handler = await queryHandler.handle(
+        const result = await queryHandler.handle(
             interaction.options.getString('url-or-query')!,
         );
 
-        if (!handler) {
+        if (!result) {
             await interaction.editReply({
                 content: 'No results found!',
             });
@@ -67,13 +70,26 @@ class Audio extends Command {
             return Promise.resolve();
         }
 
-        if (Array.isArray(handler)) {
+        // call enqueueAudio
+
+        const played = await this.enqueueAudio(
+            result as ResultUrl | ResultUrl[],
+            voiceConnection,
+        );
+
+        if (played)
             interaction.editReply({
-                content: 'Multiple results found!',
+                content: `Playing ${played}`,
             });
 
-            return Promise.resolve();
-        }
+        return Promise.resolve();
+    }
+
+    private async enqueueAudio(
+        query: Result,
+        voiceConnection: VoiceConnection,
+    ): Promise<string | null> {
+        if (!query) return Promise.resolve(null);
 
         const audioPlayer = createAudioPlayer({
             behaviors: {
@@ -81,11 +97,30 @@ class Audio extends Command {
             },
         });
 
-        voicechannel.subscribe(audioPlayer);
+        // if (Array.isArray(query)) {
+        //     // TODO: handle array
+
+        //     return Promise.resolve();
+        // }
+
+        voiceConnection.subscribe(audioPlayer);
+
+        let connectionState = playManager.getConnectionState(
+            voiceConnection.joinConfig.guildId,
+        );
+
+        if (!connectionState) {
+            connectionState = playManager.createConnectionState(
+                voiceConnection.joinConfig.guildId,
+                audioPlayer,
+            );
+        }
+
+        connectionState.pushQueue(query as any); // TODO: fix this type
 
         audioPlayer.play(
             createAudioResource(
-                await ytdl(handler.url!, {
+                await ytdl(connectionState.currentTrack!, {
                     filter: 'audioonly',
                     highWaterMark: 1 << 25,
                 }),
@@ -95,11 +130,33 @@ class Audio extends Command {
             ),
         );
 
-        await interaction.editReply({
-            content: `Playing ${handler.title ?? handler.url}`,
+        audioPlayer.on('error', (error) => {
+            console.error(
+                `Error encountered in voice connection ${voiceConnection.joinConfig.guildId}: ${error}`,
+            );
         });
 
-        return Promise.resolve();
+        audioPlayer.on(AudioPlayerStatus.Idle, async () => {
+            if (connectionState!.isLooping) {
+                await this.enqueueAudio(query, voiceConnection);
+            } else {
+                connectionState!.shiftQueue();
+
+                if (connectionState!.hasNext()) {
+                    const result = await queryHandler.handle(
+                        connectionState!.currentTrack!,
+                    );
+
+                    if (result) {
+                        await this.enqueueAudio(result, voiceConnection);
+                    }
+                } else {
+                    voiceConnection.destroy();
+                }
+            }
+        });
+
+        return Promise.resolve(connectionState.currentTrack!);
     }
 
     get data() {

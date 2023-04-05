@@ -6,8 +6,9 @@ class Ping extends Command {
 
     async execute(interaction: ChatInputCommandInteraction) {
         await interaction.reply({
-            content: 'Pong!',
-            ephemeral: true,
+            content: `${
+                new Date().getTime() - interaction.createdTimestamp
+            }ms}`,
         });
     }
 

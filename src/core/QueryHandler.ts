@@ -17,7 +17,7 @@ type Handlers = {
     [key in SupportedHandlers]: Handler;
 };
 
-type Result = ResultUrl | ResultUrl[] | null;
+export type Result = ResultUrl | ResultUrl[] | null;
 
 class QueryHandler {
     private handlers: Handlers = {

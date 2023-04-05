@@ -1,5 +1,5 @@
 import { getInfo } from 'ytdl-core-discord';
-import { UrlHandler, ResultUrl } from '../abstract/UrlHandler';
+import { ResultUrl, UrlHandler } from '../abstract/UrlHandler';
 
 export class YoutubeHandler extends UrlHandler {
     public static readonly YOUTUBE_URI = 'https://www.youtube.com/watch?v=';
