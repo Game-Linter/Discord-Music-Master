@@ -72,8 +72,8 @@ export class ConnectionState {
     }
 
     public hasNext() {
-        const [, second] = this._queue;
+        const [next] = this._queue;
 
-        return !!second;
+        return !!next;
     }
 }

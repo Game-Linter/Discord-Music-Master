@@ -32,10 +32,16 @@ class Skip extends Command {
             interaction.editReply({
                 content: 'Not even in channel bro, based!',
             });
+
+            return Promise.resolve();
         }
 
-        if (connectionState?.hasNext()) {
-            connectionState?.shiftQueue();
+        console.log(connectionState.currentTrack, connectionState.hasNext());
+
+        if (connectionState.hasNext()) {
+            connectionState.shiftQueue();
+
+            connectionState.playing = false;
 
             queryHandler
                 .handle(connectionState.currentTrack!)
