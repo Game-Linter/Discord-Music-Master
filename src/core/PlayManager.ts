@@ -109,7 +109,7 @@ class PlayManager {
 
         connectionState.subscription.player.on(
             AudioPlayerStatus.Idle,
-            await this.idleHandler(connectionState, voiceConnection, query),
+            this.idleHandler(connectionState, voiceConnection, query),
         );
 
         return Promise.resolve({
@@ -118,7 +118,7 @@ class PlayManager {
         });
     }
 
-    private async idleHandler(
+    private idleHandler(
         connectionState: ConnectionState,
         voiceConnection: VoiceConnection,
         query: Result,

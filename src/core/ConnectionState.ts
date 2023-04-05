@@ -65,6 +65,7 @@ export class ConnectionState {
 
     public pushQueue(track: Required<ResultUrl> | Required<ResultUrl>[]) {
         if (Array.isArray(track)) {
+            console.log(`pushed to queue of length: ${track.length}}`);
             this._queue.push(...track.map((t) => t.url));
         } else {
             this._queue.push(track.url);
