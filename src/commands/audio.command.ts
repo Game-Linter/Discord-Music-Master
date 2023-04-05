@@ -4,6 +4,7 @@ import {
     joinVoiceChannel,
     NoSubscriberBehavior,
     StreamType,
+    VoiceConnection,
 } from '@discordjs/voice';
 import {
     ChatInputCommandInteraction,
@@ -48,7 +49,7 @@ class Audio extends Command {
             return Promise.resolve();
         }
 
-        joinVoiceChannel({
+        const voicechannel = joinVoiceChannel({
             channelId: voiceChannel,
             guildId: interaction.guildId!,
             adapterCreator: interaction.guild?.voiceAdapterCreator!,
@@ -79,6 +80,8 @@ class Audio extends Command {
                 noSubscriber: NoSubscriberBehavior.Pause,
             },
         });
+
+        voicechannel.subscribe(audioPlayer);
 
         audioPlayer.play(
             createAudioResource(
