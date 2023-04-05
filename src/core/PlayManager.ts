@@ -1,5 +1,4 @@
 import {
-    AudioPlayer,
     AudioPlayerStatus,
     createAudioPlayer,
     createAudioResource,
@@ -8,7 +7,6 @@ import {
     StreamType,
     VoiceConnection,
 } from '@discordjs/voice';
-import { getInfo } from 'ytdl-core';
 import ytdl from 'ytdl-core-discord';
 import { ConnectionState } from './ConnectionState';
 import queryHandler from './QueryHandler';
@@ -129,9 +127,9 @@ class PlayManager {
             if (connectionState!.isLooping) {
                 await this.enqueueAudio(query, voiceConnection);
             } else {
-                connectionState!.shiftQueue();
-
                 if (connectionState!.hasNext()) {
+                    connectionState!.shiftQueue();
+
                     const result = await queryHandler.handle(
                         connectionState!.currentTrack!,
                     );
