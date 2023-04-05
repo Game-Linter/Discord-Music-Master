@@ -67,9 +67,8 @@ class Audio extends Command {
         }
 
         if (Array.isArray(handler)) {
-            interaction.reply({
+            interaction.editReply({
                 content: 'Multiple results found!',
-                ephemeral: true,
             });
 
             return Promise.resolve();
