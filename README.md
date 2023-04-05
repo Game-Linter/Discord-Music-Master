@@ -1,5 +1,4 @@
 <div align="center">
-    <h2>Migrating to v13 of discord.js, discord introduced some breaking changes... Coming soon</h2>
     <img src="https://i.imgur.com/tQrygFc.png" width="128px" style="max-width:100%;">
     <h3 style="font-size: 2rem; margin-bottom: 0">Game-Linter Music Master README</h3>
     <h4 style="margin-top: 0">Revision 1</h4>
@@ -16,6 +15,7 @@
 	<a href="https://discord.gg/QFrgdV3"><img alt="Discord" src="https://img.shields.io/discord/626833340560965652"></a>
 	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/game-linter/discord-music-master">
     <br />
+    <img src="https://sonarcloud.io/api/project_badges/quality_gate?project=Game-Linter_Discord-Music-Master">
     <br />
 	<b> Feel like supporting hosting and developement of this project??</b>
     <br />
@@ -105,8 +105,6 @@ yarn start
 
 ## Infra Repo [infra-bot](https://github.com/Game-Linter/infra-bot)
 
-
-
 </div>
       <h3>Everything is Licensed under
       <a href="https://github.com/darklight147/discord-music/blob/master/LICENSE.md">AGPL-3.0 License</a>
@@ -114,6 +112,5 @@ yarn start
     </body>
 
 </html>
-
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGame-Linter%2FDiscord-Music-Master.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FGame-Linter%2FDiscord-Music-Master?ref=badge_large)
