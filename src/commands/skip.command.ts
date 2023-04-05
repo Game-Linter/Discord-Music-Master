@@ -9,6 +9,10 @@ import { Command } from './abstract/command.abstract';
 
 class Skip extends Command {
     _data: any;
+    private message = {
+        play: 'Playing',
+        queue: 'Queued',
+    };
 
     constructor() {
         super();
@@ -52,7 +56,9 @@ class Skip extends Command {
                             connectionState.subscription.connection,
                         ).then((now) => {
                             interaction.editReply({
-                                content: `Playing ${now}`,
+                                content: `${this.message[now?.action!]} ${
+                                    now?.title
+                                }`,
                             });
                         });
                     }
