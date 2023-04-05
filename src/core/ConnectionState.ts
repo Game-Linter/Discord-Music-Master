@@ -76,4 +76,16 @@ export class ConnectionState {
 
         return !!next;
     }
+
+    /**
+     *
+     * @returns the next track in the queue
+     * but does not remove it from the queue
+     */
+
+    public next() {
+        if (!this.hasNext()) return;
+
+        return this.queue[1];
+    }
 }

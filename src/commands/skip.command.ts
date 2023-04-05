@@ -50,9 +50,19 @@ class Skip extends Command {
                         PlayManager.enqueueAudio(
                             result,
                             connectionState.subscription.connection,
-                        );
+                        ).then((now) => {
+                            interaction.editReply({
+                                content: `Playing ${now}`,
+                            });
+                        });
                     }
                 });
+        } else {
+            interaction.editReply({
+                content: 'No more tracks in queue',
+            });
+
+            connectionState.subscription.connection.destroy();
         }
 
         return Promise.resolve();

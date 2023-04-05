@@ -8,6 +8,7 @@ import {
     StreamType,
     VoiceConnection,
 } from '@discordjs/voice';
+import { getInfo } from 'ytdl-core';
 import ytdl from 'ytdl-core-discord';
 import { ConnectionState } from './ConnectionState';
 import queryHandler from './QueryHandler';
@@ -80,7 +81,7 @@ class PlayManager {
 
         if (connectionState.playing) {
             connectionState.pushQueue(query as any); // TODO: fix this type
-            return Promise.resolve(null);
+            return Promise.resolve(connectionState.next() || 'Nothing');
         }
 
         connectionState.pushQueue(query as any); // TODO: fix this type
