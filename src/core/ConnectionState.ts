@@ -1,15 +1,24 @@
-import { AudioPlayer } from '@discordjs/voice';
+import { AudioPlayer, PlayerSubscription } from '@discordjs/voice';
 import { ResultUrl } from './abstract/UrlHandler';
 
 export class ConnectionState {
     private _currentTrack!: string;
     private _queue: string[] = [];
-    private _player: AudioPlayer;
+    private _subscription: PlayerSubscription;
     private _isAutoPlay: boolean = false;
     private _isLooping: boolean = false;
+    private isPlaying: boolean = false;
 
-    constructor(player: AudioPlayer) {
-        this._player = player;
+    constructor(subscription: PlayerSubscription) {
+        this._subscription = subscription;
+    }
+
+    public get playing() {
+        return this.isPlaying;
+    }
+
+    public set playing(isPlaying: boolean) {
+        this.isPlaying = isPlaying;
     }
 
     public get currentTrack() {
@@ -28,8 +37,8 @@ export class ConnectionState {
         this._queue = queue;
     }
 
-    public get player() {
-        return this._player;
+    public get subscription() {
+        return this._subscription;
     }
     /**
      ** default: false

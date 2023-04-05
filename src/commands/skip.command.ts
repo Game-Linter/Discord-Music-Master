@@ -1,0 +1,56 @@
+import {
+    ChatInputCommandInteraction,
+    CacheType,
+    SlashCommandBuilder,
+} from 'discord.js';
+import PlayManager from '../core/PlayManager';
+import queryHandler from '../core/QueryHandler';
+import { Command } from './abstract/command.abstract';
+
+class Skip extends Command {
+    _data: any;
+
+    constructor() {
+        super();
+        this._data = new SlashCommandBuilder()
+            .setDescription('Skip the current track')
+            .setName('skip');
+    }
+
+    execute(
+        interaction: ChatInputCommandInteraction<CacheType>,
+    ): Promise<void> {
+        interaction.deferReply({
+            ephemeral: true,
+        });
+
+        const connectionState = PlayManager.getConnectionState(
+            interaction.guildId!,
+        );
+
+        if (!connectionState) {
+            interaction.editReply({
+                content: 'Not even in channel bro, based!',
+            });
+        }
+
+        if (connectionState?.hasNext()) {
+            connectionState?.shiftQueue();
+
+            queryHandler
+                .handle(connectionState.currentTrack!)
+                .then((result) => {
+                    if (result) {
+                        PlayManager.enqueueAudio(
+                            result,
+                            connectionState.subscription.connection,
+                        );
+                    }
+                });
+        }
+
+        return Promise.resolve();
+    }
+}
+
+export default Skip;

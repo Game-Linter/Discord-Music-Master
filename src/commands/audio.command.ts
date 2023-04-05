@@ -2,6 +2,7 @@ import {
     AudioPlayerStatus,
     createAudioPlayer,
     createAudioResource,
+    getVoiceConnection,
     joinVoiceChannel,
     NoSubscriberBehavior,
     StreamType,
@@ -52,11 +53,15 @@ class Audio extends Command {
             return Promise.resolve();
         }
 
-        const voiceConnection = joinVoiceChannel({
-            channelId: voiceChannel,
-            guildId: interaction.guildId!,
-            adapterCreator: interaction.guild?.voiceAdapterCreator!,
-        });
+        let voiceConnection = getVoiceConnection(interaction.guildId!);
+
+        if (!voiceConnection) {
+            voiceConnection = joinVoiceChannel({
+                channelId: voiceChannel,
+                guildId: interaction.guildId!,
+                adapterCreator: interaction.guild?.voiceAdapterCreator!,
+            });
+        }
 
         const result = await queryHandler.handle(
             interaction.options.getString('url-or-query')!,
@@ -72,7 +77,7 @@ class Audio extends Command {
 
         // call enqueueAudio
 
-        const played = await this.enqueueAudio(
+        const played = await playManager.enqueueAudio(
             result as ResultUrl | ResultUrl[],
             voiceConnection,
         );
@@ -83,84 +88,6 @@ class Audio extends Command {
             });
 
         return Promise.resolve();
-    }
-
-    private async enqueueAudio(
-        query: Result,
-        voiceConnection: VoiceConnection,
-    ): Promise<string | null> {
-        if (!query) return Promise.resolve(null);
-
-        const audioPlayer = createAudioPlayer({
-            behaviors: {
-                noSubscriber: NoSubscriberBehavior.Pause,
-            },
-        });
-
-        // if (Array.isArray(query)) {
-        //     // TODO: handle array
-
-        //     return Promise.resolve();
-        // }
-
-        voiceConnection.subscribe(audioPlayer);
-
-        let connectionState = playManager.getConnectionState(
-            voiceConnection.joinConfig.guildId,
-        );
-
-        if (!connectionState) {
-            connectionState = playManager.createConnectionState(
-                voiceConnection.joinConfig.guildId,
-                audioPlayer,
-            );
-        }
-
-        connectionState.pushQueue(query as any); // TODO: fix this type
-
-        audioPlayer.play(
-            createAudioResource(
-                await ytdl(connectionState.currentTrack!, {
-                    filter: 'audioonly',
-                    highWaterMark: 1 << 25,
-                }),
-                {
-                    inputType: StreamType.Opus,
-                },
-            ),
-        );
-
-        audioPlayer.on('error', (error) => {
-            console.error(
-                `Error encountered in voice connection ${voiceConnection.joinConfig.guildId}: ${error}`,
-            );
-        });
-
-        audioPlayer.on(AudioPlayerStatus.Idle, async () => {
-            if (connectionState!.isLooping) {
-                await this.enqueueAudio(query, voiceConnection);
-            } else {
-                connectionState!.shiftQueue();
-
-                if (connectionState!.hasNext()) {
-                    const result = await queryHandler.handle(
-                        connectionState!.currentTrack!,
-                    );
-
-                    if (result) {
-                        await this.enqueueAudio(result, voiceConnection);
-                    }
-                } else {
-                    voiceConnection.destroy();
-                }
-            }
-        });
-
-        return Promise.resolve(connectionState.currentTrack!);
-    }
-
-    get data() {
-        return this._data;
     }
 }
 
