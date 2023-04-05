@@ -2,6 +2,8 @@ import { getInfo } from 'ytdl-core-discord';
 import { UrlHandler, ResultUrl } from '../abstract/UrlHandler';
 
 export class YoutubeHandler extends UrlHandler {
+    public static readonly YOUTUBE_URI = 'https://www.youtube.com/watch?v=';
+
     public async handleUrl(
         url: string,
     ): Promise<ResultUrl | ResultUrl[] | null> {

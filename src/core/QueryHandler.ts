@@ -26,7 +26,7 @@ class QueryHandler {
             handler: new SpotifyUrlHandler(),
         },
         [SupportedHandlers.Youtube]: {
-            prefixUrl: 'https://www.youtube.com/watch?v=',
+            prefixUrl: YoutubeHandler.YOUTUBE_URI,
             handler: new YoutubeHandler(),
         },
     };
