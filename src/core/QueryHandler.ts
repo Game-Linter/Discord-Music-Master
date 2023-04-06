@@ -108,7 +108,7 @@ class QueryHandler {
 
                     if (item.url) {
                         const result = (await handler?.handler.handleUrl(
-                            item.url!,
+                            item.url,
                         )) as ResultUrl;
 
                         return {
@@ -125,7 +125,7 @@ class QueryHandler {
 
             if (newResult.url) {
                 const result = (await handler?.handler.handleUrl(
-                    newResult.url!,
+                    newResult.url,
                 )) as ResultUrl;
 
                 return {

@@ -1,6 +1,6 @@
 import { RedisPersistable } from './RedisPersistence.abstract';
 
-export class SpotifyToken extends RedisPersistable<String> {
+export class SpotifyToken extends RedisPersistable<string> {
     protected readonly dbKey = 'redis:token';
     protected readonly TTL = 3590 as const;
 

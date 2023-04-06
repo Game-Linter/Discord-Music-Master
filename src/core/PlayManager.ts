@@ -73,11 +73,13 @@ class PlayManager {
                 },
             });
 
-            const subscription = voiceConnection.subscribe(audioPlayer);
+            const subscription = voiceConnection.subscribe(
+                audioPlayer,
+            ) as PlayerSubscription;
 
             connectionState = this.createConnectionState(
                 voiceConnection.joinConfig.guildId,
-                subscription!,
+                subscription,
             );
         }
 
@@ -112,7 +114,7 @@ class PlayManager {
 
         connectionState.subscription.player.play(
             createAudioResource(
-                await ytdl(url!, {
+                await ytdl(url, {
                     filter: 'audioonly',
                     highWaterMark: 1 << 25,
                 }),
@@ -149,19 +151,19 @@ class PlayManager {
 
     private idleHandler(connectionState: ConnectionState, query: Result) {
         return async () => {
-            connectionState!.playing = false;
+            connectionState.playing = false;
 
-            if (connectionState!.isLooping) {
+            if (connectionState.isLooping) {
                 await this.enqueueAudio(
                     query,
                     connectionState.subscription.connection,
                 );
             } else {
-                if (connectionState!.hasNext()) {
-                    connectionState!.shiftQueue();
+                if (connectionState.hasNext()) {
+                    connectionState.shiftQueue();
 
                     const result = await queryHandler.handle(
-                        connectionState!.currentTrack!,
+                        connectionState.currentTrack,
                     );
 
                     await this.enqueueAudio(

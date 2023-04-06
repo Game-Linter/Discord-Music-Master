@@ -74,7 +74,7 @@ export class Discord {
                 });
             }
         });
-        this.Login().then(() => console.log('Logged in!') as void);
+        this.Login().then(() => console.log('Logged in!'));
     }
 
     async Login() {

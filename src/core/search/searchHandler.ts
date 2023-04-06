@@ -1,16 +1,16 @@
-import ytsr from 'ytsr';
+import ytsr, { Playlist, Video } from 'ytsr';
 
 export class SearchHandler {
     async handle(query: string) {
         try {
-            const { url, title } = await ytsr(query, {
+            const result = await ytsr(query, {
                 limit: 1,
                 pages: 1,
-            }).then((res) => res.items[0] as any);
+            }).then((res) => res.items[0] as Video | Playlist);
 
             return {
-                url,
-                title,
+                url: result.url,
+                title: result.title,
             };
         } catch (error: any) {
             console.log(error.message);
