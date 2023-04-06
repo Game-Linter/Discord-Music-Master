@@ -1,22 +1,12 @@
-import {
-    AudioPlayerStatus,
-    createAudioPlayer,
-    createAudioResource,
-    getVoiceConnection,
-    joinVoiceChannel,
-    NoSubscriberBehavior,
-    StreamType,
-    VoiceConnection,
-} from '@discordjs/voice';
+import { getVoiceConnection, joinVoiceChannel } from '@discordjs/voice';
 import {
     ChatInputCommandInteraction,
     PermissionFlagsBits,
     SlashCommandBuilder,
 } from 'discord.js';
-import ytdl from 'ytdl-core-discord';
 import { ResultUrl } from '../core/abstract/UrlHandler';
 import playManager from '../core/PlayManager';
-import queryHandler, { Result } from '../core/QueryHandler';
+import queryHandler from '../core/QueryHandler';
 import { Command } from './abstract/command.abstract';
 
 class Audio extends Command {

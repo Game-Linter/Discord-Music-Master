@@ -16,9 +16,9 @@
  *
  */
 
-import { redisUri } from '../config/redis.config';
 import redis from 'redis';
 import { promisify } from 'util';
+import { redisUri } from '../config/redis.config';
 
 export const redisClient = redis.createClient({
     url: redisUri,

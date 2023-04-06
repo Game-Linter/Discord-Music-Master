@@ -1,5 +1,5 @@
-import SpotifyAccountWrapper from './SpotifyAccountWrapper';
 import SpotifyToken from '../../persistence/models/SpotifyToken';
+import SpotifyAccountWrapper from './SpotifyAccountWrapper';
 
 export const getCachedSpotifyToken = async () => {
     const token = await SpotifyToken.getToken();

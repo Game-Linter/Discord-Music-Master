@@ -1,4 +1,3 @@
-import { getAsync, setAsync } from '../redis.server';
 import { RedisPersistable } from './RedisPersistence.abstract';
 
 export class SpotifyToken extends RedisPersistable<String> {

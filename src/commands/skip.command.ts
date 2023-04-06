@@ -1,6 +1,6 @@
 import {
-    ChatInputCommandInteraction,
     CacheType,
+    ChatInputCommandInteraction,
     SlashCommandBuilder,
 } from 'discord.js';
 import PlayManager from '../core/PlayManager';

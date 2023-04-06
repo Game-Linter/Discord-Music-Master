@@ -1,4 +1,4 @@
-import { AudioPlayer, PlayerSubscription } from '@discordjs/voice';
+import { PlayerSubscription } from '@discordjs/voice';
 import { ResultUrl } from './abstract/UrlHandler';
 
 export class ConnectionState {

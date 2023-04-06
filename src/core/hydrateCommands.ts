@@ -1,5 +1,5 @@
-import { REST } from 'discord.js';
 import { Routes } from 'discord-api-types/v10';
+import { REST } from 'discord.js';
 
 import { Command } from '../commands/abstract/command.abstract';
 
