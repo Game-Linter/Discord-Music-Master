@@ -8,6 +8,7 @@ import {
     VoiceConnection,
 } from '@discordjs/voice';
 import ytdl from 'ytdl-core-discord';
+import { ResultUrl } from './abstract/UrlHandler';
 import { ConnectionState } from './ConnectionState';
 import queryHandler from './QueryHandler';
 
@@ -83,7 +84,9 @@ class PlayManager {
         if (connectionState.playing) {
             connectionState.pushQueue(query as any); // TODO: fix this type
             return Promise.resolve({
-                title: connectionState.next()!,
+                title: Array.isArray(query)
+                    ? `playlist starting with : ${query[0].title}`
+                    : query.title ?? query.url!,
                 action: 'queue',
             });
         }
@@ -91,9 +94,13 @@ class PlayManager {
         connectionState.pushQueue(query as any); // TODO: fix this type
         connectionState.shiftQueue();
 
+        const { url } = (await queryHandler.handle(
+            connectionState.currentTrack!,
+        )) as ResultUrl;
+
         connectionState.subscription.player.play(
             createAudioResource(
-                await ytdl(connectionState.currentTrack!, {
+                await ytdl(url!, {
                     filter: 'audioonly',
                     highWaterMark: 1 << 25,
                 }),

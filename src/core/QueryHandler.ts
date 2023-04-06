@@ -48,6 +48,9 @@ class QueryHandler {
 
         result = this.enrichResult(result);
 
+        console.log({
+            result: await result,
+        });
         return result;
     }
 
@@ -61,33 +64,27 @@ class QueryHandler {
         if (!newResult) return null;
 
         if (Array.isArray(newResult)) {
-            const enrichedResult = [];
-
-            for (const item of newResult) {
-                if (item.title) {
-                    enrichedResult.push({
+            return await Promise.all(
+                newResult.map(async (item) => {
+                    return {
                         title: item.title,
-                        url:
-                            item.url ||
-                            (await this.defaultHandler.handle(item.title)).url,
-                    });
-                }
-            }
-
-            return enrichedResult;
+                        url: item.title
+                            ? await (
+                                  await this.defaultHandler.handle(item.title)
+                              ).url
+                            : item.url,
+                    };
+                }),
+            );
         } else {
-            if (newResult.title) {
-                return {
-                    title: newResult.title,
-                    url:
-                        newResult.url ||
-                        (await (
-                            await this.defaultHandler.handle(newResult.title)
-                        ).url),
-                };
-            }
-
-            return newResult;
+            return {
+                title: newResult.title,
+                url: newResult.title
+                    ? await (
+                          await this.defaultHandler.handle(newResult.title)
+                      ).url
+                    : newResult.url,
+            };
         }
     }
 
@@ -98,29 +95,27 @@ class QueryHandler {
 
         if (!newResult) return null;
 
-        if (Array.isArray(newResult)) {
-            const enrichedResult = [];
+        // if (Array.isArray(newResult)) {
+        //     return await Promise.all(
+        //         newResult.map(async (item) => {
+        //             return {
+        //                 title: item.title,
+        //                 url: item.url,
+        //             };
+        //         }),
+        //     );
+        // } else {
+        //     if (newResult.title) {
+        //         return {
+        //             title: newResult.title,
+        //             url: newResult.url,
+        //         };
+        //     }
 
-            for (const item of newResult) {
-                if (item.url) {
-                    enrichedResult.push({
-                        title: item.title,
-                        url: item.url,
-                    });
-                }
-            }
+        //     return newResult;
+        // }
 
-            return enrichedResult;
-        } else {
-            if (newResult.title) {
-                return {
-                    title: newResult.title,
-                    url: newResult.url,
-                };
-            }
-
-            return newResult;
-        }
+        return newResult;
     }
 }
 

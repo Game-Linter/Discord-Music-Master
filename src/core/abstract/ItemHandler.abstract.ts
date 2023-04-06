@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import { ResultUrl } from './UrlHandler';
 
 export abstract class SpotifyItemHandler {

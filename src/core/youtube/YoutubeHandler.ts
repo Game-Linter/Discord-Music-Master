@@ -4,9 +4,7 @@ import { ResultUrl, UrlHandler } from '../abstract/UrlHandler';
 export class YoutubeHandler extends UrlHandler {
     public static readonly YOUTUBE_URI = 'https://www.youtube.com/watch?v=';
 
-    public async handleUrl(
-        url: string,
-    ): Promise<ResultUrl | ResultUrl[] | null> {
+    public async handleUrl(url: string): Promise<ResultUrl | null> {
         const parsedUrl = new URL(url);
         const videoId = parsedUrl.searchParams.get('v');
 
@@ -18,6 +16,7 @@ export class YoutubeHandler extends UrlHandler {
 
         return {
             title: video.title,
+            url,
         };
     }
 
