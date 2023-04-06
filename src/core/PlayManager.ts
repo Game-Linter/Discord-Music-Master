@@ -98,6 +98,11 @@ class PlayManager {
             connectionState.currentTrack!,
         )) as ResultUrl;
 
+        if (!url) {
+            connectionState.subscription.player.stop(true);
+            return Promise.resolve(null);
+        }
+
         connectionState.subscription.player.play(
             createAudioResource(
                 await ytdl(url!, {
