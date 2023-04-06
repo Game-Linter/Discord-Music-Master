@@ -33,12 +33,18 @@ class QueryHandler {
 
     private defaultHandler = new SearchHandler();
 
-    async handle(urlOrQuery: string): Promise<Result> {
-        let result: Promise<Result> = Promise.resolve(null);
-
+    private getHandler(urlOrQuery: string) {
         const Handler = Object.values(this.handlers).find(
             ({ prefixUrl: url }) => urlOrQuery.startsWith(url),
         );
+
+        return Handler;
+    }
+
+    async handle(urlOrQuery: string): Promise<Result> {
+        let result: Promise<Result> = Promise.resolve(null);
+
+        const Handler = this.getHandler(urlOrQuery);
 
         if (!Handler) {
             result = this.defaultHandler.handle(urlOrQuery);
@@ -95,27 +101,41 @@ class QueryHandler {
 
         if (!newResult) return null;
 
-        // if (Array.isArray(newResult)) {
-        //     return await Promise.all(
-        //         newResult.map(async (item) => {
-        //             return {
-        //                 title: item.title,
-        //                 url: item.url,
-        //             };
-        //         }),
-        //     );
-        // } else {
-        //     if (newResult.title) {
-        //         return {
-        //             title: newResult.title,
-        //             url: newResult.url,
-        //         };
-        //     }
+        if (Array.isArray(newResult)) {
+            return await Promise.all(
+                newResult.map(async (item) => {
+                    const handler = this.getHandler(item.url!);
 
-        //     return newResult;
-        // }
+                    if (item.url) {
+                        const result = (await handler?.handler.handleUrl(
+                            item.url!,
+                        )) as ResultUrl;
 
-        return newResult;
+                        return {
+                            title: result.title,
+                            url: item.url,
+                        };
+                    }
+
+                    return item;
+                }),
+            );
+        } else {
+            const handler = this.getHandler(newResult.url!);
+
+            if (newResult.url) {
+                const result = (await handler?.handler.handleUrl(
+                    newResult.url!,
+                )) as ResultUrl;
+
+                return {
+                    title: result.title,
+                    url: newResult.url,
+                };
+            }
+
+            return newResult;
+        }
     }
 }
 
