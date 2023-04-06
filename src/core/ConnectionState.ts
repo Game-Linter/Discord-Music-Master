@@ -1,7 +1,28 @@
 import { PlayerSubscription } from '@discordjs/voice';
+import { TextChannel } from 'discord.js';
+import { client } from '..';
 import { ResultUrl } from './abstract/UrlHandler';
 
 export class ConnectionState {
+    async emit(
+        action: 'play' | 'queue' | 'skipped',
+        name: string,
+        guildId: string,
+    ) {
+        const channel = await client.channels.fetch(
+            this.subscription.connection.joinConfig.channelId!,
+        );
+
+        if (channel instanceof TextChannel) {
+            if (action === 'skipped') {
+                channel.send(
+                    `Skipped to next track: ${name} in guild: ${guildId}`,
+                );
+            } else {
+                channel.send(`**${action}ing**: \`${name}\``);
+            }
+        }
+    }
     private _currentTrack!: string;
     private _queue: string[] = [];
     private _subscription: PlayerSubscription;

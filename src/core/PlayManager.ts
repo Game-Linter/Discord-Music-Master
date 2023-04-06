@@ -85,6 +85,13 @@ class PlayManager {
 
         if (connectionState.playing) {
             connectionState.pushQueue(query as any); // TODO: fix this type
+
+            connectionState.emit(
+                'queue',
+                connectionState.next()!,
+                voiceConnection.joinConfig.guildId,
+            );
+
             return Promise.resolve({
                 title: Array.isArray(query)
                     ? `playlist starting with : ${query[0].title}`
@@ -128,16 +135,11 @@ class PlayManager {
             AudioPlayerStatus.Playing,
             () => {
                 // send a message to the channel that the bot is playing in
-                const channel = client.channels.cache.get(
-                    connectionState!.subscription.connection.joinConfig
-                        .channelId!,
+                connectionState?.emit(
+                    'play',
+                    connectionState.currentTrack!,
+                    connectionState.subscription.connection.joinConfig.guildId,
                 );
-
-                if (channel && channel instanceof TextChannel) {
-                    channel.send(
-                        `Now playing: ${connectionState!.currentTrack}`,
-                    );
-                }
             },
         );
 
