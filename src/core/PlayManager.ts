@@ -7,7 +7,9 @@ import {
     StreamType,
     VoiceConnection,
 } from '@discordjs/voice';
+import { TextChannel } from 'discord.js';
 import ytdl from 'ytdl-core-discord';
+import { client } from '..';
 import { ResultUrl } from './abstract/UrlHandler';
 import { ConnectionState } from './ConnectionState';
 import queryHandler from './QueryHandler';
@@ -119,7 +121,24 @@ class PlayManager {
 
         connectionState.subscription.player.on(
             AudioPlayerStatus.Idle,
-            this.idleHandler(connectionState, voiceConnection, query),
+            this.idleHandler(connectionState, query),
+        );
+
+        connectionState.subscription.player.on(
+            AudioPlayerStatus.Playing,
+            () => {
+                // send a message to the channel that the bot is playing in
+                const channel = client.channels.cache.get(
+                    connectionState!.subscription.connection.joinConfig
+                        .channelId!,
+                );
+
+                if (channel && channel instanceof TextChannel) {
+                    channel.send(
+                        `Now playing: ${connectionState!.currentTrack}`,
+                    );
+                }
+            },
         );
 
         return Promise.resolve({
@@ -128,16 +147,15 @@ class PlayManager {
         });
     }
 
-    private idleHandler(
-        connectionState: ConnectionState,
-        voiceConnection: VoiceConnection,
-        query: Result,
-    ) {
+    private idleHandler(connectionState: ConnectionState, query: Result) {
         return async () => {
             connectionState!.playing = false;
 
             if (connectionState!.isLooping) {
-                await this.enqueueAudio(query, voiceConnection);
+                await this.enqueueAudio(
+                    query,
+                    connectionState.subscription.connection,
+                );
             } else {
                 if (connectionState!.hasNext()) {
                     connectionState!.shiftQueue();
@@ -146,11 +164,15 @@ class PlayManager {
                         connectionState!.currentTrack!,
                     );
 
-                    await this.enqueueAudio(result, voiceConnection);
+                    await this.enqueueAudio(
+                        result,
+                        connectionState.subscription.connection,
+                    );
                 } else {
-                    voiceConnection.destroy();
+                    connectionState.subscription.connection.destroy();
                     this.deleteConnectionState(
-                        voiceConnection.joinConfig.guildId,
+                        connectionState.subscription.connection.joinConfig
+                            .guildId,
                     );
                     return Promise.resolve(null);
                 }

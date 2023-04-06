@@ -76,3 +76,5 @@ const signHandler = () => {
 
 process.on('SIGINT', signHandler);
 process.on('SIGTERM', signHandler);
+
+export { client };
