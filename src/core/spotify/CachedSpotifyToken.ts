@@ -8,7 +8,13 @@ export const getCachedSpotifyToken = async () => {
 
     const newToken = await SpotifyAccountWrapper.requestToken();
 
-    SpotifyToken.setToken(newToken).then((_) => console.log('Hydrated token'));
+    try {
+        await SpotifyToken.setToken(newToken);
+
+        console.log('Hydrated token');
+    } catch (error) {
+        console.error('Failed to hydrate token');
+    }
 
     return newToken;
 };

@@ -3,13 +3,6 @@ import qs from 'qs';
 import { BASE } from '../../config/base-spotify.config';
 import { HttpClient } from '../abstract/HttpWrapper';
 
-export const SpotifsyHttpClient = axios.create({
-    baseURL: 'https://accounts.spotify.com',
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-    },
-});
-
 type SpotifyResponse = {
     access_token: string;
 };
