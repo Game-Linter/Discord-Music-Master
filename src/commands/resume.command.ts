@@ -1,6 +1,6 @@
-import { Command } from './abstract/command.abstract';
-import playManager from '../core/PlayManager';
 import { SlashCommandBuilder } from 'discord.js';
+import playManager from '../core/PlayManager';
+import { Command } from './abstract/command.abstract';
 
 class Resume extends Command {
     _data: any;

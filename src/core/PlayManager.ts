@@ -7,9 +7,7 @@ import {
     StreamType,
     VoiceConnection,
 } from '@discordjs/voice';
-import { TextChannel } from 'discord.js';
 import ytdl from 'ytdl-core-discord';
-import { client } from '..';
 import { ResultUrl } from './abstract/UrlHandler';
 import { ConnectionState } from './ConnectionState';
 import queryHandler from './QueryHandler';

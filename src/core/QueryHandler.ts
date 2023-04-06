@@ -42,7 +42,7 @@ class QueryHandler {
     }
 
     async handle(urlOrQuery: string): Promise<Result> {
-        let result: Promise<Result> = Promise.resolve(null);
+        let result: Promise<Result>;
 
         const Handler = this.getHandler(urlOrQuery);
 

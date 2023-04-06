@@ -1,10 +1,10 @@
 import {
-    ChatInputCommandInteraction,
     CacheType,
+    ChatInputCommandInteraction,
     SlashCommandBuilder,
 } from 'discord.js';
-import { Command } from './abstract/command.abstract';
 import playManager from '../core/PlayManager';
+import { Command } from './abstract/command.abstract';
 
 class Pause extends Command {
     _data: any;

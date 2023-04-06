@@ -72,10 +72,7 @@ class Audio extends Command {
 
         // call enqueueAudio
 
-        const played = await playManager.enqueueAudio(
-            result as ResultUrl | ResultUrl[],
-            voiceConnection,
-        );
+        const played = await playManager.enqueueAudio(result, voiceConnection);
 
         if (played)
             interaction.editReply({
