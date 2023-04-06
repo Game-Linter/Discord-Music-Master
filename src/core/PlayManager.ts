@@ -10,11 +10,9 @@ import {
 import ytdl from 'ytdl-core-discord';
 import { ResultUrl } from './abstract/UrlHandler';
 import { ConnectionState } from './ConnectionState';
-import queryHandler from './QueryHandler';
+import queryHandler, { Result } from './QueryHandler';
 
 type GuildId = string;
-
-import { Result } from './QueryHandler';
 
 class PlayManager {
     private players = new Map<GuildId, ConnectionState>();
