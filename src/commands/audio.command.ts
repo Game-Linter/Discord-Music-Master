@@ -4,7 +4,6 @@ import {
     PermissionFlagsBits,
     SlashCommandBuilder,
 } from 'discord.js';
-import { ResultUrl } from '../core/abstract/UrlHandler';
 import playManager from '../core/PlayManager';
 import queryHandler from '../core/QueryHandler';
 import { Command } from './abstract/command.abstract';
