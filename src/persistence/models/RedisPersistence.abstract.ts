@@ -1,11 +1,13 @@
-import { getAsync, setAsync } from '../redis.server';
+import { getAsync, setAsync, setPlAsync } from '../redis.server';
 
 export abstract class RedisPersistable<T> {
-    protected abstract dbKey: string;
-    protected abstract TTL: number;
+    protected abstract _dbKey: string;
+    private _value!: T;
 
-    async get(): Promise<T | null> {
-        const value = await getAsync(this.dbKey);
+    protected abstract TTL: number | undefined;
+
+    public static async get<T>(key: string): Promise<T | null> {
+        const value = await getAsync(key);
 
         if (!value) {
             return null;
@@ -22,11 +24,61 @@ export abstract class RedisPersistable<T> {
         }
     }
 
-    async set(value: T) {
+    get value() {
+        return this._value;
+    }
+
+    set value(value: T) {
+        this._value = value;
+    }
+
+    get dbKey() {
+        return this._dbKey;
+    }
+
+    set dbKey(key: string) {
+        this._dbKey = key;
+    }
+
+    async get(): Promise<T | null> {
+        const value = await getAsync(this._dbKey);
+
+        if (!value) {
+            return null;
+        }
+
         if (typeof value === 'string') {
-            await setAsync(this.dbKey, this.TTL, value);
+            try {
+                return JSON.parse(value) as T;
+            } catch (error) {
+                return value as unknown as T;
+            }
         } else {
-            await setAsync(this.dbKey, this.TTL, JSON.stringify(value));
+            return value as unknown as T;
+        }
+    }
+
+    private async setex(value: T, ttl: number) {
+        if (typeof value === 'string') {
+            await setAsync(this._dbKey, ttl, value);
+        } else {
+            await setAsync(this._dbKey, ttl, JSON.stringify(value));
+        }
+    }
+
+    private async setPersist(value: T) {
+        if (typeof value === 'string') {
+            await setPlAsync(this._dbKey, value);
+        } else {
+            await setPlAsync(this._dbKey, JSON.stringify(value));
+        }
+    }
+
+    public async save() {
+        if (this.TTL) {
+            await this.setex(this.value, this.TTL);
+        } else {
+            await this.setPersist(this.value);
         }
     }
 }

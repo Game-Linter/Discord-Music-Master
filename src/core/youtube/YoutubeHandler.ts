@@ -11,7 +11,7 @@ export class YoutubeHandler extends UrlHandler {
 
         const playlistId = parsedUrl.searchParams.get('list');
 
-        if (playlistId) return this.getPlaylistInfo(url);
+        if (playlistId) return this.getPlaylistInfo(playlistId);
 
         const videoId = parsedUrl.searchParams.get('v');
 
@@ -36,10 +36,14 @@ export class YoutubeHandler extends UrlHandler {
         };
     }
 
-    private async getPlaylistInfo(url: string) {
-        return ytpl(url).then((info) => ({
-            title: info.title,
-            url: info.url,
+    private async getPlaylistInfo(playlistId: string) {
+        const playlist = await ytpl(playlistId);
+
+        const videoList = playlist.items.map((item) => ({
+            title: item.title,
+            url: `${YoutubeHandler.YOUTUBE_URI}${item.id}`,
         }));
+
+        return videoList;
     }
 }
