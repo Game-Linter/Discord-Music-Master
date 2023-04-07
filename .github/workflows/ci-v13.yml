@@ -5,6 +5,7 @@ on:
         branches: experiment/v13
         paths-ignore:
             - '**/README.md'
+            - 'infra/**'
 
     workflow_dispatch:
 
@@ -32,4 +33,6 @@ jobs:
                   platforms: linux/amd64,linux/arm64
                   file: ./Dockerfile
                   push: true
-                  tags: ghcr.io/game-linter/discord-music-master:latest
+                  tags: |
+                      ghcr.io/game-linter/discord-music-master:latest
+                      ghcr.io/game-linter/discord-music-master:${{ github.sha }}
