@@ -7,5 +7,5 @@ export abstract class Command {
         return this._data;
     }
 
-    abstract execute(message: ChatInputCommandInteraction): Promise<void>;
+    abstract execute(interaction: ChatInputCommandInteraction): Promise<void>;
 }
