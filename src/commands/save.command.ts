@@ -13,7 +13,9 @@ class Save extends Command {
         super();
         this._data = new SlashCommandBuilder()
             .setName('save')
-            .setDescription('Saves a track/playlist to this server with a name')
+            .setDescription(
+                'Saves a track-or-playlist to this server with a name',
+            )
             .addStringOption((option) =>
                 option
                     .setName('name')
@@ -22,7 +24,7 @@ class Save extends Command {
             )
             .addStringOption((option) =>
                 option
-                    .setName('track/playlist')
+                    .setName('track-or-playlist')
                     .setDescription('The link to save')
                     .setRequired(true),
             );
@@ -33,7 +35,7 @@ class Save extends Command {
     ): Promise<void> {
         const { name, link } = {
             name: interaction.options.getString('name', true),
-            link: interaction.options.getString('track/playlist', true),
+            link: interaction.options.getString('track-or-playlist', true),
         };
 
         let guildPlaylists = await GuildPlaylist.get<GuildPlaylist>(
