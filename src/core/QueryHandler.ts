@@ -74,22 +74,22 @@ class QueryHandler {
                 newResult.map(async (item) => {
                     return {
                         title: item.title,
-                        url: item.title
-                            ? await (
-                                  await this.defaultHandler.handle(item.title)
-                              ).url
-                            : item.url,
+                        url:
+                            !item.url && item.title
+                                ? (await this.defaultHandler.handle(item.title))
+                                      .url
+                                : item.url,
                     };
                 }),
             );
         } else {
             return {
                 title: newResult.title,
-                url: newResult.title
-                    ? await (
-                          await this.defaultHandler.handle(newResult.title)
-                      ).url
-                    : newResult.url,
+                url:
+                    !newResult.url && newResult.title
+                        ? (await this.defaultHandler.handle(newResult.title))
+                              .url
+                        : newResult.url,
             };
         }
     }
@@ -106,7 +106,7 @@ class QueryHandler {
                 newResult.map(async (item) => {
                     const handler = this.getHandler(item.url!);
 
-                    if (item.url) {
+                    if (item.url && !item.title) {
                         const result = (await handler?.handler.handleUrl(
                             item.url,
                         )) as ResultUrl;
@@ -123,7 +123,7 @@ class QueryHandler {
         } else {
             const handler = this.getHandler(newResult.url!);
 
-            if (newResult.url) {
+            if (newResult.url && !newResult.title) {
                 const result = (await handler?.handler.handleUrl(
                     newResult.url,
                 )) as ResultUrl;
