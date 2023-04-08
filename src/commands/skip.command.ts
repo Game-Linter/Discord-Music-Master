@@ -21,10 +21,10 @@ class Skip extends Command {
             .setName('skip');
     }
 
-    execute(
+    async execute(
         interaction: ChatInputCommandInteraction<CacheType>,
     ): Promise<void> {
-        interaction.deferReply({
+        await interaction.deferReply({
             ephemeral: true,
         });
 
@@ -33,7 +33,7 @@ class Skip extends Command {
         );
 
         if (!connectionState) {
-            interaction.editReply({
+            await interaction.editReply({
                 content: 'Not even in channel bro, based!',
             });
 
@@ -64,9 +64,11 @@ class Skip extends Command {
                     }
                 });
         } else {
-            interaction.editReply({
+            await interaction.editReply({
                 content: 'No more tracks in queue',
             });
+
+            PlayManager.deleteConnectionState(interaction.guildId!);
 
             connectionState.subscription.connection.destroy();
         }
