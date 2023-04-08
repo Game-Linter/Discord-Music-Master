@@ -6,7 +6,7 @@ import {
 } from 'discord.js';
 import PlayManager from '../core/PlayManager';
 import queryHandler from '../core/QueryHandler';
-import { GuildPlaylist } from '../persistence/models/Playlist';
+import { GuildPlaylist, Playlist } from '../persistence/models/Playlist';
 import { Command } from './abstract/command.abstract';
 
 class LoadCommand extends Command {
@@ -44,22 +44,11 @@ class LoadCommand extends Command {
             return;
         }
 
-        let voiceConnection = getVoiceConnection(interaction.guildId!);
-
-        if (!voiceConnection) {
-            voiceConnection = joinVoiceChannel({
-                channelId: voiceChannel,
-                guildId: interaction.guildId!,
-                adapterCreator: interaction.guild?.voiceAdapterCreator!,
-            });
-        }
-
         const name = interaction.options.getString('name', true);
 
         const guildPlaylists =
-            (await GuildPlaylist.get<Map<string, string>>(
-                interaction.guildId!,
-            )) || new Map<string, string>();
+            (await GuildPlaylist.get<Playlist>(interaction.guildId!)) ??
+            new Map<string, string>();
 
         const playlist = guildPlaylists.get(name);
 
@@ -78,6 +67,14 @@ class LoadCommand extends Command {
                 content: 'Link no longer valid!',
             });
         }
+
+        const voiceConnection =
+            getVoiceConnection(interaction.guildId!) ||
+            joinVoiceChannel({
+                channelId: voiceChannel,
+                guildId: interaction.guildId!,
+                adapterCreator: interaction.guild?.voiceAdapterCreator!,
+            });
 
         interaction.editReply({
             content: `Loading ${name}`,
