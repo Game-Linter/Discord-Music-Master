@@ -1,21 +1,40 @@
-import { getAsync, setAsync, setPlAsync } from '../redis.server';
+import { getAsync, setAsync, setPersist } from '../redis.server';
 
 export abstract class RedisPersistable<T> {
     protected abstract _dbKey: string;
     private _value!: T;
 
+    private static readonly _dbKeyPrefix = 'redis:playlist:';
+
     protected abstract TTL: number | undefined;
 
     public static async get<T>(key: string): Promise<T | null> {
-        const value = await getAsync(key);
+        const value = await getAsync(`${this._dbKeyPrefix}${key}`);
 
-        if (!value) {
-            return null;
-        }
+        if (!value) return null;
 
         if (typeof value === 'string') {
             try {
-                return JSON.parse(value) as T;
+                const parsedValue = JSON.parse(value) as T;
+
+                console.log(
+                    parsedValue,
+                    typeof parsedValue,
+                    parsedValue instanceof Object,
+                );
+                if (
+                    typeof parsedValue === 'object' &&
+                    parsedValue !== null &&
+                    parsedValue instanceof Object
+                ) {
+                    try {
+                        return new Map(parsedValue as any) as T;
+                    } catch (error) {
+                        return parsedValue;
+                    }
+                } else {
+                    return parsedValue;
+                }
             } catch (error) {
                 return value as unknown as T;
             }
@@ -68,9 +87,16 @@ export abstract class RedisPersistable<T> {
 
     private async setPersist(value: T) {
         if (typeof value === 'string') {
-            await setPlAsync(this._dbKey, value);
+            await setPersist(this._dbKey, value);
         } else {
-            await setPlAsync(this._dbKey, JSON.stringify(value));
+            if (value instanceof Map) {
+                await setPersist(
+                    this._dbKey,
+                    JSON.stringify(Array.from(value)),
+                );
+            } else {
+                await setPersist(this._dbKey, JSON.stringify(value));
+            }
         }
     }
 
