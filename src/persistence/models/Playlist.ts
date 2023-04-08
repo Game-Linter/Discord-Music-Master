@@ -1,6 +1,6 @@
 import { RedisPersistable } from './RedisPersistence.abstract';
 
-type Playlist = Map<string, string>;
+export type Playlist = Map<string, string>;
 
 export class GuildPlaylist extends RedisPersistable<Playlist> {
     protected _dbKey: string;
