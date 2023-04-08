@@ -3,7 +3,7 @@ import {
     ChatInputCommandInteraction,
     SlashCommandBuilder,
 } from 'discord.js';
-import { GuildPlaylist } from '../persistence/models/Playlist';
+import { GuildPlaylist, Playlist } from '../persistence/models/Playlist';
 import { Command } from './abstract/command.abstract';
 
 class Save extends Command {
@@ -38,38 +38,27 @@ class Save extends Command {
             link: interaction.options.getString('track-or-playlist', true),
         };
 
-        let guildPlaylists = await GuildPlaylist.get<GuildPlaylist>(
-            interaction.guildId!,
-        );
+        const guildPlaylists =
+            (await GuildPlaylist.get<Playlist>(interaction.guildId!)) ??
+            new Map<string, string>();
 
-        if (!guildPlaylists) {
-            guildPlaylists = new GuildPlaylist(interaction.guildId!);
+        guildPlaylists.set(name, link);
 
-            guildPlaylists.value = new Map<string, string>();
+        const savedPlaylist = new GuildPlaylist(interaction.guildId!);
 
-            guildPlaylists.value.set(name, link);
-
-            await guildPlaylists.save();
-        }
-
-        const playlists =
-            (await guildPlaylists.get()) || new Map<string, string>();
+        savedPlaylist.value = guildPlaylists;
 
         try {
-            playlists.set(name, link);
-
-            guildPlaylists.value = playlists;
-
-            await guildPlaylists.save();
+            await savedPlaylist.save();
 
             interaction.reply({
-                content: `Saved ${name} to ${interaction.guildId}`,
-                ephemeral: true,
+                content: `Saved ${name} to ${interaction.guild?.name}`,
+                ephemeral: false,
             });
         } catch (error: any) {
             interaction.reply({
-                content: 'Failed to save',
-                ephemeral: true,
+                content: `Failed to save ${name} to ${interaction.guild?.name}`,
+                ephemeral: false,
             });
 
             console.error(error.message);
