@@ -1,6 +1,6 @@
 import { getInfo } from 'ytdl-core-discord';
-import { ResultUrl, UrlHandler } from '../abstract/UrlHandler';
 import ytpl from 'ytpl';
+import { UrlHandler } from '../abstract/UrlHandler';
 import { Result } from '../QueryHandler';
 
 export class YoutubeHandler extends UrlHandler {
