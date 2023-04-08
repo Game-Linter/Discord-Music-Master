@@ -38,8 +38,8 @@ stages:
     - script: |
         echo '{"experimental": "enabled"}' | sudo tee /etc/docker/daemon.json
         sudo systemctl restart docker
-        docker version
-        docker buildx create --name mybuilder --driver docker-container --use
+        sudo docker version
+        sudo docker buildx create --name mybuilder --driver docker-container --use
       displayName: 'Enable buildx and create build context'
     - task: Docker@2
       displayName: Build an image
