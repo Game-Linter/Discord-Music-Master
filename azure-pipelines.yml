@@ -26,29 +26,10 @@ stages:
         arm64:
           ARCH: 'arm64'
     steps:
-    - script: |
-        echo "##vso[task.setvariable variable=dockerBuildContext]$(Build.SourcesDirectory)"
-      displayName: 'Set Docker build context'
-    - script: |
-        echo "##vso[task.setvariable variable=dockerBuildArgs]--build-arg ARCH=$(ARCH)"
-      displayName: 'Set Docker build arguments'
-    - task: DockerInstaller@0
-      inputs:
-        dockerVersion: '23.0.3'
-    - script: |
-        echo '{"experimental": "enabled"}' | sudo tee /etc/docker/daemon.json
-        sudo systemctl restart docker
-        sudo docker version
-        sudo docker buildx create --name mybuilder --driver docker-container --use
-      displayName: 'Enable buildx and create build context'
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        tags: |
-          $(tag)
-        arguments: $(dockerBuildArgs)
-        buildContext: $(dockerBuildContext)
-        additionalImageTags: $(ARCH)
-        buildxArguments: --platform linux/$(ARCH) --output "type=image,push=false"
+      - task: Docker@2
+        displayName: Build an image
+        inputs:
+          command: build
+          dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+          tags: |
+            $(tag)
