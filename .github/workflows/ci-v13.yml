@@ -13,10 +13,6 @@ jobs:
     CI:
         name: Running CI to build / push docker image
         runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                os: [ubuntu-latest]
-                architecture: [amd64, arm64]
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -32,21 +28,9 @@ jobs:
 
             - name: Build and push
               uses: docker/build-push-action@v2
-              if: ${{ matrix.architecture == 'arm64' }}
               with:
                   context: .
-                  platforms: linux/arm64/v8
-                  file: ./Dockerfile
-                  push: true
-                  tags: |
-                      ghcr.io/game-linter/discord-music-master:latest
-                      ghcr.io/game-linter/discord-music-master:${{ github.sha }}
-
-            - name: Build and push
-              uses: docker/build-push-action@v2
-              if: ${{ matrix.architecture == 'amd64' }}
-              with:
-                  context: .
+                  platforms: linux/amd64,linux/arm64/v8
                   file: ./Dockerfile
                   push: true
                   tags: |
