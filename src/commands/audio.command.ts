@@ -39,7 +39,7 @@ class Audio extends Command {
             .then((member) => member.voice.channelId);
 
         if (!voiceChannel) {
-            interaction.followUp({
+            await interaction.followUp({
                 content:
                     'You need to be in a voice channel to use this command!',
                 ephemeral: true,
@@ -74,7 +74,7 @@ class Audio extends Command {
         const played = await playManager.enqueueAudio(result, voiceConnection);
 
         if (played)
-            interaction.editReply({
+            await interaction.editReply({
                 content: `${this.message[played.action]} ${played.title}`,
             });
 

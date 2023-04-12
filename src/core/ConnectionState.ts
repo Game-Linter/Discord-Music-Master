@@ -15,17 +15,17 @@ export class ConnectionState {
 
         if (channel instanceof TextChannel) {
             if (action === 'skipped') {
-                channel.send(
+                await channel.send(
                     `Skipped to next track: ${name} in guild: ${guildId}`,
                 );
             } else {
-                channel.send(`**${action}ing**: \`${name}\``);
+                await channel.send(`**${action}ing**: \`${name}\``);
             }
         }
     }
     private _currentTrack!: string;
     private _queue: string[] = [];
-    private _subscription: PlayerSubscription;
+    private readonly _subscription: PlayerSubscription;
     private _isAutoPlay: boolean = false;
     private _isLooping: boolean = false;
     private isPlaying: boolean = false;
