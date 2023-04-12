@@ -21,7 +21,7 @@ WORKDIR /usr/app
 COPY package.json .
 COPY yarn.lock .
 
-RUN yarn --forzen-lockfile
+RUN yarn --forzen-lockfile --production
 
 COPY --from=build /usr/app/dist ./dist
 
