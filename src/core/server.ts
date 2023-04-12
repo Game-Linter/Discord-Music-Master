@@ -98,15 +98,15 @@ export class Discord {
             name: 'Production monitoring',
         });
 
-        setTimeout(() => {
-            try {
-                console.log('Sentry monitoring');
-            } catch (e) {
-                Sentry.captureException(e);
-            } finally {
-                transaction.finish();
-            }
-        }, 99);
+        // setTimeout(() => {
+        //     try {
+        //         console.log('Sentry monitoring');
+        //     } catch (e) {
+        //         Sentry.captureException(e);
+        //     } finally {
+        //         transaction.finish();
+        //     }
+        // }, 99);
         await this.client.login(token);
     }
 
