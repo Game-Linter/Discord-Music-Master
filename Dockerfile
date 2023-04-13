@@ -20,6 +20,7 @@ WORKDIR /usr/app
 
 COPY package.json .
 COPY yarn.lock .
+COPY .yarnrc .
 
 RUN yarn --forzen-lockfile --production
 
