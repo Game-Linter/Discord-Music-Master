@@ -30,6 +30,7 @@
         "ytsr": "^3.8.1"
     },
     "devDependencies": {
+        "@total-typescript/ts-reset": "^0.4.2",
         "@types/glob": "^8.1.0",
         "@types/ioredis-mock": "^8.2.1",
         "@types/jest": "^29.5.0",

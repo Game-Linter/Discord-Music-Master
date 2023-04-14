@@ -16,8 +16,6 @@
  *
  */
 
-// test
-
 import { Events } from 'discord.js';
 import dotenv from 'dotenv';
 import { globSync } from 'glob';
